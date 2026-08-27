@@ -1,0 +1,13 @@
+split,statistic,scope,headroom_fixed_pct,headroom_intermediate_pct,verdict
+leave_one_mechanism_out (macro),location,combined,7.98541023455371,21.357011813801886,KILL
+leave_one_mechanism_out (macro),location,UCI_only,10.448543372833678,20.648967185160295,KILL
+leave_one_mechanism_out (macro),spread,combined,45.15815279935072,45.15815279935072,PROCEED
+leave_one_mechanism_out (macro),spread,UCI_only,44.88447289456598,44.88447289456598,PROCEED
+unseen_severity::unseen_severity,location,combined,0.0,12.322014692308027,KILL
+unseen_severity::unseen_severity,location,UCI_only,0.0,7.565920535653422,KILL
+leave_one_domain_out::train_SKAB_test_UCI,location,cross_domain,0.0,6.553840597074502,KILL
+leave_one_domain_out::train_UCI_test_SKAB,location,cross_domain,0.0,19.2189827321571,KILL
+unseen_severity::unseen_severity,spread,combined,25.260791632682476,25.260791632682476,PROCEED
+unseen_severity::unseen_severity,spread,UCI_only,0.0308228705478516,0.0308228705478516,KILL
+leave_one_domain_out::train_SKAB_test_UCI,spread,cross_domain,26.89649950345502,26.89649950345502,PROCEED
+leave_one_domain_out::train_UCI_test_SKAB,spread,cross_domain,11.934420074221027,11.934420074221027,KILL
