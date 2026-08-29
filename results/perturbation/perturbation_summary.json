@@ -1,0 +1,57 @@
+{
+  "fits": {
+    "SKAB": {
+      "domain": "SKAB",
+      "n": 9197,
+      "n_runs": 5,
+      "n_channels": 8,
+      "pooled_slope": -0.6119471944945193,
+      "pooled_r2": 0.5265419408041613,
+      "pooled_crossing": 0.018950614450200784,
+      "demeaned_slope": -0.6904440472391336,
+      "demeaned_r2": 0.8182198721535708,
+      "per_series_mean_r2": 0.7999547538029665,
+      "per_series_min_r2": 0.31480857824112096,
+      "per_series_max_r2": 0.9293952084901561,
+      "per_series_mean_slope": -0.6615551141863087,
+      "structural_pct_below_crossing": {
+        "duplicate": 0.6175,
+        "missing": 0.745,
+        "out_of_order": 1.0,
+        "sensor_dropout_burst": 0.9043151969981238,
+        "stale_run": 0.6958698372966208
+      }
+    },
+    "UCI": {
+      "domain": "UCI",
+      "n": 9200,
+      "n_runs": 10,
+      "n_channels": 4,
+      "pooled_slope": -0.6032367675484515,
+      "pooled_r2": 0.7044081985100175,
+      "pooled_crossing": 0.017404460553606924,
+      "demeaned_slope": -0.6080654225921808,
+      "demeaned_r2": 0.774610978235329,
+      "per_series_mean_r2": 0.770998047527607,
+      "per_series_min_r2": 0.6241421911975603,
+      "per_series_max_r2": 0.8639622158361758,
+      "per_series_mean_slope": -0.6058161012692486,
+      "structural_pct_below_crossing": {
+        "duplicate": 1.0,
+        "missing": 1.0,
+        "out_of_order": 1.0,
+        "sensor_dropout_burst": 0.893125,
+        "stale_run": 0.88125
+      }
+    }
+  },
+  "rq2_connection": {
+    "uci_crossing": 0.017404460553606924,
+    "ambient_n": 3600,
+    "ambient_median_norm_pert": 0.0267783698115012,
+    "ambient_frac_above_crossing": 0.5477777777777778,
+    "isolated_n": 2000,
+    "isolated_median_norm_pert": 0.00074406981069555,
+    "isolated_frac_below_crossing": 0.9345
+  }
+}
