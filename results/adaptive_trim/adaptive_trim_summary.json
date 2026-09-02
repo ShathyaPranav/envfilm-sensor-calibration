@@ -1,0 +1,37 @@
+{
+  "ats_proxy_selected": "gap_trim_untrim",
+  "ats_proxy_correlations": {
+    "gap_trim_untrim": {
+      "spearman_rho": 0.41070323418349575,
+      "p": 0.0
+    },
+    "gap_mean_median": {
+      "spearman_rho": -0.15938004943266412,
+      "p": 0.0
+    },
+    "gap_iqr_std": {
+      "spearman_rho": 0.3694865686902227,
+      "p": 0.0
+    }
+  },
+  "ats_sign": 1,
+  "n_splits": 10,
+  "timing_us_per_window": {
+    "ats_us_per_window": 0.020345343408534992,
+    "gbt_us_per_window": 2.025363800083278,
+    "mlp_us_per_window": 0.23878813310335167
+  },
+  "mean_pct_vs_fixed": {
+    "std": 999.2335850659863,
+    "madn": 160.95859894111248,
+    "iqr": 137.9908575455169,
+    "ats": 51.65006750058289,
+    "gbt": 84.59142771688037,
+    "mlp": 116.76338912644363,
+    "oracle": -52.44777468945713
+  },
+  "n_splits_ats_beats_fixed": 0,
+  "n_splits_gbt_beats_fixed": 0,
+  "n_splits_mlp_beats_fixed": 0,
+  "n_splits_ltp_beats_ats": 3
+}
