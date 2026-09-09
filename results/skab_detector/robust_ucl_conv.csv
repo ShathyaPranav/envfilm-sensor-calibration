@@ -1,0 +1,9 @@
+f1,far,mar,rate,rule,seed,arch,scaler
+0.7822,13.64,28.21,0.0,published_quantile,0,conv,standard
+0.7781,11.75,29.86,0.0,robust_ucl,0,conv,standard
+0.7208,8.4,39.56,0.05,published_quantile,0,conv,standard
+0.7253,8.81,38.78,0.05,robust_ucl,0,conv,standard
+0.6283,5.23,52.13,0.1,published_quantile,0,conv,standard
+0.6753,5.82,46.46,0.1,robust_ucl,0,conv,standard
+0.488,3.35,66.79,0.2,published_quantile,0,conv,standard
+0.5252,3.53,63.3,0.2,robust_ucl,0,conv,standard

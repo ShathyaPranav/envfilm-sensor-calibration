@@ -1,0 +1,5 @@
+seed,rate,corrected,alpha_star,final_loss
+0,0.0,True,0.093,0.581037
+0,0.0,False,0.08162,0.872749
+0,0.2,True,0.08169,0.804368
+0,0.2,False,0.0814,1.173705

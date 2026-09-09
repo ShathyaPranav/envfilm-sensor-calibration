@@ -1,0 +1,49 @@
+seed,rate,rpf,ucl,method,f1,auc,far,mar
+0,0.0,False,quantile,published Conv-AE,0.7824,0.828,13.63,28.18
+0,0.0,False,robust,RUCL,0.778,0.828,11.75,29.87
+0,0.0,True,quantile,RPF+published,0.7847,0.836,15.08,27.03
+0,0.0,True,robust,RPF+RUCL,0.7794,0.836,13.53,28.69
+0,0.05,False,quantile,published Conv-AE,0.7208,0.8282,8.4,39.57
+0,0.05,False,robust,RUCL,0.7251,0.8282,8.81,38.8
+0,0.05,True,quantile,RPF+published,0.7394,0.8301,10.89,35.83
+0,0.05,True,robust,RPF+RUCL,0.7453,0.8301,10.94,34.99
+0,0.1,False,quantile,published Conv-AE,0.628,0.8245,5.23,52.16
+0,0.1,False,robust,RUCL,0.6753,0.8245,5.82,46.46
+0,0.1,True,quantile,RPF+published,0.694,0.8275,7.66,43.35
+0,0.1,True,robust,RPF+RUCL,0.714,0.8275,8.22,40.54
+0,0.2,False,quantile,published Conv-AE,0.4989,0.8271,3.42,65.78
+0,0.2,False,robust,RUCL,0.527,0.8271,3.63,63.1
+0,0.2,True,quantile,RPF+published,0.5126,0.8255,4.05,64.33
+0,0.2,True,robust,RPF+RUCL,0.5656,0.8255,4.25,59.12
+1,0.0,False,quantile,published Conv-AE,0.7834,0.8278,13.63,28.03
+1,0.0,False,robust,RUCL,0.7791,0.8278,11.77,29.71
+1,0.0,True,quantile,RPF+published,0.7849,0.8356,15.08,26.99
+1,0.0,True,robust,RPF+RUCL,0.7798,0.8356,13.59,28.59
+1,0.05,False,quantile,published Conv-AE,0.7118,0.8254,8.79,40.55
+1,0.05,False,robust,RUCL,0.7139,0.8254,8.59,40.37
+1,0.05,True,quantile,RPF+published,0.7484,0.8307,11.52,34.25
+1,0.05,True,robust,RPF+RUCL,0.7375,0.8307,11.52,35.77
+1,0.1,False,quantile,published Conv-AE,0.6113,0.8274,5.14,54.03
+1,0.1,False,robust,RUCL,0.6473,0.8274,5.97,49.68
+1,0.1,True,quantile,RPF+published,0.6819,0.8301,7.24,45.03
+1,0.1,True,robust,RPF+RUCL,0.6919,0.8301,8.03,43.44
+1,0.2,False,quantile,published Conv-AE,0.4885,0.8273,3.23,66.78
+1,0.2,False,robust,RUCL,0.5499,0.8273,3.73,60.86
+1,0.2,True,quantile,RPF+published,0.5153,0.826,3.52,64.24
+1,0.2,True,robust,RPF+RUCL,0.5763,0.826,4.07,58.1
+2,0.0,False,quantile,published Conv-AE,0.7845,0.8234,13.66,27.84
+2,0.0,False,robust,RUCL,0.7788,0.8234,12.19,29.51
+2,0.0,True,quantile,RPF+published,0.7868,0.8327,15.08,26.71
+2,0.0,True,robust,RPF+RUCL,0.7806,0.8327,13.64,28.44
+2,0.05,False,quantile,published Conv-AE,0.7153,0.8239,8.66,40.16
+2,0.05,False,robust,RUCL,0.7127,0.8239,8.81,40.43
+2,0.05,True,quantile,RPF+published,0.7526,0.8272,11.51,33.67
+2,0.05,True,robust,RPF+RUCL,0.7389,0.8272,11.81,35.43
+2,0.1,False,quantile,published Conv-AE,0.6178,0.8218,5.21,53.29
+2,0.1,False,robust,RUCL,0.6678,0.8218,6.9,46.89
+2,0.1,True,quantile,RPF+published,0.686,0.8244,8.01,44.18
+2,0.1,True,robust,RPF+RUCL,0.7104,0.8244,8.19,41.01
+2,0.2,False,quantile,published Conv-AE,0.484,0.8214,3.1,67.22
+2,0.2,False,robust,RUCL,0.4876,0.8214,4.28,66.57
+2,0.2,True,quantile,RPF+published,0.5022,0.8208,3.54,65.45
+2,0.2,True,robust,RPF+RUCL,0.5381,0.8208,4.9,61.64
