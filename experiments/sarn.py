@@ -206,13 +206,27 @@ def physical_screen(raw, site, var):
     return x, int(bad.sum())
 
 
-def build_series(site_frames, site, var, prescreen=True):
-    """Features, windows and targets for one (site, variable) series."""
+def build_series(site_frames, site, var, prescreen=True, rule_screen=False):
+    """Features, windows and targets for one (site, variable) series.
+
+    rule_screen=True removes what the standard rule screen (physical range, rate of change,
+    flatline runs, thresholds fitted on training years only) would remove, BEFORE the model
+    sees anything. The model then decides what else to drop, and the comparison becomes
+    "rules" against "rules plus the model", which is the question that matters: a screen and
+    a learned head are not competitors, and measured on pH the screen removes long blocks
+    that a per-point head only partially recalls, where partial recall buys nothing because
+    the rest of the block still dominates the window.
+    """
     d = site_frames[site]
     raw = d[var].to_numpy(float)
     n_screened = 0
     if prescreen:
         raw, n_screened = physical_screen(raw, site, var)
+    if rule_screen:
+        from lro_killtest import apply_rules, fit_rules
+        yr_all = d.datetime.dt.year.to_numpy()
+        mtr_all = (yr_all >= TRAIN_YEARS[0]) & (yr_all <= TRAIN_YEARS[1])
+        raw = apply_rules(raw, fit_rules(raw, mtr_all))
     cor = d['%s_cor' % var].to_numpy(float)
     qual = d['%s_qual' % var].astype(str).str.strip()
     labeled = (~qual.isin(['NULL', 'nan', 'None', '', '<NA>'])).to_numpy()
@@ -272,13 +286,28 @@ def window_index(ends):
     return (ends - W + 1)[:, None] + np.arange(W)[None, :]
 
 
-def make_tensors(S, ends, center, scale):
+def make_tensors(S, ends, center, scale, target='corrected'):
     """Windows as tensors. Values are centred and scaled per series; the trimmed mean is
-    equivariant under that, so the loss is comparable across series."""
+    equivariant under that, so the loss is comparable across series.
+
+    target='corrected'  the statistic of the technician-corrected series. This is the end
+        goal, but on conductivity and pH most of it is calibration drift that no retention
+        weighting can remove, and the measured consequence is that the learnable signal is
+        buried: trained this way the model abstained on pH even though a rule screen cuts
+        the error there by 41%.
+    target='retention'  the statistic over the points the technician KEPT, with raw values
+        elsewhere. This isolates exactly the channel a retention model can affect. It
+        changes what the model is taught, never what it is scored on: evaluation stays on
+        the corrected statistic.
+    """
     idx = window_index(ends)
     raw = (S['raw'][idx] - center) / scale
     valid = np.isfinite(raw)
-    tgt = trimmed_mean_np((S['cor'][idx] - center) / scale)
+    if target == 'retention':
+        kept = np.where(S['point'][idx], np.nan, S['raw'][idx])
+        tgt = trimmed_mean_np((kept - center) / scale)
+    else:
+        tgt = trimmed_mean_np((S['cor'][idx] - center) / scale)
     ok = np.isfinite(tgt) & valid.any(axis=1)
     return (torch.tensor(np.nan_to_num(S['feat'][idx][ok]), dtype=torch.float32),
             torch.tensor(np.nan_to_num(raw[ok]), dtype=torch.float32),
@@ -286,6 +315,31 @@ def make_tensors(S, ends, center, scale):
             torch.tensor(tgt[ok], dtype=torch.float32),
             torch.tensor(S['point'][idx][ok].astype(np.float32)),
             ends[ok])
+
+
+def statistic_errors(S, ends, scale, weights=None, drop=None):
+    """Per-window absolute error in the reported statistic, in robust-scale units.
+
+    Returned per window rather than averaged so that arms can be compared with a PAIRED
+    test on the same windows, which is the only honest way to compare two methods that
+    see identical data.
+    """
+    idx = window_index(ends)
+    raw = S['raw'][idx]
+    tgt = trimmed_mean_np(S['cor'][idx])
+    if weights is not None:
+        v = torch.tensor(np.nan_to_num(raw), dtype=torch.float32)
+        va = torch.tensor(np.isfinite(raw).astype(np.float32))
+        pred, safe = weighted_trimmed_mean(v, torch.tensor(weights, dtype=torch.float32), va)
+        pred = pred.numpy()
+        pred[~safe.numpy()] = np.nan
+    else:
+        x = raw.copy()
+        if drop is not None:
+            x = np.where(drop[idx], np.nan, x)
+        pred = trimmed_mean_np(x)
+    err = np.abs(pred - tgt) / scale
+    return err, np.isfinite(pred) & np.isfinite(tgt)
 
 
 def statistic_mae(S, ends, scale, weights=None, drop=None):

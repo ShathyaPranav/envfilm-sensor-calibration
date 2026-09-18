@@ -24,7 +24,30 @@ if _EXP not in sys.path:
     sys.path.insert(0, _EXP)
 from lro_killtest import OUT, SITES, TEST_YEARS, TRAIN_YEARS, apply_rules, fit_rules, load_site, series_scale
 from sarn import (DEV, FEATS, Net, VAL_YEAR, build_series, infer_weights, make_tensors,
-                  statistic_mae, weighted_trimmed_mean, windows_for)
+                  statistic_errors, statistic_mae, weighted_trimmed_mean, windows_for)
+
+PYHQC_DIR = os.path.join(os.path.dirname(_EXP), 'data', 'lro', 'pyhydroqc_results')
+
+
+def published_detections(site, var, when):
+    """pyhydroqc's own published detections for this series, aligned to our index.
+
+    Returns a dict of model name to boolean mask. Empty when the resource ships no
+    detections for this series (it covers conductivity at two sites and pH at one).
+    """
+    out = {}
+    if not os.path.isdir(PYHQC_DIR):
+        return out
+    for f in sorted(os.listdir(PYHQC_DIR)):
+        if 'detections' not in f or not f.endswith('.csv'):
+            continue
+        parts = f[:-4].replace('_detections', '').split('_')
+        if parts[-2] != site or parts[-1] != var:
+            continue
+        dd = pd.read_csv(os.path.join(PYHQC_DIR, f), parse_dates=['datetime'])
+        m = dd.set_index('datetime')['anomaly'].reindex(when).fillna(False).to_numpy(bool)
+        out['pyhydroqc_' + '_'.join(parts[:-2])] = m
+    return out
 
 
 def validate(net, arm, data):
@@ -122,6 +145,10 @@ def main():
     ap.add_argument('--epochs', type=int, default=20)
     ap.add_argument('--seeds', default='0')
     ap.add_argument('--stride', type=int, default=3)
+    ap.add_argument('--target', default='corrected', choices=['corrected', 'retention'])
+    ap.add_argument('--rule-screen', action='store_true',
+                    help='apply the standard rule screen first, so arms measure what the '
+                         'model ADDS on top of it')
     args = ap.parse_args()
 
     frames = {}
@@ -135,7 +162,7 @@ def main():
         print('\n=== %s ===' % var, flush=True)
         series, packs = {}, {}
         for site in frames:
-            S = build_series(frames, site, var)
+            S = build_series(frames, site, var, rule_screen=args.rule_screen)
             mtr = (S['year'] >= TRAIN_YEARS[0]) & (S['year'] <= TRAIN_YEARS[1])
             if not np.isfinite(S['cor'][mtr]).any():
                 continue
@@ -143,9 +170,17 @@ def main():
             scale = series_scale(S['cor'], mtr)
             if not np.isfinite(scale) or scale <= 0:
                 continue
-            tr = make_tensors(S, windows_for(S, TRAIN_YEARS, args.stride), center, scale)
-            va = make_tensors(S, windows_for(S, (VAL_YEAR, VAL_YEAR), args.stride), center, scale)
-            te = make_tensors(S, windows_for(S, TEST_YEARS, 1), center, scale)
+            tr = make_tensors(S, windows_for(S, TRAIN_YEARS, args.stride), center, scale,
+                              args.target)
+            va = make_tensors(S, windows_for(S, (VAL_YEAR, VAL_YEAR), args.stride), center, scale,
+                              args.target)
+            # The TEST split is always built on the corrected target, whatever the model was
+            # trained against. make_tensors drops windows whose target is undefined, and the
+            # retention target is undefined exactly where the technician flagged every point
+            # in a window. Those are the worst windows, so letting the training target pick
+            # the test set silently removed them and flattered the run (measured: the
+            # no-action baseline on MainStreet pH read 0.4874 instead of 0.7716).
+            te = make_tensors(S, windows_for(S, TEST_YEARS, 1), center, scale, 'corrected')
             if len(tr[0]) < 500 or len(va[0]) < 100 or len(te[0]) < 100:
                 print('  %-14s skipped (windows: train %d val %d test %d)'
                       % (site, len(tr[0]), len(va[0]), len(te[0])))
@@ -197,13 +232,34 @@ def main():
                 res['sarn_hard'] = statistic_mae(S, ends, scale,
                                                  weights=(w_sarn >= 0.5).astype(float))[0]
                 res['mean_weight'] = float(w_sarn.mean())
+                # soft-weighting control: the point-label network's own probabilities used
+                # as weights, separating "trained through the statistic" from "soft weights
+                # instead of a hard mask"
+                res['pointnet_soft'] = statistic_mae(S, ends, scale, weights=1.0 - w_pn)[0]
+                for name, mask in published_detections(site, var, S['datetime']).items():
+                    res[name] = statistic_mae(S, ends, scale, drop=mask)[0]
+                e_sarn, ok_a = statistic_errors(S, ends, scale, weights=w_sarn)
+                e_pn, ok_b = statistic_errors(S, ends, scale,
+                                              weights=(w_pn < arms['pointnet'][2]).astype(float))
+                both = ok_a & ok_b & np.isfinite(e_sarn) & np.isfinite(e_pn)
+                if both.sum() > 100:
+                    diff = e_sarn[both] - e_pn[both]
+                    rng = np.random.default_rng(0)
+                    draws = rng.integers(0, len(diff), size=(1000, len(diff)))
+                    boot = diff[draws].mean(axis=1)
+                    res['diff_mean'] = float(diff.mean())
+                    res['diff_lo'] = float(np.percentile(boot, 2.5))
+                    res['diff_hi'] = float(np.percentile(boot, 97.5))
+                    res['win_rate'] = float((e_sarn[both] < e_pn[both]).mean())
                 rows.append(res)
                 print('   %-14s screened %5d | prescreened %.4f | rules %.4f | label-oracle '
                       '%.4f | pointnet %.4f | SARN %.4f (hard %.4f, keeps %.3f)'
                       % (site, res['n_screened'], res['raw'], res['rules'], res['oracle_labels'],
                          res['pointnet'], res['sarn'], res['sarn_hard'], res['mean_weight']),
                       flush=True)
-                pd.DataFrame(rows).to_csv(os.path.join(OUT, 'sarn_results.csv'), index=False)
+                pd.DataFrame(rows).to_csv(os.path.join(
+                    OUT, 'sarn_results_%s.csv'
+                    % (args.target + ('_onrules' if args.rule_screen else ''))), index=False)
 
     r = pd.DataFrame(rows)
     if not len(r):
@@ -211,8 +267,23 @@ def main():
         return
     r.to_csv(os.path.join(OUT, 'sarn_results.csv'), index=False)
     print('\n=== test-year statistic MAE (2018-2020), mean over sites and seeds ===')
-    print(r.groupby('var')[['raw', 'rules', 'oracle_labels', 'pointnet', 'sarn', 'sarn_hard']]
-          .mean().to_string(float_format='%.4f'))
+    cols = [c for c in ['raw', 'rules', 'oracle_labels', 'pointnet', 'pointnet_soft', 'sarn',
+                        'sarn_hard'] if c in r.columns]
+    print(r.groupby('var')[cols].mean().to_string(float_format='%.4f'))
+    pub = [c for c in r.columns if c.startswith('pyhydroqc_')]
+    if pub:
+        print()
+        print('where published detections exist, on identical windows:')
+        sub = r[r[pub].notna().any(axis=1)]
+        print(sub.groupby(['var', 'site'])[['raw', 'rules', 'sarn', 'sarn_hard'] + pub]
+              .mean().to_string(float_format='%.4f'))
+    if 'diff_lo' in r.columns:
+        print()
+        print('paired bootstrap over test windows, SARN minus the point-label control:')
+        print(r[['var', 'site', 'seed', 'diff_mean', 'diff_lo', 'diff_hi', 'win_rate']]
+              .to_string(index=False, float_format='%+.5f'))
+        print('series-seeds whose 95%% interval lies entirely below zero: %d of %d'
+              % (int((r.diff_hi < 0).sum()), len(r)))
     r['vs_pointnet'] = (r.sarn - r.pointnet) / r.pointnet
     r['vs_rules'] = (r.sarn - r.rules) / r.rules
     print('\nrelative change from SARN (negative means SARN is better):')
