@@ -43,7 +43,7 @@ ALLVARS = ['temp', 'cond', 'ph', 'do']
 TRAIN_YEARS = (2014, 2016)          # rule thresholds and scales are fitted here only
 TEST_YEARS = (2018, 2020)
 WINDOWS = [30, 96]                  # harness default, and 24 h at a 15-minute timestep
-CHUNK = 150000
+CHUNK = 50000        # keeps the sliding-window sort under control on long series
 
 # ---- pre-registered pass thresholds -----------------------------------------
 G0_MAX_REPLACEMENT = 0.25
@@ -71,6 +71,10 @@ def load_site(site):
     for c in d.columns:
         if c != 'datetime' and not c.endswith('_qual'):
             d[c] = pd.to_numeric(d[c], errors='coerce')
+            # pyhydroqc writes -9999 into the corrected column to mark a value the
+            # technician removed (anomaly_utilities.add_labels). It is a sentinel, not a
+            # measurement: treating it as one puts a -9999 inside rolling windows.
+            d.loc[d[c] <= -9990, c] = np.nan
     step = d.datetime.diff().dt.total_seconds().median()
     grid = pd.date_range(d.datetime.iloc[0], d.datetime.iloc[-1], freq='%ds' % int(step))
     d = d.set_index('datetime').reindex(grid)
@@ -242,12 +246,14 @@ def gate1():
                     rows.append(dict(site=site, var=var, w=w, est=est, n_windows=n, scale=scale,
                                      mae=mae / scale, peak=peak / scale, nonzero=nz,
                                      res_mae=rmae / scale, res_peak=rpeak / scale, res_nonzero=rnz))
+            pd.DataFrame(rows).to_csv(os.path.join(OUT, 'g1_headroom.csv'), index=False)
             shown = [r for r in rows[-12:] if r['est'] in ('median', 'trimmed_mean')]
             print('  %-14s %-4s scale=%8.3f  ' % (site, var, scale)
                   + '  '.join('W%d/%s mae %.3f->%.3f' % (r['w'], r['est'], r['mae'], r['res_mae'])
                               for r in shown), flush=True)
     r = pd.DataFrame(rows)
     r.to_csv(os.path.join(OUT, 'g1_headroom.csv'), index=False)
+    print('wrote %s (%d rows)' % (os.path.join(OUT, 'g1_headroom.csv'), len(r)), flush=True)
     prim = r[(r['var'].isin(PRIMARY)) & (r.est == 'trimmed_mean') & (r.w == WINDOWS[0])]
     med_mae = prim.mae.median()
     n_peak = int((prim.peak >= G1_MIN_PEAK).sum())
