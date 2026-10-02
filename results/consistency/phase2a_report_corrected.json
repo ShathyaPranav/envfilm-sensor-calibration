@@ -1,0 +1,43 @@
+{
+ "mixed_configuration_frequency": {
+  "combined": {
+   "overall_fraction_mixed": 0.17391304347826086,
+   "n_regimes": 23,
+   "per_mechanism": {
+    "duplicate": 1.0,
+    "missing": 0.0,
+    "out_of_order": 1.0,
+    "outlier": 0.0,
+    "sensor_dropout_burst": 0.0,
+    "spike_burst": 0.16666666666666666,
+    "stale_run": 0.25
+   }
+  },
+  "SKAB": {
+   "overall_fraction_mixed": 0.391304347826087,
+   "n_regimes": 23,
+   "per_mechanism": {
+    "duplicate": 1.0,
+    "missing": 1.0,
+    "out_of_order": 1.0,
+    "outlier": 0.0,
+    "sensor_dropout_burst": 1.0,
+    "spike_burst": 0.16666666666666666,
+    "stale_run": 0.25
+   }
+  },
+  "UCI": {
+   "overall_fraction_mixed": 0.043478260869565216,
+   "n_regimes": 23,
+   "per_mechanism": {
+    "duplicate": 0.0,
+    "missing": 0.0,
+    "out_of_order": 0.0,
+    "outlier": 0.0,
+    "sensor_dropout_burst": 0.0,
+    "spike_burst": 0.16666666666666666,
+    "stale_run": 0.0
+   }
+  }
+ }
+}

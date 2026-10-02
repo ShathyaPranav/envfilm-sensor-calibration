@@ -15,7 +15,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CSV = os.path.join(_REPO_ROOT, 'results', 'trim_sweep', 'table1_by_tau.csv')
+# DQ_CONSISTENCY=1 reads the sweep rerun with the consistency-scaled trimmed std,
+# which is what the paper now reports.
+CSV = os.path.join(_REPO_ROOT, 'results', 'trim_sweep' + ('_consistent' if os.environ.get('DQ_CONSISTENCY', '0') == '1' else ''), 'table1_by_tau.csv')
 OUT_PDF = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fig_trim_sweep.pdf')
 OUT_PNG = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fig_trim_sweep.png')
 

@@ -35,7 +35,12 @@ if _REPO_ROOT not in sys.path:
 import run_phase2a_full as r2a
 from harness import phase2a_ext as p2x
 
-OUT_DIR = os.path.join(_REPO_ROOT, 'results', 'window_sweep')
+# DQ_CONSISTENCY=1 applies the Gaussian consistency factor to the trimmed standard
+# deviation, so that it estimates sigma like MADn and the IQR-based scale already do,
+# and writes to a separate results directory. Without the factor the trimmed estimator
+# reads systematically low and collects proportionally smaller errors by construction.
+CONSISTENCY = os.environ.get('DQ_CONSISTENCY', '0') == '1'
+OUT_DIR = os.path.join(_REPO_ROOT, 'results', 'window_sweep' + ('_consistent' if CONSISTENCY else ''))
 SEEDS = list(range(10))
 WINDOWS = [15, 30, 60, 120]
 
@@ -62,7 +67,7 @@ def sweep_one_window(series_list, regimes, w):
         x = s['x']
         finite = x[np.isfinite(x)]
         channel_sigma = float(np.nanstd(finite)) if finite.size else np.nan
-        clean_cache = p2x.precompute_clean(x, w=w)
+        clean_cache = p2x.precompute_clean(x, w=w, consistency=CONSISTENCY)
         for r in regimes:
             kwargs = {}
             if r['sev_type'] == 'magnitude':
@@ -71,7 +76,7 @@ def sweep_one_window(series_list, regimes, w):
                 kwargs['burst_len'] = r['sev_value']
             for seed in SEEDS:
                 res = p2x.eval_cell_16(x, r['mechanism'], r2a.RATE, seed,
-                                        precomputed_clean=clean_cache, w=w, **kwargs)
+                                        precomputed_clean=clean_cache, w=w, consistency=CONSISTENCY, **kwargs)
                 rows.append(dict(
                     domain=s['domain'], run=s['run'], channel=s['channel'],
                     mechanism=r['mechanism'], sev_type=r['sev_type'], sev_value=r['sev_value'],

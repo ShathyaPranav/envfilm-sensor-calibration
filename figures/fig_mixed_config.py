@@ -17,7 +17,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-REPORT_JSON = os.path.join(_REPO_ROOT, 'results', 'phase2a_full', 'phase2a_report.json')
+# DQ_CONSISTENCY=1 plots the report recomputed with the consistency-scaled trimmed
+# standard deviation (results/consistency/), which is what the paper now uses.
+REPORT_JSON = (os.path.join(_REPO_ROOT, 'results', 'consistency', 'phase2a_report_corrected.json')
+               if os.environ.get('DQ_CONSISTENCY', '0') == '1'
+               else os.path.join(_REPO_ROOT, 'results', 'phase2a_full', 'phase2a_report.json'))
 OUT_PDF = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fig_mixed_config.pdf')
 OUT_PNG = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fig_mixed_config.png')
 
