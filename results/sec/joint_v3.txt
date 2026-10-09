@@ -1,0 +1,240 @@
+  All NO joint net seed 0  anchor-holdout RMSE 4.806  (427 s)
+  All NO joint net seed 1  anchor-holdout RMSE 4.450  (22 s)
+  All NO joint net seed 2  anchor-holdout RMSE 4.473  (47 s)
+  All NO joint net -ctx seed 0  anchor-holdout RMSE 5.065  (31 s)
+  All NO joint net -ctx seed 1  anchor-holdout RMSE 5.205  (17 s)
+  All NO joint net -ctx seed 2  anchor-holdout RMSE 4.750  (26 s)
+  All-no-Antwerp NO city-blind net seed 0  anchor-holdout RMSE 7.328  (15 s)
+  All-no-Antwerp NO city-blind net seed 1  anchor-holdout RMSE 7.220  (24 s)
+  All-no-Antwerp NO city-blind net seed 2  anchor-holdout RMSE 7.476  (24 s)
+  All-no-Oslo NO city-blind net seed 0  anchor-holdout RMSE 2.056  (35 s)
+  All-no-Oslo NO city-blind net seed 1  anchor-holdout RMSE 1.959  (64 s)
+  All-no-Oslo NO city-blind net seed 2  anchor-holdout RMSE 2.145  (25 s)
+  All-no-Zagreb NO city-blind net seed 0  anchor-holdout RMSE 4.670  (34 s)
+  All-no-Zagreb NO city-blind net seed 1  anchor-holdout RMSE 4.701  (23 s)
+  All-no-Zagreb NO city-blind net seed 2  anchor-holdout RMSE 4.590  (38 s)
+
+Antwerp NO: 21 target units, 9 anchors, reference sd 27.33
+   joint net                median RMSE   6.32   vs joint net   +0.0%   better on  0 of 21   peak bias -15.4%
+   joint net -ctx           median RMSE   7.71   vs joint net  -11.4%   better on  4 of 21   peak bias -20.3%
+   mlp own-first            median RMSE  10.74   vs joint net  -64.6%   better on  0 of 21   peak bias -27.5%
+   pooled mlp fleet-first-z median RMSE  15.75   vs joint net -149.1%   better on  0 of 21   peak bias -45.6%
+   pooled mlp anchor-all-z  median RMSE   9.95   vs joint net  -46.0%   better on  1 of 21   peak bias -27.4%
+   pooled mlp anchor-late-z median RMSE   9.21   vs joint net  -27.2%   better on  3 of 21   peak bias -17.3%
+   pooled mlp anchor-all-z+ctx median RMSE   6.15   vs joint net   -1.9%   better on  9 of 21   peak bias  -6.9%
+   pooled mlp anchor-late-z+ctx median RMSE   9.86   vs joint net  -48.9%   better on  2 of 21   peak bias -25.9%
+   pooled mlp own+anchor-res median RMSE   9.57   vs joint net  -44.2%   better on  1 of 21   peak bias -19.9%
+   pooled mlp [oracle] offset+gain median RMSE   6.33   vs joint net   +9.3%   better on 13 of 21   peak bias  -7.6%
+   pooled mlp [oracle] in-period median RMSE   2.58   vs joint net  +57.1%   better on 17 of 21   peak bias  -2.5%
+   boosting own-first       median RMSE  21.90   vs joint net -246.4%   better on  0 of 21   peak bias -62.2%
+   pooled boosting fleet-first-z median RMSE  18.48   vs joint net -181.1%   better on  0 of 21   peak bias -54.6%
+   pooled boosting anchor-all-z median RMSE  12.80   vs joint net -104.9%   better on  0 of 21   peak bias -36.3%
+   pooled boosting anchor-late-z median RMSE  11.89   vs joint net  -81.2%   better on  0 of 21   peak bias -28.8%
+   pooled boosting anchor-all-z+ctx median RMSE   9.04   vs joint net  -34.4%   better on  1 of 21   peak bias -19.6%
+   pooled boosting anchor-late-z+ctx median RMSE  12.84   vs joint net  -90.5%   better on  0 of 21   peak bias -28.3%
+   pooled boosting own+anchor-res median RMSE  19.21   vs joint net -199.8%   better on  0 of 21   peak bias -39.5%
+   city-blind net           median RMSE  10.52   vs joint net  -52.0%   better on  0 of 21   peak bias -24.0%
+
+Oslo NO: 21 target units, 5 anchors, reference sd 4.76
+   joint net                median RMSE   2.71   vs joint net   +0.0%   better on  0 of 21   peak bias +16.3%
+   joint net -ctx           median RMSE   3.11   vs joint net  -14.0%   better on  7 of 21   peak bias -11.2%
+   mlp own-first            median RMSE   5.53   vs joint net -104.3%   better on  2 of 21   peak bias +16.3%
+   pooled mlp fleet-first-z median RMSE   6.76   vs joint net -134.4%   better on  2 of 21   peak bias +25.3%
+   pooled mlp anchor-all-z  median RMSE   2.96   vs joint net  -22.4%   better on  6 of 21   peak bias  +2.9%
+   pooled mlp anchor-late-z median RMSE   4.88   vs joint net  -78.7%   better on  2 of 21   peak bias  +5.6%
+   pooled mlp anchor-all-z+ctx median RMSE   5.95   vs joint net  -72.8%   better on  3 of 21   peak bias +60.1%
+   pooled mlp anchor-late-z+ctx median RMSE   4.69   vs joint net  -62.8%   better on  3 of 21   peak bias +25.6%
+   pooled mlp own+anchor-res median RMSE   5.65   vs joint net -105.5%   better on  2 of 21   peak bias +27.1%
+   pooled mlp [oracle] offset+gain median RMSE   3.34   vs joint net  -33.4%   better on  6 of 21   peak bias -28.8%
+   pooled mlp [oracle] in-period median RMSE   1.64   vs joint net  +33.6%   better on 19 of 21   peak bias  -3.0%
+   boosting own-first       median RMSE   4.03   vs joint net  -36.9%   better on  4 of 21   peak bias -10.1%
+   pooled boosting fleet-first-z median RMSE   2.91   vs joint net   -8.2%   better on  8 of 21   peak bias -11.5%
+   pooled boosting anchor-all-z median RMSE   2.59   vs joint net   +2.5%   better on 11 of 21   peak bias  +4.2%
+   pooled boosting anchor-late-z median RMSE   5.19   vs joint net  -78.8%   better on  2 of 21   peak bias +18.3%
+   pooled boosting anchor-all-z+ctx median RMSE   3.85   vs joint net  -33.7%   better on  5 of 21   peak bias +24.8%
+   pooled boosting anchor-late-z+ctx median RMSE   5.77   vs joint net -103.3%   better on  1 of 21   peak bias +18.6%
+   pooled boosting own+anchor-res median RMSE   6.36   vs joint net -133.9%   better on  1 of 21   peak bias +41.4%
+   city-blind net           median RMSE   3.11   vs joint net  -13.2%   better on  7 of 21   peak bias  -9.5%
+
+Zagreb NO: 8 target units, 0 anchors, reference sd 7.48
+   joint net                median RMSE   5.20   vs joint net   +0.0%   better on  0 of  8   peak bias -61.8%
+   joint net -ctx           median RMSE   5.60   vs joint net   -2.5%   better on  2 of  8   peak bias -62.4%
+   mlp own-first            median RMSE   6.32   vs joint net  -19.1%   better on  0 of  8   peak bias -56.8%
+   pooled mlp fleet-first-z median RMSE   9.55   vs joint net  -82.7%   better on  0 of  8   peak bias -28.4%
+   pooled mlp anchor-all-z  median RMSE   5.14   vs joint net   +4.7%   better on  5 of  8   peak bias -44.4%
+   pooled mlp anchor-late-z median RMSE   5.85   vs joint net  -13.0%   better on  2 of  8   peak bias -41.7%
+   pooled mlp anchor-all-z+ctx median RMSE   5.49   vs joint net   -7.3%   better on  3 of  8   peak bias -19.4%
+   pooled mlp anchor-late-z+ctx median RMSE   4.96   vs joint net   +8.5%   better on  5 of  8   peak bias -49.8%
+   pooled mlp own+anchor-res median RMSE   6.30   vs joint net  -22.4%   better on  0 of  8   peak bias -35.7%
+   pooled mlp [oracle] offset+gain median RMSE   6.08   vs joint net  -17.4%   better on  0 of  8   peak bias -55.9%
+   pooled mlp [oracle] in-period median RMSE   2.81   vs joint net  +47.3%   better on  8 of  8   peak bias  -8.0%
+   boosting own-first       median RMSE   7.81   vs joint net  -51.4%   better on  0 of  8   peak bias -23.8%
+   pooled boosting fleet-first-z median RMSE   6.03   vs joint net  -16.3%   better on  0 of  8   peak bias -48.1%
+   pooled boosting anchor-all-z median RMSE   5.37   vs joint net   -0.6%   better on  4 of  8   peak bias -46.9%
+   pooled boosting anchor-late-z median RMSE   5.15   vs joint net   +3.2%   better on  6 of  8   peak bias -35.9%
+   pooled boosting anchor-all-z+ctx median RMSE   4.96   vs joint net   +8.0%   better on  6 of  8   peak bias -32.0%
+   pooled boosting anchor-late-z+ctx median RMSE   4.88   vs joint net  +10.5%   better on  6 of  8   peak bias -28.6%
+   pooled boosting own+anchor-res median RMSE  11.67   vs joint net -124.3%   better on  0 of  8   peak bias +22.9%
+   city-blind net           median RMSE   5.05   vs joint net   +3.7%   better on  8 of  8   peak bias -57.5%
+  All NO2 joint net seed 0  anchor-holdout RMSE 3.482  (589 s)
+  All NO2 joint net seed 1  anchor-holdout RMSE 3.686  (57 s)
+  All NO2 joint net seed 2  anchor-holdout RMSE 3.368  (96 s)
+  All NO2 joint net -ctx seed 0  anchor-holdout RMSE 4.332  (28 s)
+  All NO2 joint net -ctx seed 1  anchor-holdout RMSE 4.681  (32 s)
+  All NO2 joint net -ctx seed 2  anchor-holdout RMSE 4.530  (25 s)
+  All-no-Antwerp NO2 city-blind net seed 0  anchor-holdout RMSE 3.711  (34 s)
+  All-no-Antwerp NO2 city-blind net seed 1  anchor-holdout RMSE 3.541  (36 s)
+  All-no-Antwerp NO2 city-blind net seed 2  anchor-holdout RMSE 3.611  (21 s)
+  All-no-Oslo NO2 city-blind net seed 0  anchor-holdout RMSE 3.582  (57 s)
+  All-no-Oslo NO2 city-blind net seed 1  anchor-holdout RMSE 3.295  (57 s)
+  All-no-Oslo NO2 city-blind net seed 2  anchor-holdout RMSE 3.223  (85 s)
+  All-no-Zagreb NO2 city-blind net seed 0  anchor-holdout RMSE 2.964  (48 s)
+  All-no-Zagreb NO2 city-blind net seed 1  anchor-holdout RMSE 2.759  (58 s)
+  All-no-Zagreb NO2 city-blind net seed 2  anchor-holdout RMSE 3.300  (52 s)
+
+Antwerp NO2: 21 target units, 9 anchors, reference sd 12.69
+   joint net                median RMSE   4.50   vs joint net   +0.0%   better on  0 of 21   peak bias -15.2%
+   joint net -ctx           median RMSE   5.43   vs joint net  -20.2%   better on  1 of 21   peak bias -15.3%
+   mlp own-first            median RMSE   5.46   vs joint net  -23.2%   better on  1 of 21   peak bias  +5.2%
+   pooled mlp fleet-first-z median RMSE  11.57   vs joint net -159.3%   better on  0 of 21   peak bias -54.0%
+   pooled mlp anchor-all-z  median RMSE   8.74   vs joint net -100.2%   better on  0 of 21   peak bias -41.5%
+   pooled mlp anchor-late-z median RMSE   8.29   vs joint net  -97.3%   better on  0 of 21   peak bias -27.6%
+   pooled mlp anchor-all-z+ctx median RMSE   6.70   vs joint net  -48.0%   better on  3 of 21   peak bias -26.7%
+   pooled mlp anchor-late-z+ctx median RMSE   6.91   vs joint net  -70.1%   better on  2 of 21   peak bias -29.2%
+   pooled mlp own+anchor-res median RMSE   6.81   vs joint net  -45.4%   better on  1 of 21   peak bias -19.7%
+   pooled mlp [oracle] offset+gain median RMSE   4.22   vs joint net   +3.9%   better on 12 of 21   peak bias  -3.1%
+   pooled mlp [oracle] in-period median RMSE   1.97   vs joint net  +50.6%   better on 21 of 21   peak bias  -1.6%
+   boosting own-first       median RMSE   5.79   vs joint net  -35.8%   better on  3 of 21   peak bias -26.2%
+   pooled boosting fleet-first-z median RMSE  10.20   vs joint net -133.4%   better on  0 of 21   peak bias -53.1%
+   pooled boosting anchor-all-z median RMSE   7.76   vs joint net  -87.2%   better on  1 of 21   peak bias -37.7%
+   pooled boosting anchor-late-z median RMSE   8.61   vs joint net  -91.7%   better on  1 of 21   peak bias -41.4%
+   pooled boosting anchor-all-z+ctx median RMSE   7.35   vs joint net  -63.6%   better on  3 of 21   peak bias -38.2%
+   pooled boosting anchor-late-z+ctx median RMSE   7.41   vs joint net  -81.9%   better on  1 of 21   peak bias -37.2%
+   pooled boosting own+anchor-res median RMSE   7.10   vs joint net  -59.1%   better on  1 of 21   peak bias -25.0%
+   city-blind net           median RMSE   5.30   vs joint net  -18.7%   better on  3 of 21   peak bias -17.1%
+
+Oslo NO2: 21 target units, 5 anchors, reference sd 6.38
+   joint net                median RMSE   3.35   vs joint net   +0.0%   better on  0 of 21   peak bias +10.2%
+   joint net -ctx           median RMSE   3.89   vs joint net  -25.4%   better on  2 of 21   peak bias +13.1%
+   mlp own-first            median RMSE   4.90   vs joint net  -38.1%   better on  1 of 21   peak bias  +1.6%
+   pooled mlp fleet-first-z median RMSE   5.27   vs joint net  -66.5%   better on  4 of 21   peak bias -12.3%
+   pooled mlp anchor-all-z  median RMSE   4.33   vs joint net  -35.5%   better on  4 of 21   peak bias  -9.8%
+   pooled mlp anchor-late-z median RMSE   3.93   vs joint net  -26.3%   better on  3 of 21   peak bias  -1.9%
+   pooled mlp anchor-all-z+ctx median RMSE   5.20   vs joint net  -54.3%   better on  2 of 21   peak bias +19.1%
+   pooled mlp anchor-late-z+ctx median RMSE   5.16   vs joint net  -59.6%   better on  1 of 21   peak bias  -2.1%
+   pooled mlp own+anchor-res median RMSE   6.20   vs joint net  -95.3%   better on  2 of 21   peak bias  -8.7%
+   pooled mlp [oracle] offset+gain median RMSE   3.66   vs joint net   -5.8%   better on  9 of 21   peak bias -18.3%
+   pooled mlp [oracle] in-period median RMSE   1.99   vs joint net  +38.8%   better on 20 of 21   peak bias  -3.1%
+   boosting own-first       median RMSE   3.28   vs joint net   +7.0%   better on 11 of 21   peak bias -23.4%
+   pooled boosting fleet-first-z median RMSE   4.20   vs joint net  -22.2%   better on  4 of 21   peak bias  +4.1%
+   pooled boosting anchor-all-z median RMSE   3.84   vs joint net   -3.3%   better on  9 of 21   peak bias  -5.1%
+   pooled boosting anchor-late-z median RMSE   4.23   vs joint net  -38.1%   better on  5 of 21   peak bias  -8.7%
+   pooled boosting anchor-all-z+ctx median RMSE   3.12   vs joint net   -0.7%   better on 10 of 21   peak bias +10.9%
+   pooled boosting anchor-late-z+ctx median RMSE   3.45   vs joint net   -8.3%   better on  6 of 21   peak bias  +5.4%
+   pooled boosting own+anchor-res median RMSE   6.29   vs joint net  -84.5%   better on  2 of 21   peak bias  -5.0%
+   city-blind net           median RMSE   3.36   vs joint net   +0.3%   better on 11 of 21   peak bias  +5.6%
+
+Zagreb NO2: 8 target units, 4 anchors, reference sd 7.72
+   joint net                median RMSE   5.05   vs joint net   +0.0%   better on  0 of  8   peak bias -40.0%
+   joint net -ctx           median RMSE   5.65   vs joint net   -5.8%   better on  2 of  8   peak bias -43.1%
+   mlp own-first            median RMSE   6.08   vs joint net  -21.0%   better on  0 of  8   peak bias -51.6%
+   pooled mlp fleet-first-z median RMSE   6.30   vs joint net  -31.5%   better on  0 of  8   peak bias -38.0%
+   pooled mlp anchor-all-z  median RMSE   5.59   vs joint net  -10.8%   better on  0 of  8   peak bias -33.6%
+   pooled mlp anchor-late-z median RMSE   5.82   vs joint net  -12.1%   better on  0 of  8   peak bias -31.9%
+   pooled mlp anchor-all-z+ctx median RMSE   6.08   vs joint net  -21.9%   better on  2 of  8   peak bias -13.1%
+   pooled mlp anchor-late-z+ctx median RMSE   5.44   vs joint net   -7.9%   better on  0 of  8   peak bias -30.7%
+   pooled mlp own+anchor-res median RMSE   6.31   vs joint net  -25.2%   better on  0 of  8   peak bias -40.9%
+   pooled mlp [oracle] offset+gain median RMSE   3.84   vs joint net  +16.8%   better on  6 of  8   peak bias -15.9%
+   pooled mlp [oracle] in-period median RMSE   2.21   vs joint net  +56.8%   better on  8 of  8   peak bias  -8.1%
+   boosting own-first       median RMSE   6.09   vs joint net  -25.5%   better on  1 of  8   peak bias -51.1%
+   pooled boosting fleet-first-z median RMSE   5.20   vs joint net   -3.0%   better on  3 of  8   peak bias -32.8%
+   pooled boosting anchor-all-z median RMSE   5.27   vs joint net   -3.3%   better on  3 of  8   peak bias -38.2%
+   pooled boosting anchor-late-z median RMSE   5.39   vs joint net   -5.6%   better on  2 of  8   peak bias -37.7%
+   pooled boosting anchor-all-z+ctx median RMSE   5.15   vs joint net   +1.4%   better on  4 of  8   peak bias -37.6%
+   pooled boosting anchor-late-z+ctx median RMSE   5.45   vs joint net   -4.9%   better on  2 of  8   peak bias -30.4%
+   pooled boosting own+anchor-res median RMSE   6.24   vs joint net  -28.8%   better on  0 of  8   peak bias -34.8%
+   city-blind net           median RMSE   5.16   vs joint net   -1.0%   better on  4 of  8   peak bias -44.1%
+  All PM2.5 joint net seed 0  anchor-holdout RMSE 4.640  (426 s)
+  All PM2.5 joint net seed 1  anchor-holdout RMSE 4.586  (39 s)
+  All PM2.5 joint net seed 2  anchor-holdout RMSE 4.560  (36 s)
+  All PM2.5 joint net -ctx seed 0  anchor-holdout RMSE 5.098  (20 s)
+  All PM2.5 joint net -ctx seed 1  anchor-holdout RMSE 4.902  (54 s)
+  All PM2.5 joint net -ctx seed 2  anchor-holdout RMSE 4.921  (45 s)
+  All-no-Antwerp PM2.5 city-blind net seed 0  anchor-holdout RMSE 6.431  (28 s)
+  All-no-Antwerp PM2.5 city-blind net seed 1  anchor-holdout RMSE 6.587  (30 s)
+  All-no-Antwerp PM2.5 city-blind net seed 2  anchor-holdout RMSE 6.679  (17 s)
+  All-no-Oslo PM2.5 city-blind net seed 0  anchor-holdout RMSE 4.462  (29 s)
+  All-no-Oslo PM2.5 city-blind net seed 1  anchor-holdout RMSE 4.510  (31 s)
+  All-no-Oslo PM2.5 city-blind net seed 2  anchor-holdout RMSE 4.245  (47 s)
+  All-no-Zagreb PM2.5 city-blind net seed 0  anchor-holdout RMSE 2.994  (28 s)
+  All-no-Zagreb PM2.5 city-blind net seed 1  anchor-holdout RMSE 3.007  (44 s)
+  All-no-Zagreb PM2.5 city-blind net seed 2  anchor-holdout RMSE 3.004  (58 s)
+
+Antwerp PM2.5: 22 target units, 10 anchors, reference sd 12.22
+   joint net                median RMSE   2.58   vs joint net   +0.0%   better on  0 of 22   peak bias -10.0%
+   joint net -ctx           median RMSE   3.44   vs joint net  -21.1%   better on  4 of 22   peak bias -13.7%
+   mlp own-first            median RMSE   3.00   vs joint net  -10.7%   better on  9 of 22   peak bias  -4.8%
+   pooled mlp fleet-first-z median RMSE   6.03   vs joint net -133.8%   better on  0 of 22   peak bias -23.4%
+   pooled mlp anchor-all-z  median RMSE   6.46   vs joint net -132.6%   better on  0 of 22   peak bias -28.8%
+   pooled mlp anchor-late-z median RMSE   7.33   vs joint net -180.6%   better on  1 of 22   peak bias -39.3%
+   pooled mlp anchor-all-z+ctx median RMSE   9.76   vs joint net -248.7%   better on  0 of 22   peak bias -49.8%
+   pooled mlp anchor-late-z+ctx median RMSE   8.81   vs joint net -209.8%   better on  0 of 22   peak bias -46.0%
+   pooled mlp own+anchor-res median RMSE   7.57   vs joint net -184.5%   better on  2 of 22   peak bias -35.8%
+   pooled mlp [oracle] offset+gain median RMSE   2.72   vs joint net  +10.4%   better on 13 of 22   peak bias  -1.3%
+   pooled mlp [oracle] in-period median RMSE   1.99   vs joint net  +35.5%   better on 19 of 22   peak bias  +1.4%
+   boosting own-first       median RMSE   4.28   vs joint net  -55.7%   better on  6 of 22   peak bias  -3.4%
+   pooled boosting fleet-first-z median RMSE   8.21   vs joint net -205.9%   better on  0 of 22   peak bias -34.9%
+   pooled boosting anchor-all-z median RMSE   6.84   vs joint net -159.0%   better on  0 of 22   peak bias -34.3%
+   pooled boosting anchor-late-z median RMSE   8.52   vs joint net -224.7%   better on  1 of 22   peak bias -49.8%
+   pooled boosting anchor-all-z+ctx median RMSE   9.56   vs joint net -255.1%   better on  0 of 22   peak bias -49.2%
+   pooled boosting anchor-late-z+ctx median RMSE   9.64   vs joint net -259.9%   better on  0 of 22   peak bias -52.6%
+   pooled boosting own+anchor-res median RMSE   6.30   vs joint net -144.0%   better on  2 of 22   peak bias -33.0%
+   city-blind net           median RMSE   3.20   vs joint net  -23.6%   better on  3 of 22   peak bias -11.7%
+
+Oslo PM2.5: 14 target units, 6 anchors, reference sd 4.43
+   joint net                median RMSE   3.23   vs joint net   +0.0%   better on  0 of 14   peak bias +14.1%
+   joint net -ctx           median RMSE   2.96   vs joint net   +9.3%   better on 12 of 14   peak bias  +7.4%
+   mlp own-first            median RMSE   3.09   vs joint net   +4.6%   better on  8 of 14   peak bias +12.1%
+   pooled mlp fleet-first-z median RMSE   8.43   vs joint net -117.5%   better on  0 of 14   peak bias +86.4%
+   pooled mlp anchor-all-z  median RMSE   4.04   vs joint net  -28.0%   better on  3 of 14   peak bias +19.9%
+   pooled mlp anchor-late-z median RMSE   6.02   vs joint net  -86.5%   better on  1 of 14   peak bias +19.9%
+   pooled mlp anchor-all-z+ctx median RMSE   4.44   vs joint net  -29.6%   better on  3 of 14   peak bias +33.7%
+   pooled mlp anchor-late-z+ctx median RMSE   3.98   vs joint net  -21.7%   better on  5 of 14   peak bias -30.8%
+   pooled mlp own+anchor-res median RMSE   8.27   vs joint net -151.7%   better on  0 of 14   peak bias  +7.3%
+   pooled mlp [oracle] offset+gain median RMSE   2.54   vs joint net  +30.6%   better on 14 of 14   peak bias -11.8%
+   pooled mlp [oracle] in-period median RMSE   2.56   vs joint net  +29.2%   better on 12 of 14   peak bias  +6.6%
+   boosting own-first       median RMSE   2.82   vs joint net  +16.4%   better on 13 of 14   peak bias  -9.3%
+   pooled boosting fleet-first-z median RMSE   7.93   vs joint net -137.3%   better on  0 of 14   peak bias +89.1%
+   pooled boosting anchor-all-z median RMSE   4.66   vs joint net  -41.9%   better on  3 of 14   peak bias +32.6%
+   pooled boosting anchor-late-z median RMSE   5.57   vs joint net  -63.3%   better on  2 of 14   peak bias +24.8%
+   pooled boosting anchor-all-z+ctx median RMSE   4.11   vs joint net  -15.7%   better on  4 of 14   peak bias +27.3%
+   pooled boosting anchor-late-z+ctx median RMSE   4.47   vs joint net  -41.1%   better on  3 of 14   peak bias +17.6%
+   pooled boosting own+anchor-res median RMSE   6.24   vs joint net  -92.9%   better on  2 of 14   peak bias  -7.7%
+   city-blind net           median RMSE   3.69   vs joint net  -10.5%   better on  3 of 14   peak bias  +8.7%
+
+Zagreb PM2.5: 8 target units, 3 anchors, reference sd 7.07
+   joint net                median RMSE   5.65   vs joint net   +0.0%   better on  0 of  8   peak bias  +1.5%
+   joint net -ctx           median RMSE   7.10   vs joint net  -24.8%   better on  0 of  8   peak bias  +1.4%
+   mlp own-first            median RMSE  11.55   vs joint net -117.8%   better on  0 of  8   peak bias -86.4%
+   pooled mlp fleet-first-z median RMSE  11.68   vs joint net -125.5%   better on  0 of  8   peak bias -51.6%
+   pooled mlp anchor-all-z  median RMSE   9.59   vs joint net  -81.9%   better on  0 of  8   peak bias +30.8%
+   pooled mlp anchor-late-z median RMSE  10.90   vs joint net  -99.9%   better on  0 of  8   peak bias +27.0%
+   pooled mlp anchor-all-z+ctx median RMSE   6.59   vs joint net  -30.0%   better on  0 of  8   peak bias  +3.7%
+   pooled mlp anchor-late-z+ctx median RMSE   9.94   vs joint net  -89.0%   better on  0 of  8   peak bias +18.3%
+   pooled mlp own+anchor-res median RMSE   7.26   vs joint net  -35.2%   better on  0 of  8   peak bias -52.9%
+   pooled mlp [oracle] offset+gain median RMSE   6.95   vs joint net  -21.4%   better on  1 of  8   peak bias -44.9%
+   pooled mlp [oracle] in-period median RMSE   4.62   vs joint net   +5.7%   better on  5 of  8   peak bias -11.0%
+   boosting own-first       median RMSE   7.64   vs joint net  -34.5%   better on  0 of  8   peak bias -56.1%
+   pooled boosting fleet-first-z median RMSE   9.71   vs joint net  -74.3%   better on  0 of  8   peak bias -47.6%
+   pooled boosting anchor-all-z median RMSE   7.81   vs joint net  -38.5%   better on  0 of  8   peak bias  +9.2%
+   pooled boosting anchor-late-z median RMSE   9.44   vs joint net  -66.8%   better on  0 of  8   peak bias +14.3%
+   pooled boosting anchor-all-z+ctx median RMSE   5.89   vs joint net   -6.6%   better on  2 of  8   peak bias  -4.0%
+   pooled boosting anchor-late-z+ctx median RMSE   7.96   vs joint net  -51.5%   better on  1 of  8   peak bias  -0.7%
+   pooled boosting own+anchor-res median RMSE   6.31   vs joint net   -9.1%   better on  2 of  8   peak bias -45.1%
+   city-blind net           median RMSE   9.52   vs joint net  -77.4%   better on  0 of  8   peak bias -70.5%
+  All O3 joint net seed 0  anchor-holdout RMSE 3.171  (762 s)
+  All O3 joint net seed 1  anchor-holdout RMSE 3.329  (34 s)
+  All O3 joint net seed 2  anchor-holdout RMSE 3.669  (26 s)
+  All O3 joint net -ctx seed 0  anchor-holdout RMSE 4.086  (17 s)
+  All O3 joint net -ctx seed 1  anchor-holdout RMSE 3.670  (20 s)
+  All O3 joint net -ctx seed 2  anchor-holdout RMSE 3.499  (21 s)

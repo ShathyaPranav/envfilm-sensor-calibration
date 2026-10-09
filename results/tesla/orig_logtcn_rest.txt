@@ -1,0 +1,19 @@
+PM2.5 Antwerp  TCN        seed 0  val 5.352  test 7.298  (published nan)  1248 s
+PM2.5 Antwerp  TCN        seed 1  val 5.311  test 5.032  (published nan)  1229 s
+PM2.5 Antwerp  TCN        seed 2  val 5.457  test 6.430  (published nan)  1259 s
+PM2.5 Oslo     TCN        seed 0  val 2.091  test 3.807  (published nan)  317 s
+PM2.5 Oslo     TCN        seed 1  val 2.240  test 3.851  (published nan)  317 s
+PM2.5 Oslo     TCN        seed 2  val 2.154  test 4.304  (published nan)  318 s
+PM2.5 Zagreb   TCN        seed 0  val 2.818  test 2.478  (published nan)  354 s
+PM2.5 Zagreb   TCN        seed 1  val 2.816  test 2.948  (published nan)  354 s
+PM2.5 Zagreb   TCN        seed 2  val 3.088  test 2.284  (published nan)  354 s
+PM1   Antwerp  TCN        seed 0  val 2.077  test 3.657  (published nan)  1242 s
+PM1   Antwerp  TCN        seed 1  val 2.406  test 2.380  (published nan)  1043 s
+PM1   Antwerp  TCN        seed 2  val 2.765  test 2.658  (published nan)  503 s
+PM1   Oslo     TCN        seed 0  val 1.124  test 2.065  (published nan)  127 s
+PM1   Oslo     TCN        seed 1  val 1.027  test 1.854  (published nan)  127 s
+PM1   Oslo     TCN        seed 2  val 1.199  test 1.732  (published nan)  127 s
+PM1   Zagreb   TCN        seed 0  val 1.061  test 0.986  (published nan)  143 s
+PM1   Zagreb   TCN        seed 1  val 1.205  test 1.022  (published nan)  143 s
+PM1   Zagreb   TCN        seed 2  val 1.205  test 0.900  (published nan)  142 s
+

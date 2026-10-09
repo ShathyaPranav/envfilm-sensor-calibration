@@ -1,0 +1,30 @@
+PM2.5 Antwerp  fold 0 TCN              val 5.587  units 9.32 5.71 4.46 6.94 4.23 5.71  302 s
+PM2.5 Antwerp  fold 0 TESLA            val 6.453  units 8.10 7.38 6.30 5.92 6.22 5.92  152 s
+PM2.5 Antwerp  fold 1 TCN              val 7.505  units 6.28 4.71 7.05 4.76 6.29 7.24  297 s
+PM2.5 Antwerp  fold 1 TESLA            val 7.662  units 8.04 7.22 6.44 6.41 6.44 7.24  152 s
+PM2.5 Antwerp  fold 2 TCN              val 7.391  units 6.07 5.90 5.87 5.47 4.19 8.11  298 s
+PM2.5 Antwerp  fold 2 TESLA            val 7.832  units 6.76 6.77 6.37 6.28 5.79 8.58  152 s
+PM2.5 Antwerp  fold 3 TCN              val 6.462  units 5.25 4.79 4.51 10.36 5.74 6.18  294 s
+PM2.5 Antwerp  fold 3 TESLA            val 7.406  units 5.12 5.63 5.66 10.73 6.78 5.88  152 s
+PM2.5 Antwerp  fold 4 TCN              val 5.426  units 7.27 7.20 5.05 7.06 6.53 6.10  305 s
+PM2.5 Antwerp  fold 4 TESLA            val 5.922  units 8.34 8.15 5.58 8.22 7.11 6.92  153 s
+PM2.5 Oslo     fold 0 TCN              val 3.813  units 6.04 4.15 5.03 4.04 6.44  70 s
+PM2.5 Oslo     fold 0 TESLA            val 4.454  units 7.41 4.78 5.33 4.60 8.68  36 s
+PM2.5 Oslo     fold 1 TCN              val 6.014  units 3.29 5.78 4.62 3.27  79 s
+PM2.5 Oslo     fold 1 TESLA            val 6.933  units 4.93 7.70 6.23 4.18  37 s
+PM2.5 Oslo     fold 2 TCN              val 4.588  units 4.47 7.45 10.37 7.37  76 s
+PM2.5 Oslo     fold 2 TESLA            val 4.455  units 3.86 6.56 9.49 7.11  39 s
+PM2.5 Oslo     fold 3 TCN              val 3.957  units 5.22 4.86 4.29 4.64  77 s
+PM2.5 Oslo     fold 3 TESLA            val 4.593  units 7.58 5.85 4.72 5.36  38 s
+PM2.5 Oslo     fold 4 TCN              val 4.141  units 6.20 3.46 4.70 3.41  75 s
+PM2.5 Oslo     fold 4 TESLA            val 5.462  units 6.25 3.78 6.71 5.00  37 s
+PM2.5 Zagreb   fold 0 TCN              val 2.460  units 2.86 1.92 2.11  92 s
+PM2.5 Zagreb   fold 0 TESLA            val 2.793  units 3.03 2.14 2.28  41 s
+PM2.5 Zagreb   fold 1 TCN              val 2.492  units 2.28 2.35 2.47  90 s
+PM2.5 Zagreb   fold 1 TESLA            val 2.642  units 2.56 2.65 2.60  40 s
+PM2.5 Zagreb   fold 2 TCN              val 2.653  units 2.11 2.19 3.08  90 s
+PM2.5 Zagreb   fold 2 TESLA            val 2.791  units 2.23 2.50 3.26  40 s
+PM2.5 Zagreb   fold 3 TCN              val 2.122  units 2.33 2.04 1.95  79 s
+PM2.5 Zagreb   fold 3 TESLA            val 2.386  units 2.59 2.19 2.24  40 s
+PM2.5 Zagreb   fold 4 TCN              val 2.009  units 2.13 5.36  94 s
+PM2.5 Zagreb   fold 4 TESLA            val 2.412  units 2.15 5.81  44 s

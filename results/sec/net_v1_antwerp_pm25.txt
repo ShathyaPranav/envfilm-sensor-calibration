@@ -1,0 +1,14 @@
+  Antwerp PM2.5 net       seed 0  anchor-holdout RMSE 1.544  (32 s)
+  Antwerp PM2.5 net       seed 1  anchor-holdout RMSE 1.765  (19 s)
+  Antwerp PM2.5 net       seed 2  anchor-holdout RMSE 1.455  (59 s)
+  Antwerp PM2.5 net -ctx  seed 0  anchor-holdout RMSE 1.816  (42 s)
+  Antwerp PM2.5 net -ctx  seed 1  anchor-holdout RMSE 1.832  (40 s)
+  Antwerp PM2.5 net -ctx  seed 2  anchor-holdout RMSE 1.840  (50 s)
+  Antwerp PM2.5 net -emb  seed 0  anchor-holdout RMSE 1.551  (21 s)
+  Antwerp PM2.5 net -emb  seed 1  anchor-holdout RMSE 1.647  (25 s)
+  Antwerp PM2.5 net -emb  seed 2  anchor-holdout RMSE 1.491  (31 s)
+
+Antwerp PM2.5: 22 target units, 10 anchors, reference sd 12.22
+   net                      median RMSE   3.23   vs net   +0.0%   better on  0 of 22   peak bias -14.5%
+   net -ctx                 median RMSE   3.62   vs net  -13.5%   better on  2 of 22   peak bias -14.2%
+   net -emb                 median RMSE   2.97   vs net   +0.1%   better on 11 of 22   peak bias -13.3%

@@ -1,0 +1,9 @@
+PM10  Antwerp  TESLA      seed 0  val 10.177  test 14.093  (published 14.58)  896 s
+PM10  Oslo     TESLA      seed 0  val 9.638  test 14.457  (published 15.79)  263 s
+PM10  Zagreb   TESLA      seed 0  val 16.363  test 13.526  (published 13.87)  291 s
+PM2.5 Antwerp  TESLA      seed 0  val 5.120  test 7.089  (published 7.54)  838 s
+PM2.5 Oslo     TESLA      seed 0  val 3.247  test 6.788  (published 7.90)  212 s
+PM2.5 Zagreb   TESLA      seed 0  val 4.028  test 2.994  (published 3.03)  236 s
+PM1   Antwerp  TESLA      seed 0  val 2.224  test 4.713  (published 4.78)  685 s
+PM1   Oslo     TESLA      seed 0  val 1.960  test 3.141  (published 3.63)  170 s
+PM1   Zagreb   TESLA      seed 0  val 1.954  test 1.355  (published 1.14)  188 s

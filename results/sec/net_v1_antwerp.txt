@@ -1,0 +1,30 @@
+  Antwerp NO net       seed 0  anchor-holdout RMSE 2.683  (55 s)
+  Antwerp NO net       seed 1  anchor-holdout RMSE 4.020  (17 s)
+  Antwerp NO net       seed 2  anchor-holdout RMSE 3.418  (29 s)
+  Antwerp NO net -ctx  seed 0  anchor-holdout RMSE 2.907  (27 s)
+  Antwerp NO net -ctx  seed 1  anchor-holdout RMSE 2.903  (21 s)
+  Antwerp NO net -ctx  seed 2  anchor-holdout RMSE 2.938  (23 s)
+  Antwerp NO net -emb  seed 0  anchor-holdout RMSE 3.735  (26 s)
+  Antwerp NO net -emb  seed 1  anchor-holdout RMSE 3.897  (16 s)
+  Antwerp NO net -emb  seed 2  anchor-holdout RMSE 2.772  (39 s)
+
+Antwerp NO: 21 target units, 9 anchors, reference sd 27.33
+   net                      median RMSE   6.89   vs net -ctx  +10.1%   better on 12 of 21   peak bias -14.9%
+   net -ctx                 median RMSE   8.57   vs net -ctx   +0.0%   better on  0 of 21   peak bias -27.4%
+   net -emb                 median RMSE   6.78   vs net -ctx   +4.2%   better on 13 of 21   peak bias -17.0%
+  Antwerp NO2 net       seed 0  anchor-holdout RMSE 2.402  (43 s)
+  Antwerp NO2 net       seed 1  anchor-holdout RMSE 2.315  (49 s)
+  Antwerp NO2 net       seed 2  anchor-holdout RMSE 2.385  (38 s)
+  Antwerp NO2 net -ctx  seed 0  anchor-holdout RMSE 3.862  (24 s)
+  Antwerp NO2 net -ctx  seed 1  anchor-holdout RMSE 4.180  (14 s)
+  Antwerp NO2 net -ctx  seed 2  anchor-holdout RMSE 3.980  (18 s)
+  Antwerp NO2 net -emb  seed 0  anchor-holdout RMSE 2.203  (40 s)
+  Antwerp NO2 net -emb  seed 1  anchor-holdout RMSE 2.760  (15 s)
+  Antwerp NO2 net -emb  seed 2  anchor-holdout RMSE 2.541  (24 s)
+
+Antwerp NO2: 21 target units, 9 anchors, reference sd 12.69
+   net                      median RMSE   3.91   vs net -ctx  +45.7%   better on 21 of 21   peak bias -11.7%
+   net -ctx                 median RMSE   6.65   vs net -ctx   +0.0%   better on  0 of 21   peak bias -27.6%
+   net -emb                 median RMSE   4.14   vs net -ctx  +42.1%   better on 21 of 21   peak bias -14.5%
+  Antwerp PM2.5 net       seed 0  anchor-holdout RMSE 1.523  (38 s)
+  Antwerp PM2.5 net       seed 1  anchor-holdout RMSE 1.645  (56 s)

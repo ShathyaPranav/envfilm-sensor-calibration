@@ -1,0 +1,90 @@
+PM10  Antwerp  fold 0 TCN              val 10.430  units 16.47 11.46 10.50 12.59 10.72 10.43  172 s
+PM10  Antwerp  fold 0 GainTCN+ctx+aug  val 11.896  units 16.78 12.88 12.00 12.57 11.71 10.59  175 s
+PM10  Antwerp  fold 1 TCN              val 14.066  units 14.42 12.21 12.67 11.00 10.83 14.09  176 s
+PM10  Antwerp  fold 1 GainTCN+ctx+aug  val 14.013  units 16.09 14.42 10.25 11.72 12.61 11.26  194 s
+PM10  Antwerp  fold 2 TCN              val 14.877  units 13.55 12.56 9.59 12.37 11.07 15.55  131 s
+PM10  Antwerp  fold 2 GainTCN+ctx+aug  val 15.224  units 14.01 13.76 11.08 13.23 9.30 14.43  134 s
+PM10  Antwerp  fold 3 TCN              val 14.073  units 8.92 11.52 10.01 18.24 10.93 8.94  125 s
+PM10  Antwerp  fold 3 GainTCN+ctx+aug  val 14.763  units 9.52 11.52 10.69 16.14 12.76 10.44  137 s
+PM10  Antwerp  fold 4 TCN              val 11.003  units 13.27 13.04 10.77 12.64 13.55 11.38  124 s
+PM10  Antwerp  fold 4 GainTCN+ctx+aug  val 12.066  units 15.09 15.40 12.15 14.72 15.57 13.72  136 s
+PM10  Oslo     fold 0 TCN              val 9.684  units 11.74 10.90 12.13 9.57 14.22  31 s
+PM10  Oslo     fold 0 GainTCN+ctx+aug  val 10.678  units 11.99 11.08 12.38 10.16 14.51  33 s
+PM10  Oslo     fold 1 TCN              val 12.400  units 8.59 13.36 12.40 8.44  32 s
+PM10  Oslo     fold 1 GainTCN+ctx+aug  val 12.763  units 8.26 12.77 12.01 9.79  34 s
+PM10  Oslo     fold 2 TCN              val 9.915  units 10.16 15.99 19.70 15.52  32 s
+PM10  Oslo     fold 2 GainTCN+ctx+aug  val 9.891  units 8.50 11.82 17.30 11.27  35 s
+PM10  Oslo     fold 3 TCN              val 9.083  units 12.22 10.57 9.63 9.04  31 s
+PM10  Oslo     fold 3 GainTCN+ctx+aug  val 9.617  units 11.87 11.26 10.38 11.16  33 s
+PM10  Oslo     fold 4 TCN              val 11.731  units 12.66 9.12 12.30 9.27  32 s
+PM10  Oslo     fold 4 GainTCN+ctx+aug  val 10.155  units 11.62 9.79 12.01 9.77  33 s
+PM10  Zagreb   fold 0 TCN              val 9.592  units 10.97 7.65 10.44  38 s
+PM10  Zagreb   fold 0 GainTCN+ctx+aug  val 10.032  units 11.12 7.63 10.81  40 s
+PM10  Zagreb   fold 1 TCN              val 9.383  units 8.45 10.57 10.10  38 s
+PM10  Zagreb   fold 1 GainTCN+ctx+aug  val 9.899  units 8.85 11.64 10.37  40 s
+PM10  Zagreb   fold 2 TCN              val 9.450  units 9.00 9.01 10.59  38 s
+PM10  Zagreb   fold 2 GainTCN+ctx+aug  val 10.153  units 9.70 10.20 11.69  40 s
+PM10  Zagreb   fold 3 TCN              val 8.556  units 9.44 9.88 7.65  38 s
+PM10  Zagreb   fold 3 GainTCN+ctx+aug  val 9.240  units 10.20 10.53 8.59  41 s
+PM10  Zagreb   fold 4 TCN              val 9.351  units 7.60 13.47  39 s
+PM10  Zagreb   fold 4 GainTCN+ctx+aug  val 9.999  units 6.54 14.60  44 s
+PM2.5 Antwerp  fold 0 TCN              val 5.565  units 9.28 5.69 4.46 6.92 4.20 5.68  126 s
+PM2.5 Antwerp  fold 0 GainTCN+ctx+aug  val 5.780  units 8.11 7.33 5.66 5.66 5.41 4.66  136 s
+PM2.5 Antwerp  fold 1 TCN              val 7.447  units 6.28 4.71 6.94 4.70 5.99 7.22  126 s
+PM2.5 Antwerp  fold 1 GainTCN+ctx+aug  val 7.295  units 8.13 7.51 5.17 5.83 6.10 5.80  137 s
+PM2.5 Antwerp  fold 2 TCN              val 7.395  units 6.07 5.90 5.86 5.47 4.19 8.11  126 s
+PM2.5 Antwerp  fold 2 GainTCN+ctx+aug  val 8.063  units 7.21 6.37 5.74 6.70 5.18 7.85  137 s
+PM2.5 Antwerp  fold 3 TCN              val 6.454  units 5.25 4.79 4.50 10.36 5.73 6.18  126 s
+PM2.5 Antwerp  fold 3 GainTCN+ctx+aug  val 7.260  units 5.08 5.62 5.19 9.28 6.49 6.08  137 s
+PM2.5 Antwerp  fold 4 TCN              val 5.426  units 7.27 7.21 5.06 7.07 6.54 6.09  125 s
+PM2.5 Antwerp  fold 4 GainTCN+ctx+aug  val 6.038  units 8.72 8.05 5.65 7.75 7.32 7.07  136 s
+PM2.5 Oslo     fold 0 TCN              val 3.813  units 6.04 4.15 5.03 4.04 6.44  30 s
+PM2.5 Oslo     fold 0 GainTCN+ctx+aug  val 3.729  units 5.66 3.53 4.82 3.62 5.30  33 s
+PM2.5 Oslo     fold 1 TCN              val 6.014  units 3.29 5.78 4.62 3.27  31 s
+PM2.5 Oslo     fold 1 GainTCN+ctx+aug  val 5.710  units 3.19 5.50 4.24 3.45  34 s
+PM2.5 Oslo     fold 2 TCN              val 4.588  units 4.47 7.45 10.37 7.37  32 s
+PM2.5 Oslo     fold 2 GainTCN+ctx+aug  val 4.486  units 3.19 5.77 9.03 4.99  34 s
+PM2.5 Oslo     fold 3 TCN              val 3.956  units 5.22 4.86 4.29 4.64  31 s
+PM2.5 Oslo     fold 3 GainTCN+ctx+aug  val 3.198  units 4.33 3.69 3.46 4.59  33 s
+PM2.5 Oslo     fold 4 TCN              val 4.140  units 6.19 3.46 4.70 3.41  32 s
+PM2.5 Oslo     fold 4 GainTCN+ctx+aug  val 3.577  units 4.52 4.27 3.72 3.23  33 s
+PM2.5 Zagreb   fold 0 TCN              val 2.460  units 2.86 1.92 2.11  38 s
+PM2.5 Zagreb   fold 0 GainTCN+ctx+aug  val 2.525  units 2.83 2.08 2.01  41 s
+PM2.5 Zagreb   fold 1 TCN              val 2.492  units 2.28 2.35 2.47  38 s
+PM2.5 Zagreb   fold 1 GainTCN+ctx+aug  val 2.516  units 2.46 2.53 2.49  41 s
+PM2.5 Zagreb   fold 2 TCN              val 2.653  units 2.11 2.19 3.08  38 s
+PM2.5 Zagreb   fold 2 GainTCN+ctx+aug  val 2.636  units 2.09 2.30 3.14  41 s
+PM2.5 Zagreb   fold 3 TCN              val 2.122  units 2.33 2.04 1.95  38 s
+PM2.5 Zagreb   fold 3 GainTCN+ctx+aug  val 2.179  units 2.40 1.96 2.14  40 s
+PM2.5 Zagreb   fold 4 TCN              val 2.009  units 2.13 5.36  40 s
+PM2.5 Zagreb   fold 4 GainTCN+ctx+aug  val 2.223  units 2.06 5.68  44 s
+PM1   Antwerp  fold 0 TCN              val 2.557  units 4.55 2.47 2.17 3.49 1.68 2.71  126 s
+PM1   Antwerp  fold 0 GainTCN+ctx+aug  val 3.099  units 4.71 3.41 2.54 3.88 2.28 2.96  135 s
+PM1   Antwerp  fold 1 TCN              val 3.399  units 3.62 2.64 2.44 3.24 2.68 3.42  125 s
+PM1   Antwerp  fold 1 GainTCN+ctx+aug  val 3.710  units 3.46 2.81 2.51 3.29 2.90 2.74  136 s
+PM1   Antwerp  fold 2 TCN              val 3.474  units 2.57 2.33 2.49 2.53 1.76 4.28  126 s
+PM1   Antwerp  fold 2 GainTCN+ctx+aug  val 3.741  units 3.35 3.00 3.08 3.50 2.30 3.40  136 s
+PM1   Antwerp  fold 3 TCN              val 2.734  units 2.71 2.66 1.84 5.63 2.97 2.59  126 s
+PM1   Antwerp  fold 3 GainTCN+ctx+aug  val 3.181  units 2.30 2.78 2.89 4.33 3.48 2.42  137 s
+PM1   Antwerp  fold 4 TCN              val 2.433  units 3.39 3.19 2.21 3.13 3.21 2.65  125 s
+PM1   Antwerp  fold 4 GainTCN+ctx+aug  val 2.677  units 4.06 3.64 2.53 3.32 3.29 3.53  137 s
+PM1   Oslo     fold 0 TCN              val 1.835  units 3.84 1.71 2.14 1.84 2.54  30 s
+PM1   Oslo     fold 0 GainTCN+ctx+aug  val 1.968  units 3.58 1.85 2.22 1.87 2.29  34 s
+PM1   Oslo     fold 1 TCN              val 2.626  units 1.73 2.92 2.39 1.37  31 s
+PM1   Oslo     fold 1 GainTCN+ctx+aug  val 2.709  units 1.40 2.51 2.02 1.35  34 s
+PM1   Oslo     fold 2 TCN              val 2.145  units 2.78 4.18 5.08 3.99  32 s
+PM1   Oslo     fold 2 GainTCN+ctx+aug  val 2.360  units 2.30 3.42 4.39 2.95  35 s
+PM1   Oslo     fold 3 TCN              val 1.780  units 2.17 2.01 2.03 2.26  31 s
+PM1   Oslo     fold 3 GainTCN+ctx+aug  val 1.562  units 1.96 1.63 1.65 2.55  33 s
+PM1   Oslo     fold 4 TCN              val 1.910  units 3.06 1.53 1.94 1.82  31 s
+PM1   Oslo     fold 4 GainTCN+ctx+aug  val 1.668  units 2.27 1.43 1.93 1.78  33 s
+PM1   Zagreb   fold 0 TCN              val 1.452  units 1.39 1.04 1.12  38 s
+PM1   Zagreb   fold 0 GainTCN+ctx+aug  val 1.528  units 1.40 0.99 1.16  40 s
+PM1   Zagreb   fold 1 TCN              val 1.238  units 1.36 1.29 1.38  37 s
+PM1   Zagreb   fold 1 GainTCN+ctx+aug  val 1.270  units 1.41 1.32 1.44  41 s
+PM1   Zagreb   fold 2 TCN              val 1.416  units 1.14 1.08 1.85  38 s
+PM1   Zagreb   fold 2 GainTCN+ctx+aug  val 1.432  units 1.14 1.13 1.91  41 s
+PM1   Zagreb   fold 3 TCN              val 1.209  units 1.23 1.18 1.06  37 s
+PM1   Zagreb   fold 3 GainTCN+ctx+aug  val 1.264  units 1.33 1.22 1.18  41 s
+PM1   Zagreb   fold 4 TCN              val 1.142  units 1.24 2.49  39 s
+PM1   Zagreb   fold 4 GainTCN+ctx+aug  val 1.177  units 1.23 2.55  44 s

@@ -1,0 +1,72 @@
+
+--- model class: mlp
+Antwerp NO2: 21 target units, 9 anchors, reference sd 12.69
+   own-first                median RMSE   5.46   vs own-first   +0.0%   better on  0 of 21   peak bias  +5.2%
+   fleet-first-z            median RMSE   8.19   vs own-first  -43.5%   better on  2 of 21   peak bias -16.9%
+   anchor-all-z             median RMSE   7.12   vs own-first  -37.2%   better on  4 of 21   peak bias -29.5%
+   anchor-late-z            median RMSE   8.03   vs own-first  -70.2%   better on  2 of 21   peak bias -26.8%
+   anchor-all-z+ctx         median RMSE   5.57   vs own-first   -8.3%   better on  8 of 21   peak bias -11.1%
+   anchor-late-z+ctx        median RMSE   7.64   vs own-first  -28.9%   better on  5 of 21   peak bias +15.9%
+   own+anchor-res           median RMSE   5.49   vs own-first   -8.2%   better on 10 of 21   peak bias -22.8%
+   [oracle] offset+gain     median RMSE   4.22   vs own-first  +20.8%   better on 20 of 21   peak bias  -3.1%
+   [oracle] in-period       median RMSE   1.97   vs own-first  +61.3%   better on 21 of 21   peak bias  -1.6%
+
+--- model class: boosting
+Antwerp NO2: 21 target units, 9 anchors, reference sd 12.69
+   own-first                median RMSE   5.79   vs own-first   +0.0%   better on  0 of 21   peak bias -26.2%
+   fleet-first-z            median RMSE   8.06   vs own-first  -37.7%   better on  0 of 21   peak bias -37.7%
+   anchor-all-z             median RMSE   6.40   vs own-first   -2.1%   better on  8 of 21   peak bias -25.7%
+   anchor-late-z            median RMSE   7.30   vs own-first  -24.0%   better on  3 of 21   peak bias -29.1%
+   anchor-all-z+ctx         median RMSE   5.58   vs own-first   +3.4%   better on 12 of 21   peak bias -23.1%
+   anchor-late-z+ctx        median RMSE   6.67   vs own-first  -16.2%   better on  5 of 21   peak bias -29.9%
+   own+anchor-res           median RMSE   6.87   vs own-first  -17.1%   better on  0 of 21   peak bias -34.2%
+   [oracle] offset+gain     median RMSE   5.18   vs own-first  +12.8%   better on 19 of 21   peak bias -19.7%
+   [oracle] in-period       median RMSE   4.11   vs own-first  +29.6%   better on 21 of 21   peak bias -14.4%
+
+--- model class: mlp
+Antwerp NO: 21 target units, 9 anchors, reference sd 27.33
+   own-first                median RMSE  10.74   vs own-first   +0.0%   better on  0 of 21   peak bias -27.5%
+   fleet-first-z            median RMSE  17.60   vs own-first  -69.2%   better on  0 of 21   peak bias -50.2%
+   anchor-all-z             median RMSE   6.91   vs own-first  +35.9%   better on 20 of 21   peak bias -19.4%
+   anchor-late-z            median RMSE   6.94   vs own-first  +32.9%   better on 16 of 21   peak bias -10.5%
+   anchor-all-z+ctx         median RMSE   6.04   vs own-first  +46.9%   better on 16 of 21   peak bias  -4.2%
+   anchor-late-z+ctx        median RMSE   9.25   vs own-first  +15.2%   better on 19 of 21   peak bias -14.7%
+   own+anchor-res           median RMSE   8.28   vs own-first  +24.9%   better on 20 of 21   peak bias  -2.2%
+   [oracle] offset+gain     median RMSE   6.33   vs own-first  +40.1%   better on 21 of 21   peak bias  -7.6%
+   [oracle] in-period       median RMSE   2.58   vs own-first  +76.9%   better on 18 of 21   peak bias  -2.5%
+
+--- model class: boosting
+Antwerp NO: 21 target units, 9 anchors, reference sd 27.33
+   own-first                median RMSE  21.90   vs own-first   +0.0%   better on  0 of 21   peak bias -62.2%
+   fleet-first-z            median RMSE  24.12   vs own-first   -7.9%   better on  1 of 21   peak bias -69.9%
+   anchor-all-z             median RMSE   7.51   vs own-first  +65.6%   better on 21 of 21   peak bias -22.0%
+   anchor-late-z            median RMSE  12.89   vs own-first  +41.7%   better on 21 of 21   peak bias -27.7%
+   anchor-all-z+ctx         median RMSE   6.30   vs own-first  +71.5%   better on 21 of 21   peak bias -12.5%
+   anchor-late-z+ctx        median RMSE  12.75   vs own-first  +44.5%   better on 21 of 21   peak bias -20.6%
+   own+anchor-res           median RMSE  19.62   vs own-first  +11.7%   better on 21 of 21   peak bias -40.7%
+   [oracle] offset+gain     median RMSE  17.48   vs own-first  +19.7%   better on 21 of 21   peak bias -34.3%
+   [oracle] in-period       median RMSE  14.24   vs own-first  +35.3%   better on 21 of 21   peak bias -21.3%
+
+--- model class: mlp
+Antwerp PM2.5: 22 target units, 10 anchors, reference sd 12.22
+   own-first                median RMSE   3.00   vs own-first   +0.0%   better on  0 of 22   peak bias  -4.8%
+   fleet-first-z            median RMSE   3.96   vs own-first  -40.8%   better on  3 of 22   peak bias  -9.8%
+   anchor-all-z             median RMSE   3.19   vs own-first   -2.3%   better on 10 of 22   peak bias -12.0%
+   anchor-late-z            median RMSE   4.37   vs own-first  -50.8%   better on  2 of 22   peak bias -20.9%
+   anchor-all-z+ctx         median RMSE   3.68   vs own-first  -22.9%   better on  3 of 22   peak bias -12.8%
+   anchor-late-z+ctx        median RMSE   7.12   vs own-first -148.5%   better on  2 of 22   peak bias -16.7%
+   own+anchor-res           median RMSE   6.13   vs own-first -119.6%   better on  4 of 22   peak bias -32.3%
+   [oracle] offset+gain     median RMSE   2.72   vs own-first  +15.7%   better on 20 of 22   peak bias  -1.3%
+   [oracle] in-period       median RMSE   1.99   vs own-first  +32.0%   better on 21 of 22   peak bias  +1.4%
+
+--- model class: boosting
+Antwerp PM2.5: 22 target units, 10 anchors, reference sd 12.22
+   own-first                median RMSE   4.28   vs own-first   +0.0%   better on  0 of 22   peak bias  -3.4%
+   fleet-first-z            median RMSE   3.35   vs own-first  +19.8%   better on 18 of 22   peak bias -11.3%
+   anchor-all-z             median RMSE   4.03   vs own-first   +0.9%   better on 11 of 22   peak bias -17.0%
+   anchor-late-z            median RMSE   6.35   vs own-first  -54.1%   better on  1 of 22   peak bias -35.4%
+   anchor-all-z+ctx         median RMSE   3.86   vs own-first  +11.5%   better on 12 of 22   peak bias -15.3%
+   anchor-late-z+ctx        median RMSE   6.81   vs own-first  -56.9%   better on  0 of 22   peak bias -36.2%
+   own+anchor-res           median RMSE   7.31   vs own-first  -70.9%   better on  0 of 22   peak bias -39.9%
+   [oracle] offset+gain     median RMSE   3.76   vs own-first   +7.5%   better on 22 of 22   peak bias  -8.2%
+   [oracle] in-period       median RMSE   2.35   vs own-first  +41.5%   better on 22 of 22   peak bias  -5.1%

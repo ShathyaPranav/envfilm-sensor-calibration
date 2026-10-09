@@ -1,0 +1,2 @@
+PM10  Antwerp  CalJEPA-TCN seed 0  val 9.192  test 11.197  (published nan)  1287 s
+PM10  Antwerp  CalJEPA-TCN seed 1  val 8.653  test 11.300  (published nan)  1273 s

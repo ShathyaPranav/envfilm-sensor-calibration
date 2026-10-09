@@ -1,0 +1,58 @@
+PM2.5 Oslo     fold 0 TCN+RH         val 4.156  73 s
+PM2.5 Oslo     fold 0 TCN+ENV        val 3.345  70 s
+PM2.5 Oslo     fold 1 TCN+RH         val 3.224  71 s
+PM2.5 Oslo     fold 1 TCN+ENV        val 3.008  68 s
+PM2.5 Oslo     fold 2 TCN+RH         val 3.716  69 s
+PM2.5 Oslo     fold 2 TCN+ENV        val 3.470  69 s
+PM2.5 Oslo     fold 3 TCN+RH         val 4.349  74 s
+PM2.5 Oslo     fold 3 TCN+ENV        val 3.216  73 s
+PM2.5 Zagreb   fold 0 TCN+RH         val 3.137  81 s
+PM2.5 Zagreb   fold 0 TCN+ENV        val 3.454  82 s
+PM2.5 Zagreb   fold 1 TCN+RH         val 2.845  80 s
+PM2.5 Zagreb   fold 1 TCN+ENV        val 2.830  79 s
+PM2.5 Zagreb   fold 2 TCN+RH         val 5.541  79 s
+PM2.5 Zagreb   fold 2 TCN+ENV        val 5.415  58 s
+PM2.5 Zagreb   fold 3 TCN+RH         val 5.563  32 s
+PM2.5 Zagreb   fold 3 TCN+ENV        val 5.494  31 s
+PM10  Oslo     fold 0 TCN+RH         val 10.339  37 s
+PM10  Oslo     fold 0 TCN+ENV        val 8.421  68 s
+PM10  Oslo     fold 1 TCN+RH         val 9.320  69 s
+PM10  Oslo     fold 1 TCN+ENV        val 8.676  68 s
+PM10  Oslo     fold 2 TCN+RH         val 10.917  69 s
+PM10  Oslo     fold 2 TCN+ENV        val 9.815  70 s
+PM10  Oslo     fold 3 TCN+RH         val 10.859  72 s
+PM10  Oslo     fold 3 TCN+ENV        val 8.387  72 s
+PM10  Zagreb   fold 0 TCN+RH         val 15.075  81 s
+PM10  Zagreb   fold 0 TCN+ENV        val 15.397  80 s
+PM10  Zagreb   fold 1 TCN+RH         val 14.700  70 s
+PM10  Zagreb   fold 1 TCN+ENV        val 14.571  81 s
+PM10  Zagreb   fold 2 TCN+RH         val 16.891  85 s
+PM10  Zagreb   fold 2 TCN+ENV        val 16.660  83 s
+PM10  Zagreb   fold 3 TCN+RH         val 16.864  80 s
+PM10  Zagreb   fold 3 TCN+ENV        val 16.449  81 s
+
+median per-unit RMSE ratio to TCN (below 1 = better), and share of units better:
+Traceback (most recent call last):
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'TCN'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_dev.py", line 70, in <module>
+    main()
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_dev.py", line 63, in main
+    ratio = (w[m] / w[base]).groupby(level=[0, 1]).median()
+                    ~^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\frame.py", line 4107, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'TCN'

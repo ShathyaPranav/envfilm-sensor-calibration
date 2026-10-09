@@ -1,0 +1,43 @@
+  Oslo NO net       seed 0  anchor-holdout RMSE 6.613  (119 s)
+  Oslo NO net       seed 1  anchor-holdout RMSE 7.176  (5 s)
+  Oslo NO net       seed 2  anchor-holdout RMSE 7.450  (15 s)
+  Oslo NO net -ctx  seed 0  anchor-holdout RMSE 7.520  (7 s)
+  Oslo NO net -ctx  seed 1  anchor-holdout RMSE 6.832  (5 s)
+  Oslo NO net -ctx  seed 2  anchor-holdout RMSE 6.963  (9 s)
+
+Oslo NO: 21 target units, 5 anchors, reference sd 4.76
+   net                      median RMSE   2.99   vs net   +0.0%   better on  0 of 21   peak bias +25.1%
+   net -ctx                 median RMSE   2.38   vs net  +26.1%   better on 14 of 21   peak bias  +2.1%
+  Oslo NO2 net       seed 0  anchor-holdout RMSE 2.709  (162 s)
+  Oslo NO2 net       seed 1  anchor-holdout RMSE 2.783  (8 s)
+  Oslo NO2 net       seed 2  anchor-holdout RMSE 2.940  (10 s)
+  Oslo NO2 net -ctx  seed 0  anchor-holdout RMSE 3.157  (6 s)
+  Oslo NO2 net -ctx  seed 1  anchor-holdout RMSE 3.019  (5 s)
+  Oslo NO2 net -ctx  seed 2  anchor-holdout RMSE 2.987  (8 s)
+
+Oslo NO2: 21 target units, 5 anchors, reference sd 6.38
+   net                      median RMSE   4.04   vs net   +0.0%   better on  0 of 21   peak bias +12.9%
+   net -ctx                 median RMSE   3.80   vs net   +5.8%   better on 11 of 21   peak bias  +4.0%
+  Oslo PM2.5 net       seed 0  anchor-holdout RMSE 4.556  (82 s)
+  Oslo PM2.5 net       seed 1  anchor-holdout RMSE 4.669  (6 s)
+  Oslo PM2.5 net       seed 2  anchor-holdout RMSE 4.663  (6 s)
+  Oslo PM2.5 net -ctx  seed 0  anchor-holdout RMSE 4.605  (6 s)
+  Oslo PM2.5 net -ctx  seed 1  anchor-holdout RMSE 4.606  (3 s)
+  Oslo PM2.5 net -ctx  seed 2  anchor-holdout RMSE 4.631  (4 s)
+
+Oslo PM2.5: 14 target units, 6 anchors, reference sd 4.43
+   net                      median RMSE   3.31   vs net   +0.0%   better on  0 of 14   peak bias +20.6%
+   net -ctx                 median RMSE   2.90   vs net   +5.3%   better on 12 of 14   peak bias +13.6%
+Traceback (most recent call last):
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\sec_net.py", line 289, in <module>
+    main()
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\sec_net.py", line 276, in main
+    p, v = train(D, c, e, seed=s)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\sec_net.py", line 190, in train
+    u_va, r_va, y_va = samples(D, G, units, val_frames)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\sec_net.py", line 112, in samples
+    return np.concatenate(U), np.concatenate(R), np.concatenate(Y)
+           ^^^^^^^^^^^^^^^^^
+ValueError: need at least one array to concatenate

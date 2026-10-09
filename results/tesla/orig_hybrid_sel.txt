@@ -1,0 +1,6 @@
+PM10  Antwerp  CalJEPA-joint seed 0  val 9.145  test 14.976  (published nan)  2300 s
+PM10  Antwerp  CalJEPA-frozen seed 0  val 9.294  test 11.767  (published nan)  1551 s
+PM10  Antwerp  CalJEPA-gentle seed 0  val 9.787  test 12.778  (published nan)  1315 s
+PM10  Oslo     CalJEPA-joint seed 0  val 8.570  test 12.251  (published nan)  731 s
+PM10  Oslo     CalJEPA-frozen seed 0  val 6.909  test 12.992  (published nan)  633 s
+PM10  Oslo     CalJEPA-gentle seed 0  val 7.709  test 12.524  (published nan)  526 s

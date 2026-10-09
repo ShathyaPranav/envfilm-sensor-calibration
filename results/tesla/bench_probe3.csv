@@ -1,0 +1,3 @@
+pm,city,model,seed,val,test,published
+PM2.5,Oslo,GainTCN+ctx+aug,0,2.189434289932251,4.373978614807129,
+PM2.5,Oslo,TCN+ctx+aug,0,2.5446600914001465,4.437463283538818,

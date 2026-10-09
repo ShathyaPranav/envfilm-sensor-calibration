@@ -1,0 +1,74 @@
+PM2.5 Oslo     fold 0 TCN+ENV        val 3.345  72 s
+PM2.5 Oslo     fold 0 EnvFiLM        val 3.321  104 s
+PM2.5 Oslo     fold 1 TCN+ENV        val 3.008  69 s
+PM2.5 Oslo     fold 1 EnvFiLM        val 2.673  105 s
+PM2.5 Oslo     fold 2 TCN+ENV        val 3.470  69 s
+PM2.5 Oslo     fold 2 EnvFiLM        val 3.461  95 s
+PM2.5 Oslo     fold 3 TCN+ENV        val 3.217  74 s
+PM2.5 Oslo     fold 3 EnvFiLM        val 3.627  111 s
+PM2.5 Zagreb   fold 0 TCN+ENV        val 3.454  82 s
+PM2.5 Zagreb   fold 0 EnvFiLM        val 3.250  126 s
+PM2.5 Zagreb   fold 1 TCN+ENV        val 2.847  83 s
+PM2.5 Zagreb   fold 1 EnvFiLM        val 2.712  122 s
+PM2.5 Zagreb   fold 2 TCN+ENV        val 5.361  53 s
+PM2.5 Zagreb   fold 2 EnvFiLM        val 5.510  48 s
+PM2.5 Zagreb   fold 3 TCN+ENV        val 5.496  32 s
+PM2.5 Zagreb   fold 3 EnvFiLM        val 5.288  46 s
+PM10  Oslo     fold 0 TCN+ENV        val 8.421  26 s
+PM10  Oslo     fold 0 EnvFiLM        val 8.010  38 s
+PM10  Oslo     fold 1 TCN+ENV        val 8.676  27 s
+PM10  Oslo     fold 1 EnvFiLM        val 7.939  38 s
+PM10  Oslo     fold 2 TCN+ENV        val 9.815  26 s
+PM10  Oslo     fold 2 EnvFiLM        val 9.380  39 s
+PM10  Oslo     fold 3 TCN+ENV        val 8.387  28 s
+PM10  Oslo     fold 3 EnvFiLM        val 8.120  40 s
+PM10  Zagreb   fold 0 TCN+ENV        val 15.397  31 s
+PM10  Zagreb   fold 0 EnvFiLM        val 14.075  45 s
+PM10  Zagreb   fold 1 TCN+ENV        val 14.571  33 s
+PM10  Zagreb   fold 1 EnvFiLM        val 13.299  50 s
+PM10  Zagreb   fold 2 TCN+ENV        val 16.660  33 s
+PM10  Zagreb   fold 2 EnvFiLM        val 15.580  48 s
+PM10  Zagreb   fold 3 TCN+ENV        val 16.449  31 s
+PM10  Zagreb   fold 3 EnvFiLM        val 15.173  44 s
+PM1   Oslo     fold 0 TCN+ENV        val 1.440  26 s
+PM1   Oslo     fold 0 EnvFiLM        val 1.391  38 s
+PM1   Oslo     fold 1 TCN+ENV        val 1.484  26 s
+PM1   Oslo     fold 1 EnvFiLM        val 1.276  38 s
+PM1   Oslo     fold 2 TCN+ENV        val 1.770  25 s
+PM1   Oslo     fold 2 EnvFiLM        val 1.735  38 s
+PM1   Oslo     fold 3 TCN+ENV        val 1.584  27 s
+PM1   Oslo     fold 3 EnvFiLM        val 1.618  39 s
+PM1   Zagreb   fold 0 TCN+ENV        val 1.181  32 s
+PM1   Zagreb   fold 0 EnvFiLM        val 1.161  48 s
+PM1   Zagreb   fold 1 TCN+ENV        val 0.956  31 s
+PM1   Zagreb   fold 1 EnvFiLM        val 1.046  44 s
+PM1   Zagreb   fold 2 TCN+ENV        val 1.758  32 s
+PM1   Zagreb   fold 2 EnvFiLM        val 1.739  47 s
+PM1   Zagreb   fold 3 TCN+ENV        val 1.708  32 s
+PM1   Zagreb   fold 3 EnvFiLM        val 1.665  45 s
+
+median per-unit RMSE ratio to TCN (below 1 = better), and share of units better:
+Traceback (most recent call last):
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'TCN'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_dev.py", line 70, in <module>
+    main()
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_dev.py", line 63, in main
+    ratio = (w[m] / w[base]).groupby(level=[0, 1]).median()
+                    ~^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\frame.py", line 4107, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'TCN'

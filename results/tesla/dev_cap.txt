@@ -1,0 +1,50 @@
+PM2.5 Oslo     fold 0 TCN+ENVwide    val 3.369  47 s
+PM2.5 Oslo     fold 1 TCN+ENVwide    val 2.798  47 s
+PM2.5 Oslo     fold 2 TCN+ENVwide    val 3.718  48 s
+PM2.5 Oslo     fold 3 TCN+ENVwide    val 3.531  49 s
+PM2.5 Zagreb   fold 0 TCN+ENVwide    val 3.368  51 s
+PM2.5 Zagreb   fold 1 TCN+ENVwide    val 2.916  52 s
+PM2.5 Zagreb   fold 2 TCN+ENVwide    val 5.447  51 s
+PM2.5 Zagreb   fold 3 TCN+ENVwide    val 5.525  52 s
+PM10  Oslo     fold 0 TCN+ENVwide    val 8.277  44 s
+PM10  Oslo     fold 1 TCN+ENVwide    val 8.682  46 s
+PM10  Oslo     fold 2 TCN+ENVwide    val 10.102  46 s
+PM10  Oslo     fold 3 TCN+ENVwide    val 8.918  47 s
+PM10  Zagreb   fold 0 TCN+ENVwide    val 14.323  53 s
+PM10  Zagreb   fold 1 TCN+ENVwide    val 14.135  52 s
+PM10  Zagreb   fold 2 TCN+ENVwide    val 16.426  51 s
+PM10  Zagreb   fold 3 TCN+ENVwide    val 16.246  50 s
+PM1   Oslo     fold 0 TCN+ENVwide    val 1.620  44 s
+PM1   Oslo     fold 1 TCN+ENVwide    val 1.346  47 s
+PM1   Oslo     fold 2 TCN+ENVwide    val 1.774  46 s
+PM1   Oslo     fold 3 TCN+ENVwide    val 1.507  48 s
+PM1   Zagreb   fold 0 TCN+ENVwide    val 1.281  52 s
+PM1   Zagreb   fold 1 TCN+ENVwide    val 0.968  53 s
+PM1   Zagreb   fold 2 TCN+ENVwide    val 1.816  51 s
+PM1   Zagreb   fold 3 TCN+ENVwide    val 1.730  50 s
+
+median per-unit RMSE ratio to TCN (below 1 = better), and share of units better:
+Traceback (most recent call last):
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'TCN'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_dev.py", line 70, in <module>
+    main()
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_dev.py", line 63, in main
+    ratio = (w[m] / w[base]).groupby(level=[0, 1]).median()
+                    ~^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\frame.py", line 4107, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'TCN'

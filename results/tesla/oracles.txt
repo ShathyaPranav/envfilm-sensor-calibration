@@ -1,0 +1,22 @@
+PM10 Antwerp done
+PM10 Oslo done
+PM10 Zagreb done
+PM2.5 Antwerp done
+PM2.5 Oslo done
+PM2.5 Zagreb done
+PM1 Antwerp done
+PM1 Oslo done
+PM1 Zagreb done
+                 rmse  rmse_O1  gain_share  floor  O1/floor  O2_scalar  O2_affine  O2_mlp  mlp_vs_scalar  O3_daily_spread
+pm    city                                                                                                               
+PM1   Antwerp   3.185    2.707       0.293  0.322     8.408      3.856      4.021   4.933         -0.279            0.419
+      Oslo      3.142    2.357       0.377  0.287     8.210      2.714      2.836   2.702          0.004            0.443
+      Zagreb    1.466    1.455       0.019  0.268     5.437      1.321      1.235   1.441         -0.090            0.774
+PM10  Antwerp  14.039   13.820       0.123  4.253     3.249     14.850     15.152  16.230         -0.093            0.427
+      Oslo     12.680   12.447       0.096  4.149     3.000     12.020     12.072  11.895          0.010            0.324
+      Zagreb   14.834   14.809       0.003  7.264     2.039     16.443     17.134  17.473         -0.063            0.472
+PM2.5 Antwerp   7.778    7.049       0.191  0.818     8.622      8.963      8.865   8.917          0.005            0.540
+      Oslo      6.812    5.268       0.329  0.733     7.182      5.665      5.684   5.791         -0.022            0.444
+      Zagreb    3.639    3.626       0.007  1.784     2.033      2.775      2.720   2.897         -0.044            0.463
+
+medians over all units: O1/floor 4.86  MLP vs scalar -0.037  daily gain spread 0.447

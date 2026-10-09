@@ -1,0 +1,27 @@
+PM10  Antwerp  TCN        seed 0  val 9.014  test 10.576  (published nan)  1105 s
+PM10  Antwerp  TCN        seed 1  val 8.892  test 10.478  (published nan)  1137 s
+PM10  Antwerp  TCN        seed 2  val 9.619  test 10.543  (published nan)  1325 s
+PM10  Oslo     TCN        seed 0  val 6.921  test 11.297  (published nan)  333 s
+PM10  Oslo     TCN        seed 1  val 7.302  test 11.252  (published nan)  325 s
+PM10  Oslo     TCN        seed 2  val 7.453  test 11.342  (published nan)  330 s
+PM10  Zagreb   TCN        seed 0  val 11.665  test 10.203  (published nan)  362 s
+PM10  Zagreb   TCN        seed 1  val 11.774  test 10.444  (published nan)  358 s
+PM10  Zagreb   TCN        seed 2  val 12.003  test 10.228  (published nan)  387 s
+Traceback (most recent call last):
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 339, in <module>
+    t = time.time()
+
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 330, in main
+    seeds = int(os.environ.get('TSL_SEEDS', '1'))
+                               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 296, in fit
+    perm = rng.permutation(S.train)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 58, in batch
+    def batch(self, i):
+            ^^^^^^^^^^^^
+RuntimeError: CUDA error: an illegal memory access was encountered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
