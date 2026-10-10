@@ -73,6 +73,63 @@ def rotation(name, a, b):
     return out, rat
 
 
+SOTON_ON = ['rotate_soton_onboard_s0.csv', 'rotate_soton_onboard_s1.csv']
+SOTON_MATCHED = ['rotate_soton_matched_s0.csv', 'rotate_soton_matched_s1.csv']
+
+
+def southampton():
+    """Independent dataset (Bulot et al.): on-board channels (2 seeds), weather-only full-year run (1 seed) and,
+    when present, the matched weather-only control on the on-board rows (2 seeds)."""
+    runs = {'onboard': SOTON_ON, 'weather_year': ['rotate_soton_rot.csv']}
+    if all(os.path.exists(os.path.join(R, f)) for f in SOTON_MATCHED):
+        runs['weather_matched'] = SOTON_MATCHED
+    out = {}
+    for k, files in runs.items():
+        out[k] = {}
+        for b in ('TCN+ENV', 'TESLA+ENV'):
+            _, rat = rotation(files, 'EnvFiLM-b', b)
+            for g in ('SotonPMS', 'SotonSPS'):
+                x = rat[rat.index.get_level_values(1) == g]
+                d = dict(n=int(len(x)), better=float((x < 1).mean()), median_ratio=float(x.median()),
+                         wilcoxon_p=float(wilcoxon(np.log(x)).pvalue))
+                for pm in PMS:
+                    y = x[x.index.get_level_values(0) == pm]
+                    d[pm] = dict(better=int((y < 1).sum()), n=int(len(y)), median_ratio=float(y.median()))
+                out[k]['%s %s' % (g, b)] = d
+    r = pd.concat([csv(f) for f in SOTON_ON]).groupby(['pm', 'city', 'unit', 'model']).rmse.mean().reset_index()
+    out['onboard_mean_rmse'] = {'%s %s' % k: {m: float(v) for m, v in x.groupby('model').rmse.mean().items()}
+                                for k, x in r.groupby(['city', 'pm'])}
+    return out
+
+
+def write_soton_tex(S):
+    def pmn(pm):
+        return pm.replace('PM2.5', 'PM$_{2.5}$').replace('PM10', 'PM$_{10}$').replace('PM1', 'PM$_{1}$')
+    cols = [('onboard', 'TCN+ENV'), ('onboard', 'TESLA+ENV')] + (
+        [('weather_matched', 'TCN+ENV')] if 'weather_matched' in S else []) + [('weather_year', 'TCN+ENV')]
+    heads = {('onboard', 'TCN+ENV'): 'On-board, vs TCN+env.', ('onboard', 'TESLA+ENV'): 'On-board, vs TESLA+env.',
+             ('weather_matched', 'TCN+ENV'): 'Weather, same rows, vs TCN+env.',
+             ('weather_year', 'TCN+ENV'): 'Weather, full year, vs TCN+env.'}
+    lines = ['\\begin{tabular}{ll' + 'rr' * len(cols) + '}', '\\toprule',
+             ' & & ' + ' & '.join('\\multicolumn{2}{c}{%s}' % heads[c] for c in cols) + ' \\\\',
+             'Sensor & PM & ' + ' & '.join(['better & median'] * len(cols)) + ' \\\\', '\\midrule']
+    for g, gn in (('SotonPMS', 'PMS5003'), ('SotonSPS', 'SPS30')):
+        for pm in PMS:
+            cells = []
+            for k, b in cols:
+                d = S[k]['%s %s' % (g, b)][pm]
+                cells += ['%d/%d' % (d['better'], d['n']), '%.3f' % d['median_ratio']]
+            lines.append('%s & %s & %s \\\\' % (gn, pmn(pm), ' & '.join(cells)))
+        cells = []
+        for k, b in cols:
+            d = S[k]['%s %s' % (g, b)]
+            cells += ['%.0f\\%%' % (100 * d['better']), '%.3f' % d['median_ratio']]
+        lines.append('%s & all & %s \\\\' % (gn, ' & '.join(cells)))
+        lines.append('\\midrule' if g == 'SotonPMS' else '\\bottomrule')
+    lines.append('\\end{tabular}')
+    open(os.path.join(OUT, 'tab_soton.tex'), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
+
+
 def fmt(v, best):
     return ('\\textbf{%.2f}' % v) if best else '%.2f' % v
 
@@ -239,6 +296,8 @@ def main():
     N['rotation_ref_per_seed'] = {k: {kk: vv for kk, vv in rotation(f, 'EnvFiLM-b', 'TCN+ENV')[0].items() if kk != 'groups'}
                                   for k, f in enumerate(REF_SEEDS)}
     write_groups_tex(N['rotation_tesla_vs_tcnenv'], N['rotation_tesla_vs_late'], N['rotation_ref_vs_tcnenv'])
+    N['southampton'] = southampton()
+    write_soton_tex(N['southampton'])
     N['dev'] = dev_ablations()
     N['out_of_season'] = out_of_season()
     o = csv('oracles.csv')

@@ -19,19 +19,18 @@
 \maketitle
 
 \begin{abstract}
-Low-cost optical particle sensors need a learned calibration, and recent deep-learning calibrators for this task
-use attention over the particle signal alone. We show that the sensor boxes already measure the most useful extra
+Recent deep-learning calibrators for low-cost optical particle sensors use attention over the particle signal alone. We show that the sensor boxes already measure the most useful extra
 information, their own humidity and temperature and those of the target instrument, and that it works best when it
 changes how the particle signal is read rather than entering as one more input. We propose EnvFiLM, a dilated
 convolutional calibrator on the log particle signal whose every layer is scaled and shifted by a bounded encoding of
 this on-board state (feature-wise linear modulation). On the SensEURCity benchmark of TESLA (AAAI 2025), with the
 authors' own data and protocol, EnvFiLM lowers city-averaged RMSE by 43\% to 52\% relative to the published SCARE
-results and is lower than published TESLA in all nine city and size cells. Against the same network given exactly
-the same channels, it has a lower error on 65.6\% of 195 held-out units over two training seeds (Wilcoxon $p = 1.6\times10^{-6}$), and
-removing the modulation makes it worse on 81\% of units. When the target is the station's reference instrument and
-each model is averaged over four training seeds, EnvFiLM is better than the same-input network on 83.7\% of 153
-units with a 5.4\% lower median error. EnvFiLM is sensitive to its training seed and does not transfer from spring to
-the following winter; we report both limitations with the designs that did not help.
+results and is lower than published TESLA in all nine city and size cells. Against the same network given the same
+channels, it has a lower error on 65.6\% of 195 held-out units over two training seeds (Wilcoxon $p = 1.6\times10^{-6}$), and
+removing the modulation makes it worse on 81\% of units. Against the station's reference instrument, averaged over four seeds, it is better than the same-input network on 83.7\% of 153
+units with a 5.4\% lower median error. On an independent dataset from Southampton (UK), with each monitor's own
+humidity and temperature and a FIDAS reference, it is better on 22 of 24 Plantower unit cases. EnvFiLM is sensitive
+to its training seed and does not transfer from spring to the following winter.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -71,8 +70,9 @@ ablation that switches the modulation off (Section~\ref{sec:results}).
 architecture because the official protocol has a single test unit per city
 (Section~\ref{sec:protocol}).
 \item A second benchmark on the same units in which the target is the station's reference instrument,
-where the architectural advantage is larger, and a statement of the conditions in which EnvFiLM does not
-help (Sections~\ref{sec:ref} and \ref{sec:limits}).
+where the architectural advantage is larger, a replication on an independent dataset with different sensors,
+reference and climate, and a statement of the conditions in which EnvFiLM does not help
+(Sections~\ref{sec:ref}, \ref{sec:soton} and \ref{sec:limits}).
 \end{enumerate}
 All design decisions were taken on training or validation units, and the pass criteria of every
 confirmatory test were written down before the test was run.
@@ -139,6 +139,15 @@ reference instrument (FIDAS in Antwerp, the station reference in Oslo); because 
 minute-resolved, all signals are averaged to 10 minutes and the window is 36 steps (the same six hours).
 Zagreb is excluded because its reference is not sub-hourly. The unit lists and splits are those of the TESLA
 benchmark.
+
+\textit{Independent dataset.} Bulot et al. \cite{bulot2023} co-located 8 Plantower PMS5003 and 8 Sensirion SPS30
+sensors, housed in four monitors, with a FIDAS 200S reference in Southampton (UK) and published 2-minute medians
+\cite{bulot2022data}; each monitor also logged its own humidity and temperature (SHT35) \cite{bulot2022onboard}. We
+use the period in which the monitor records exist (July to December 2020, about 0.87 million 2-minute rows per sensor
+type), take each sensor's reading of a size fraction as input and the FIDAS reading of the same fraction as target,
+and give every model four state channels: the monitor's humidity and temperature and the humidity and temperature of
+the reference station's weather sensor. The window is 180 steps (the same six hours). The sensors, the reference, the
+climate and the network are all different from SensEURCity.
 
 \section{EnvFiLM}
 \label{sec:method}
@@ -326,6 +335,35 @@ seeds). Best per row in bold.}
 \resizebox{\columnwidth}{!}{\input{tab_ref.tex}}
 \end{table}
 
+\subsection{Independent dataset}
+\label{sec:soton}
+
+On Southampton we ran the unit rotation within each sensor type (8 units, five folds, two validation units, every
+fourth training window) with models and hyperparameters unchanged from SensEURCity and per-unit RMSE averaged over two
+training seeds. The pass criteria were written down before the run, with the PMS5003 group, the sensor of the main
+study, as primary. Table~\ref{tab:soton} gives the result. For the PMS5003 sensors EnvFiLM is better than the TCN with
+the same four channels on 22 of 24 unit cases (median ratio 0.959, Wilcoxon $p = 5.1\times10^{-6}$; 75.0\% and 87.5\%
+for the two seeds separately) and better than TESLA with the same channels on all 24 (median 0.859). For the SPS30
+sensors it is better than TESLA with channels on 22 of 24 (median 0.821) but close to the TCN with channels (14 of 24,
+median 0.988). Its mean RMSE is the lowest of the three models in all six sensor and size groups.
+
+An earlier run on the same site gave every model only the reference station's weather channels (humidity, temperature,
+dew point and pressure) over the full year of the dataset, with one seed. There EnvFiLM was clearly better than TESLA
+with channels (23 of 24 PMS5003 cases, median 0.925) but not better than the TCN with channels (11 of 24, median 1.002).
+That run differs from the main one in period and seed count as well as in the channels, so the contrast is not a
+controlled ablation; it is consistent with the reading that the modulation is useful when it is driven by the state of
+the measuring device itself.
+
+\begin{table*}[t]
+\centering
+\caption{Unit rotation on the independent Southampton dataset: held-out unit cases on which EnvFiLM has the lower RMSE,
+and the median ratio of per-unit RMSEs (EnvFiLM / comparison; below one favours EnvFiLM). On-board: each monitor's
+humidity and temperature plus the station's humidity and temperature, July to December 2020, two seeds. Weather, full
+year: the station's weather channels only, July 2020 to July 2021, one seed.}
+\label{tab:soton}
+\input{tab_soton.tex}
+\end{table*}
+
 \subsection{Cost}
 
 EnvFiLM has 54,785 parameters, against 23,681 for the TCN with channels and 4,531 for TESLA with channels. A
@@ -402,7 +440,11 @@ are attached to the authors' rows by timestamp from the SensEURCity archive; row
 unit. Our TESLA re-implementation follows the official TensorFlow code in PyTorch with identical sizes; SCARE is cited from
 its paper only.
 
-\textit{Scope.} All results are on SensEURCity. We make no claim about other sensor platforms or networks.
+\textit{Scope.} The results come from two co-location datasets: SensEURCity (three cities, AirSensEUR boxes) and one
+site in Southampton (two sensor types, 16 sensors). The Southampton replication is small, has a single site and
+covers half a year, and its on-board state does not include the internal state of the target instrument. We make no
+claim about networks without on-board humidity and temperature sensing, where the Southampton weather-only run suggests
+the advantage over the TCN with channels may vanish.
 
 \section{Conclusion}
 
@@ -410,12 +452,13 @@ On the TESLA benchmark, the most useful information for calibrating a low-cost p
 sensor box, and the most useful way to use it is to let it modulate how the particle signal is read. EnvFiLM, a
 dilated convolutional calibrator with bounded feature-wise environmental modulation, lowers the error of the published
 attention-based models by about half and beats an equal-information convolutional network on most held-out units, by
-a larger margin when the target is a true reference instrument. The remaining problem is change between seasons,
+a larger margin when the target is a true reference instrument. The same model, unchanged, replicates on an
+independent dataset with different sensors and reference when it receives the monitors' own state. The remaining problem is change between seasons,
 which neither EnvFiLM nor the baselines solve.
 
 \section*{Data and Code Availability}
 SensEURCity is available from Zenodo \cite{vanpoppel2023}; the TESLA preprocessed files from the authors' repository
-\cite{ahn2025}. Code, result files and the pre-registration notes are available from the authors on request
+\cite{ahn2025}; the Southampton data from Zenodo \cite{bulot2022data,bulot2022onboard}. Code, result files and the pre-registration notes are available from the authors on request
 \TODO{repository link when made public}.
 
 \begin{thebibliography}{99}
@@ -453,6 +496,15 @@ real-time, and efficiency,'' arXiv:2511.06715, 2025.
 
 \bibitem{vanpoppel2023} M.~Van~Poppel \emph{et al.}, ``SensEURCity: A multi-city air quality dataset collected for
 2020/2021 using open low-cost sensor systems,'' \emph{Sci. Data}, vol.~10, p.~322, 2023.
+
+\bibitem{bulot2023} F.~M.~J. Bulot \emph{et al.}, ``Characterisation and calibration of low-cost PM sensors at high
+temporal resolution to reference-grade performance,'' \emph{Heliyon}, vol.~9, no.~5, p.~e15943, 2023.
+
+\bibitem{bulot2022data} F.~M.~J. Bulot \emph{et al.}, ``Characterisation and calibration of low-cost PM sensors at high
+temporal resolution to reference grade performances: dataset,'' Zenodo, 2022, doi:10.5281/zenodo.7198378.
+
+\bibitem{bulot2022onboard} F.~M.~J. Bulot, ``Characterisation and calibration of PM sensors at high temporal
+resolution,'' Zenodo, 2022, doi:10.5281/zenodo.6637781.
 
 \bibitem{koziel2025} S.~Koziel, A.~Pietrenko-Dabrowska, M.~Wojcikowski, and B.~Pankiewicz, ``Efficient field
 correction of low-cost particulate matter sensors using machine learning, mixed multiplicative/additive scaling and

@@ -673,6 +673,212 @@
    "wilcoxon_p": 9.349485748349028e-22
   }
  },
+ "southampton": {
+  "onboard": {
+   "SotonPMS TCN+ENV": {
+    "n": 24,
+    "better": 0.9166666666666666,
+    "median_ratio": 0.9586187343394394,
+    "wilcoxon_p": 5.125999450683594e-06,
+    "PM10": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.9812645243422858
+    },
+    "PM2.5": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.9639270039762009
+    },
+    "PM1": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.9254050965045613
+    }
+   },
+   "SotonSPS TCN+ENV": {
+    "n": 24,
+    "better": 0.5833333333333334,
+    "median_ratio": 0.9876103748900389,
+    "wilcoxon_p": 0.06910169124603271,
+    "PM10": {
+     "better": 6,
+     "n": 8,
+     "median_ratio": 0.983889375403679
+    },
+    "PM2.5": {
+     "better": 3,
+     "n": 8,
+     "median_ratio": 1.0049070235889945
+    },
+    "PM1": {
+     "better": 5,
+     "n": 8,
+     "median_ratio": 0.9836051256044009
+    }
+   },
+   "SotonPMS TESLA+ENV": {
+    "n": 24,
+    "better": 1.0,
+    "median_ratio": 0.8589142785291319,
+    "wilcoxon_p": 1.1920928955078125e-07,
+    "PM10": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.8816512026320151
+    },
+    "PM2.5": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.8646000999019612
+    },
+    "PM1": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.7695038382495207
+    }
+   },
+   "SotonSPS TESLA+ENV": {
+    "n": 24,
+    "better": 0.9166666666666666,
+    "median_ratio": 0.8205675067450464,
+    "wilcoxon_p": 1.1920928955078125e-06,
+    "PM10": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.8443280135695851
+    },
+    "PM2.5": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.7807325919309271
+    },
+    "PM1": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.7526108789982404
+    }
+   }
+  },
+  "weather_year": {
+   "SotonPMS TCN+ENV": {
+    "n": 24,
+    "better": 0.4583333333333333,
+    "median_ratio": 1.0019446931578107,
+    "wilcoxon_p": 0.9888126850128174,
+    "PM10": {
+     "better": 3,
+     "n": 8,
+     "median_ratio": 1.0019446931578107
+    },
+    "PM2.5": {
+     "better": 3,
+     "n": 8,
+     "median_ratio": 1.031562516304891
+    },
+    "PM1": {
+     "better": 5,
+     "n": 8,
+     "median_ratio": 0.9926527273006844
+    }
+   },
+   "SotonSPS TCN+ENV": {
+    "n": 24,
+    "better": 0.5833333333333334,
+    "median_ratio": 0.9826994033196323,
+    "wilcoxon_p": 0.05642664432525635,
+    "PM10": {
+     "better": 5,
+     "n": 8,
+     "median_ratio": 0.8672425878988415
+    },
+    "PM2.5": {
+     "better": 5,
+     "n": 8,
+     "median_ratio": 0.9783534851358878
+    },
+    "PM1": {
+     "better": 4,
+     "n": 8,
+     "median_ratio": 0.9955392589229062
+    }
+   },
+   "SotonPMS TESLA+ENV": {
+    "n": 24,
+    "better": 0.9583333333333334,
+    "median_ratio": 0.9249813084578276,
+    "wilcoxon_p": 2.014636993408203e-05,
+    "PM10": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.9858714377624616
+    },
+    "PM2.5": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.9135036334737108
+    },
+    "PM1": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.8084010917225058
+    }
+   },
+   "SotonSPS TESLA+ENV": {
+    "n": 24,
+    "better": 0.9583333333333334,
+    "median_ratio": 0.8533763859401102,
+    "wilcoxon_p": 3.0159950256347656e-05,
+    "PM10": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.8698882823796527
+    },
+    "PM2.5": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.8608335746293029
+    },
+    "PM1": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.8322999382932139
+    }
+   }
+  },
+  "onboard_mean_rmse": {
+   "SotonPMS PM1": {
+    "EnvFiLM-b": 3.0991404205560684,
+    "TCN+ENV": 3.2809059619903564,
+    "TESLA+ENV": 3.8186551332473755
+   },
+   "SotonPMS PM10": {
+    "EnvFiLM-b": 7.385180503129959,
+    "TCN+ENV": 7.599983304738998,
+    "TESLA+ENV": 8.29088369011879
+   },
+   "SotonPMS PM2.5": {
+    "EnvFiLM-b": 3.603949472308159,
+    "TCN+ENV": 3.8404992073774338,
+    "TESLA+ENV": 4.143875002861023
+   },
+   "SotonSPS PM1": {
+    "EnvFiLM-b": 2.890500769019127,
+    "TCN+ENV": 2.955851674079895,
+    "TESLA+ENV": 3.5802846401929855
+   },
+   "SotonSPS PM10": {
+    "EnvFiLM-b": 7.678913354873657,
+    "TCN+ENV": 7.747185826301575,
+    "TESLA+ENV": 8.570027202367783
+   },
+   "SotonSPS PM2.5": {
+    "EnvFiLM-b": 3.7353282272815704,
+    "TCN+ENV": 3.751506984233856,
+    "TESLA+ENV": 4.361605644226074
+   }
+  }
+ },
  "dev": {
   "RH vs none": {
    "units": 118,
@@ -817,27 +1023,27 @@
  "models": {
   "EnvFiLM-b": {
    "params": 54785,
-   "cpu_ms_per_window": 3.3889743334536133
+   "cpu_ms_per_window": 3.508802333381027
   },
   "TCN+ENV": {
    "params": 23681,
-   "cpu_ms_per_window": 2.394755000132136
+   "cpu_ms_per_window": 2.303563666646369
   },
   "TCN+ENVwide": {
    "params": 52949,
-   "cpu_ms_per_window": 3.1848586666941023
+   "cpu_ms_per_window": 3.323656333377585
   },
   "TESLA+ENV": {
    "params": 4531,
-   "cpu_ms_per_window": 1.1379693334068484
+   "cpu_ms_per_window": 1.1763339999985571
   },
   "TCN": {
    "params": 23041,
-   "cpu_ms_per_window": 2.311163333361037
+   "cpu_ms_per_window": 2.3390250001102686
   },
   "TESLA": {
    "params": 4499,
-   "cpu_ms_per_window": 1.0824949998641387
+   "cpu_ms_per_window": 1.11174066667445
   }
  }
 }
