@@ -221,7 +221,10 @@ def main():
     N['city_means'] = {p: {c: float(cm.loc[p, c]) for c in ('EnvFiLM-b', 'TCN+ENV', 'LogTCN', 'TESLA-reimpl', 'TESLA-pub')}
                        for p in PMS}
     N['city_means_published'] = dict(SCARE=PUB_SCARE_MEAN, TESLA_in_SCARE_table=PUB_TESLA_MEAN_SCARE)
-    N['rotation_tesla_vs_tcnenv'], rot_main = rotation('rotate_rot_filmb.csv', 'EnvFiLM-b', 'TCN+ENV')
+    TESLA_SEEDS = ['rotate_rot_filmb.csv', 'rotate_rot_filmb_s1.csv']
+    N['rotation_tesla_vs_tcnenv'], rot_main = rotation(TESLA_SEEDS, 'EnvFiLM-b', 'TCN+ENV')
+    N['rotation_tesla_per_seed'] = {k: {kk: vv for kk, vv in rotation(f, 'EnvFiLM-b', 'TCN+ENV')[0].items() if kk != 'groups'}
+                                    for k, f in enumerate(TESLA_SEEDS)}
     N['rotation_tesla_vs_late'], rot_late = rotation('rotate_rot_filmb.csv', 'EnvFiLM-b', 'EnvLate')
     N['rotation_unbounded_vs_tcnenv'], _ = rotation('rotate_rot_film.csv', 'EnvFiLM', 'TCN+ENV')
     r = csv('bench_ref10_off.csv')
@@ -245,7 +248,7 @@ def main():
     N['models'] = params_and_latency()
     figures(rot_main, rot_ref, rot_late)
     json.dump(N, open(os.path.join(OUT, 'numbers.json'), 'w'), indent=1)
-    print(json.dumps({k: N[k] for k in ('main_compare', 'city_means', 'rotation_tesla_vs_tcnenv', 'rotation_tesla_vs_late',
+    print(json.dumps({k: N[k] for k in ('main_compare', 'city_means', 'rotation_tesla_vs_tcnenv', 'rotation_tesla_per_seed', 'rotation_tesla_vs_late',
                                         'ref_compare', 'rotation_ref_vs_tcnenv', 'models')}, indent=1)[:6000])
 
 

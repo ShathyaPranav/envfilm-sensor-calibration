@@ -1,0 +1,90 @@
+PM10  Antwerp  fold 0 EnvFiLM-b        val 7.574  units 14.13 8.38 6.74 13.50 7.73 7.94  215 s
+PM10  Antwerp  fold 0 TCN+ENV          val 7.854  units 13.73 7.31 6.56 14.00 8.06 8.66  203 s
+PM10  Antwerp  fold 1 EnvFiLM-b        val 10.842  units 12.45 8.92 5.76 6.73 7.52 8.13  322 s
+PM10  Antwerp  fold 1 TCN+ENV          val 10.039  units 12.01 8.01 5.81 7.58 8.09 7.46  202 s
+PM10  Antwerp  fold 2 EnvFiLM-b        val 12.263  units 8.64 8.74 8.31 8.41 8.30 12.40  317 s
+PM10  Antwerp  fold 2 TCN+ENV          val 12.080  units 8.12 8.90 8.57 8.06 8.61 12.67  172 s
+PM10  Antwerp  fold 3 EnvFiLM-b        val 10.227  units 7.14 8.09 7.18 15.93 8.11 6.99  385 s
+PM10  Antwerp  fold 3 TCN+ENV          val 10.325  units 8.26 8.02 8.04 15.92 8.21 6.77  259 s
+PM10  Antwerp  fold 4 EnvFiLM-b        val 8.167  units 7.39 7.31 7.59 7.64 9.38 7.61  390 s
+PM10  Antwerp  fold 4 TCN+ENV          val 7.402  units 8.01 7.35 7.71 7.91 9.47 7.25  266 s
+PM10  Oslo     fold 0 EnvFiLM-b        val 7.458  units 12.74 8.53 9.39 8.81 9.18  110 s
+PM10  Oslo     fold 0 TCN+ENV          val 7.974  units 14.57 10.41 9.34 10.87 8.92  55 s
+PM10  Oslo     fold 1 EnvFiLM-b        val 11.143  units 10.38 10.80 10.28 7.08  111 s
+PM10  Oslo     fold 1 TCN+ENV          val 11.110  units 11.59 11.30 9.52 8.31  59 s
+PM10  Oslo     fold 2 EnvFiLM-b        val 11.015  units 7.34 9.53 13.59 9.66  108 s
+PM10  Oslo     fold 2 TCN+ENV          val 10.680  units 10.31 10.85 15.44 10.32  62 s
+PM10  Oslo     fold 3 EnvFiLM-b        val 9.286  units 10.33 11.72 10.93 8.14  114 s
+PM10  Oslo     fold 3 TCN+ENV          val 10.313  units 11.98 14.21 11.41 8.37  60 s
+PM10  Oslo     fold 4 EnvFiLM-b        val 8.001  units 8.93 7.69 9.70 7.47  108 s
+PM10  Oslo     fold 4 TCN+ENV          val 7.635  units 8.55 8.05 9.95 7.55  66 s
+PM10  Zagreb   fold 0 EnvFiLM-b        val 12.795  units 14.91 12.04 13.80  116 s
+PM10  Zagreb   fold 0 TCN+ENV          val 13.266  units 14.00 11.69 14.10  87 s
+PM10  Zagreb   fold 1 EnvFiLM-b        val 13.206  units 12.85 15.33 13.16  113 s
+PM10  Zagreb   fold 1 TCN+ENV          val 13.213  units 13.11 15.12 13.93  88 s
+PM10  Zagreb   fold 2 EnvFiLM-b        val 13.694  units 12.70 52.26 14.28  117 s
+PM10  Zagreb   fold 2 TCN+ENV          val 13.982  units 12.45 23.26 14.31  77 s
+PM10  Zagreb   fold 3 EnvFiLM-b        val 12.868  units 14.74 13.97 11.64  130 s
+PM10  Zagreb   fold 3 TCN+ENV          val 13.340  units 14.76 14.97 11.97  74 s
+PM10  Zagreb   fold 4 EnvFiLM-b        val 12.414  units 13.49 16.43  123 s
+PM10  Zagreb   fold 4 TCN+ENV          val 12.799  units 11.25 17.00  89 s
+PM2.5 Antwerp  fold 0 EnvFiLM-b        val 3.445  units 8.72 3.65 2.62 8.07 3.64 4.53  379 s
+PM2.5 Antwerp  fold 0 TCN+ENV          val 3.481  units 8.38 3.33 2.54 7.55 4.02 4.89  260 s
+PM2.5 Antwerp  fold 1 EnvFiLM-b        val 6.578  units 5.42 3.73 4.09 2.86 3.74 3.08  377 s
+PM2.5 Antwerp  fold 1 TCN+ENV          val 6.222  units 6.17 4.24 4.13 3.87 4.57 3.89  267 s
+PM2.5 Antwerp  fold 2 EnvFiLM-b        val 6.762  units 5.41 4.73 5.39 3.80 2.81 6.43  373 s
+PM2.5 Antwerp  fold 2 TCN+ENV          val 6.622  units 4.29 3.88 5.24 4.83 4.44 9.19  249 s
+PM2.5 Antwerp  fold 3 EnvFiLM-b        val 4.520  units 3.10 4.71 3.04 9.13 3.65 4.20  392 s
+PM2.5 Antwerp  fold 3 TCN+ENV          val 4.321  units 3.07 3.17 2.64 9.74 3.42 3.90  250 s
+PM2.5 Antwerp  fold 4 EnvFiLM-b        val 3.974  units 4.88 4.63 3.26 4.90 5.24 3.90  399 s
+PM2.5 Antwerp  fold 4 TCN+ENV          val 3.849  units 4.67 3.62 2.93 5.03 4.91 3.59  253 s
+PM2.5 Oslo     fold 0 EnvFiLM-b        val 2.568  units 6.41 3.50 3.12 3.09 4.10  96 s
+PM2.5 Oslo     fold 0 TCN+ENV          val 2.791  units 7.02 4.35 3.28 3.15 3.47  64 s
+PM2.5 Oslo     fold 1 EnvFiLM-b        val 4.715  units 4.27 4.30 3.53 2.43  102 s
+PM2.5 Oslo     fold 1 TCN+ENV          val 4.600  units 4.54 4.06 3.40 2.99  75 s
+PM2.5 Oslo     fold 2 EnvFiLM-b        val 4.674  units 2.90 4.34 6.55 3.56  103 s
+PM2.5 Oslo     fold 2 TCN+ENV          val 4.407  units 2.73 3.49 6.29 3.37  76 s
+PM2.5 Oslo     fold 3 EnvFiLM-b        val 3.538  units 3.23 3.84 3.87 2.80  101 s
+PM2.5 Oslo     fold 3 TCN+ENV          val 3.868  units 3.33 4.84 4.21 3.06  75 s
+PM2.5 Oslo     fold 4 EnvFiLM-b        val 2.612  units 4.41 2.81 3.87 2.81  96 s
+PM2.5 Oslo     fold 4 TCN+ENV          val 2.825  units 5.04 3.32 3.61 2.76  76 s
+PM2.5 Zagreb   fold 0 EnvFiLM-b        val 2.945  units 3.62 2.32 2.44  113 s
+PM2.5 Zagreb   fold 0 TCN+ENV          val 3.090  units 3.56 2.52 2.76  75 s
+PM2.5 Zagreb   fold 1 EnvFiLM-b        val 3.220  units 3.44 4.33 3.74  130 s
+PM2.5 Zagreb   fold 1 TCN+ENV          val 3.202  units 3.31 4.16 3.70  74 s
+PM2.5 Zagreb   fold 2 EnvFiLM-b        val 3.507  units 2.60 17.63 3.41  119 s
+PM2.5 Zagreb   fold 2 TCN+ENV          val 3.469  units 2.73 7.06 3.36  86 s
+PM2.5 Zagreb   fold 3 EnvFiLM-b        val 3.080  units 3.30 3.60 2.60  113 s
+PM2.5 Zagreb   fold 3 TCN+ENV          val 3.164  units 3.35 3.62 2.67  87 s
+PM2.5 Zagreb   fold 4 EnvFiLM-b        val 2.787  units 3.34 6.77  116 s
+PM2.5 Zagreb   fold 4 TCN+ENV          val 2.742  units 2.78 6.58  83 s
+PM1   Antwerp  fold 0 EnvFiLM-b        val 1.695  units 4.27 1.72 1.26 4.22 1.58 2.03  397 s
+PM1   Antwerp  fold 0 TCN+ENV          val 1.789  units 4.21 1.72 1.40 4.36 1.86 2.46  241 s
+PM1   Antwerp  fold 1 EnvFiLM-b        val 3.236  units 2.36 1.75 2.12 1.57 1.73 1.87  397 s
+PM1   Antwerp  fold 1 TCN+ENV          val 2.873  units 2.57 1.36 1.43 1.64 1.89 2.14  250 s
+PM1   Antwerp  fold 2 EnvFiLM-b        val 3.203  units 2.44 2.73 2.78 2.75 1.37 3.43  241 s
+PM1   Antwerp  fold 2 TCN+ENV          val 3.197  units 1.79 1.85 2.24 2.32 1.85 4.21  120 s
+PM1   Antwerp  fold 3 EnvFiLM-b        val 1.893  units 1.28 2.18 1.45 4.80 1.88 1.89  185 s
+PM1   Antwerp  fold 3 TCN+ENV          val 1.825  units 1.42 2.04 1.68 4.99 1.79 2.22  120 s
+PM1   Antwerp  fold 4 EnvFiLM-b        val 1.794  units 2.52 2.04 1.42 1.98 2.97 1.91  186 s
+PM1   Antwerp  fold 4 TCN+ENV          val 1.796  units 2.35 2.03 1.59 2.42 2.81 2.01  120 s
+PM1   Oslo     fold 0 EnvFiLM-b        val 1.379  units 2.37 1.51 1.56 1.48 2.34  48 s
+PM1   Oslo     fold 0 TCN+ENV          val 1.208  units 2.34 1.70 1.36 1.53 2.12  31 s
+PM1   Oslo     fold 1 EnvFiLM-b        val 2.041  units 1.42 2.32 1.50 1.08  49 s
+PM1   Oslo     fold 1 TCN+ENV          val 1.978  units 1.43 2.12 1.55 1.17  32 s
+PM1   Oslo     fold 2 EnvFiLM-b        val 1.790  units 1.00 1.94 2.86 1.95  50 s
+PM1   Oslo     fold 2 TCN+ENV          val 1.772  units 1.72 3.06 3.89 2.47  32 s
+PM1   Oslo     fold 3 EnvFiLM-b        val 1.302  units 1.29 1.30 1.74 1.51  51 s
+PM1   Oslo     fold 3 TCN+ENV          val 1.373  units 1.51 1.35 1.84 1.51  33 s
+PM1   Oslo     fold 4 EnvFiLM-b        val 1.221  units 2.46 1.46 1.28 1.32  50 s
+PM1   Oslo     fold 4 TCN+ENV          val 1.166  units 2.88 1.55 1.26 1.24  32 s
+PM1   Zagreb   fold 0 EnvFiLM-b        val 1.114  units 1.11 1.08 0.79  59 s
+PM1   Zagreb   fold 0 TCN+ENV          val 1.090  units 1.08 0.98 0.81  38 s
+PM1   Zagreb   fold 1 EnvFiLM-b        val 0.960  units 1.13 0.93 1.09  57 s
+PM1   Zagreb   fold 1 TCN+ENV          val 0.987  units 1.14 0.98 1.10  37 s
+PM1   Zagreb   fold 2 EnvFiLM-b        val 1.111  units 0.79 15.96 1.45  57 s
+PM1   Zagreb   fold 2 TCN+ENV          val 1.115  units 0.86 2.93 1.47  37 s
+PM1   Zagreb   fold 3 EnvFiLM-b        val 0.971  units 0.97 1.11 0.80  57 s
+PM1   Zagreb   fold 3 TCN+ENV          val 0.921  units 0.94 1.12 0.87  37 s
+PM1   Zagreb   fold 4 EnvFiLM-b        val 0.794  units 1.49 2.20  60 s
+PM1   Zagreb   fold 4 TCN+ENV          val 0.775  units 1.49 2.22  39 s

@@ -27,7 +27,7 @@ convolutional calibrator on the log particle signal whose every layer is scaled 
 this on-board state (feature-wise linear modulation). On the SensEURCity benchmark of TESLA (AAAI 2025), with the
 authors' own data and protocol, EnvFiLM lowers city-averaged RMSE by 43\% to 52\% relative to the published SCARE
 results and is lower than published TESLA in all nine city and size cells. Against the same network given exactly
-the same channels, it has a lower error on 62.6\% of 195 held-out units (Wilcoxon $p = 2.4\times10^{-6}$), and
+the same channels, it has a lower error on 65.6\% of 195 held-out units over two training seeds (Wilcoxon $p = 1.6\times10^{-6}$), and
 removing the modulation makes it worse on 81\% of units. When the target is the station's reference instrument and
 each model is averaged over four training seeds, EnvFiLM is better than the same-input network on 83.7\% of 153
 units with a 5.4\% lower median error. EnvFiLM is sensitive to its training seed and does not transfer from spring to
@@ -222,7 +222,7 @@ Our TESLA re-implementation reproduces the published numbers closely on the auth
 of the order of 7\% on a single unit with an identical seed (GPU non-determinism), comparable to the effects of
 interest. We therefore also hold out every unit once: per city and size fraction the unit list is cut into
 five folds; a fold's units test, two other units validate, the rest train (every fourth window, for all models
-alike), one seed. This gives 195 unit cases on the TESLA benchmark and 153 on the true-reference benchmark. We
+alike). The comparison with the same-input TCN uses per-unit RMSE averaged over two training seeds on the TESLA benchmark and four on the true-reference benchmark; the comparison with the modulation switched off uses one seed. This gives 195 unit cases on the TESLA benchmark and 153 on the true-reference benchmark. We
 report the share of units on which EnvFiLM has the lower RMSE, the median ratio of per-unit RMSEs, a sign test
 and a Wilcoxon signed-rank test on log ratios.
 
@@ -267,9 +267,12 @@ with humidity and with the concentration level.
 
 The official split cannot separate effects of a few percent. The unit rotation can
 (Fig.~\ref{fig:rot}). Over 195 held-out units, EnvFiLM is better than the TCN with the same four channels on
-62.6\% of units (bootstrap 95\% interval over units 55.4\% to 69.2\%), with a median per-unit ratio of 0.967
-(interval 0.943 to 0.987; sign test $p = 5.5\times10^{-4}$; Wilcoxon $p = 2.4\times10^{-6}$), and its mean RMSE is
-lower in six of the nine city and size groups (Table~\ref{tab:groups}). Against the same model with the modulation
+65.6\% of units when each unit's RMSE is averaged over two training seeds (bootstrap 95\% interval over units 59.0\% to
+72.3\%), with a median per-unit ratio of 0.974 (interval 0.960 to 0.984; sign test $p = 1.5\times10^{-5}$; Wilcoxon
+$p = 1.6\times10^{-6}$), and its mean RMSE is lower in six of the nine city and size groups (Table~\ref{tab:groups}).
+Each seed on its own also favours EnvFiLM: 62.6\% of units with median ratio 0.967 for the first and 59.0\% with 0.984
+for the second. In the three Zagreb groups the median unit favours EnvFiLM but a few units with large errors raise its
+mean. Against the same model with the modulation
 switched off, EnvFiLM is better on 81.0\% of units (interval 75.4\% to 86.2\%; median ratio 0.912, interval 0.890 to
 0.928; Wilcoxon $p = 6.7\times10^{-17}$): the environment is far more useful when it changes the particle pathway than
 when it reaches only the output head. The comparison with the TCN given the same channels is closer, because that
@@ -280,7 +283,7 @@ concatenated channels.
 \begin{table*}[t]
 \centering
 \caption{Unit rotation by group: number of held-out units on which EnvFiLM has the lower RMSE, and the median ratio of
-per-unit RMSEs (EnvFiLM / comparison; below one favours EnvFiLM). TESLA benchmark: one seed; true reference: per-unit
+per-unit RMSEs (EnvFiLM / comparison; below one favours EnvFiLM). TESLA benchmark: against the TCN with channels, per-unit RMSE averaged over two seeds; against the modulation switched off, one seed; true reference: per-unit
 RMSE averaged over four seeds. Zagreb has no sub-hourly reference instrument.}
 \label{tab:groups}
 \input{tab_groups.tex}
@@ -291,7 +294,7 @@ the size-matched TCN on 68.8\% of 93 units (median 0.951).
 \centering
 \includegraphics[width=\columnwidth]{fig_rotation.pdf}
 \caption{Per-unit log$_2$ RMSE ratios of EnvFiLM against the TCN with the same channels and against EnvFiLM with
-the modulation switched off (TESLA benchmark, 195 units, one seed), and against the TCN with the same channels on the
+the modulation switched off (TESLA benchmark, 195 units; two seeds against the TCN, one against the modulation switched off), and against the TCN with the same channels on the
 true-reference benchmark (153 units, per-unit RMSE averaged over four seeds). Values below zero favour EnvFiLM; every
 unit is shown.}
 \label{fig:rot}
@@ -374,8 +377,8 @@ clear advantage and two left it tied with the TCN that receives the same channel
 between seeds (median seed-to-seed ratio 0.98 against 1.09 for EnvFiLM between the first two seeds). The modulation path
 starts at zero and appears not to engage in every run within the ten-epoch budget. We therefore recommend averaging
 several trainings; selecting, per fold, the seed with the lowest validation error recovered less of the advantage
-(73.2\% of units, median ratio 0.951) than averaging (83.7\%, 0.946). The TESLA-benchmark rotation in
-Table~\ref{tab:groups} uses a single seed. \TODO{update with the second-seed rotation on the TESLA benchmark}
+(73.2\% of units, median ratio 0.951) than averaging (83.7\%, 0.946). On the TESLA benchmark the seed effect was
+smaller: both seeds favoured EnvFiLM (62.6\% and 59.0\% of units), and averaging the two gave 65.6\%.
 
 \textit{Bounded modulation is necessary.} An unbounded version of EnvFiLM (scale $1 + \gamma$, no input clipping)
 performed similarly in season (better than the TCN with channels on 67.7\% of 195 units) but failed badly out of
@@ -394,7 +397,7 @@ worse in every cell tested.
 
 \textit{Threats to validity.} The official split has one test unit per city, and identical seeds can differ by about 7\%
 on a single unit because GPU training is not bit-reproducible; we therefore rest the architectural claim on the unit
-rotation. The rotation uses one training seed and every fourth training window for all models alike. The on-board channels
+rotation. The rotation uses two to four training seeds for the main comparison, one for the ablation, and every fourth training window for all models alike. The on-board channels
 are attached to the authors' rows by timestamp from the SensEURCity archive; rows without them were interpolated within each
 unit. Our TESLA re-implementation follows the official TensorFlow code in PyTorch with identical sizes; SCARE is cited from
 its paper only.
