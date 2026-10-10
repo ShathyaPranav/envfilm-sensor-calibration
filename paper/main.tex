@@ -108,7 +108,25 @@ takes a Plantower PMS5003 channel as the low-cost input and the box's Alphasense
 fraction (\PMten, \PMtwo{} or \PMone) as the target, and splits by unit: in each city the units are kept in a
 fixed order, the last one tests, the second-to-last validates and the rest train. The model sees the previous
 360 rows of the input and predicts the target at the last row; the metric is RMSE in \textmu g/m$^3$. We use
-the authors' preprocessed files (row counts identical to their Table A1) and their unit lists.
+the authors' preprocessed files (row counts identical to their Table A1) and their unit lists. Rows were dropped by
+the authors wherever a value or a quality flag was missing, so consecutive rows are not always consecutive minutes;
+windows are taken over rows, as in the original code. Table~\ref{tab:data} summarises the benchmark.
+
+\begin{table}[t]
+\centering
+\caption{The TESLA benchmark as used here (authors' preprocessed files). Units are split in the authors' order: all
+but the last two train, the second-to-last validates, the last tests.}
+\label{tab:data}
+\begin{tabular}{lrrl}
+\toprule
+City & Units & Rows (minutes) & First co-location period \\
+\midrule
+Antwerp & 30 & 3,113,955 & 2020-04-03 to 2020-06-15 \\
+Oslo & 21 & 810,314 & 2020-09-17 to 2020-10-14 \\
+Zagreb & 14 & 939,838 & 2020-05-22 to 2020-07-08 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \textit{On-board state.} Each box also records ambient relative humidity and temperature (SHT31) and the OPC-N3
 reports its own internal humidity and temperature. We attach these four channels to the authors' rows by
@@ -124,6 +142,14 @@ benchmark.
 \section{EnvFiLM}
 \label{sec:method}
 
+\textit{Motivation.} Humidity and temperature do not add a fixed amount to an optical particle reading. Water uptake
+changes particle size and refractive index, so its effect on a light-scattering sensor scales with the particle signal
+and depends on the size distribution \cite{diantonio2018,crilley2018,petters2007}; the two sensors of a SensEURCity box
+also sit in the same housing and share its temperature. A model that simply receives humidity as one more input must
+learn such multiplicative interactions from data. Feature-wise linear modulation \cite{perez2018} builds them in: the
+side input sets a gain and an offset for every feature channel, so the environment can change how strongly each learned
+temporal pattern of the particle signal contributes to the output.
+
 Fig.~\ref{fig:arch} shows the model. The particle window $x_{t-N+1},\dots,x_t$ is transformed to
 $\ell = \log(1 + x)$, because concentrations are heavy-tailed and optical sensor responses are closer to
 multiplicative than additive. Seven convolution layers with kernel size 3, 32 channels and dilations
@@ -137,7 +163,30 @@ h_k = \mathrm{GELU}\big( (1 + \tfrac12\tanh \gamma_k) \odot \mathrm{Conv}_k(h_{k
 \end{equation}
 The encoder's last layer is initialised at zero, so training starts from an unconditioned network. The bound
 keeps every scale in $[0.5, 1.5]$; Section~\ref{sec:limits} shows why it is necessary. The head is an MLP on
-the last and mean states of the final layer, the last value of $\ell$, and $z$. EnvFiLM has 54,785 parameters.
+the last and mean states of the final layer, the last value of $\ell$, and $z$. EnvFiLM has 54,785 parameters;
+Table~\ref{tab:hyper} lists the configuration. The output is in the scale of the target (divided by 300, as in the
+original code) and the loss is the mean squared error.
+
+\begin{table}[t]
+\centering
+\caption{EnvFiLM configuration (identical on both benchmarks; not tuned on test units).}
+\label{tab:hyper}
+\begin{tabular}{ll}
+\toprule
+Component & Setting \\
+\midrule
+Input transform & $\log(1 + x)$, $x$ in \textmu g/m$^3$ \\
+Convolutions & 7 layers, kernel 3, 32 channels, dilations $2^0..2^6$, GELU \\
+State channels & ambient RH and $T$, OPC-N3 internal RH and $T$ \\
+State summary $z$ & last, mean, change over last 60 steps, min, max \\
+State clipping & $\pm3$ training standard deviations \\
+Environment encoder & MLP $20 \to 64 \to 2\cdot 32\cdot 7$, last layer zero-initialised \\
+Modulation & scale $1+\frac12\tanh\gamma$, shift $\frac12\tanh\beta$ \\
+Head & MLP on [last state, mean state, last $\ell$, $z$], 64 hidden units \\
+Training & Adam, lr $10^{-3}$, batch 512, 10 epochs, best validation epoch \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure*}[t]
 \centering
@@ -217,11 +266,23 @@ with humidity and with the concentration level.
 
 The official split cannot separate effects of a few percent. The unit rotation can
 (Fig.~\ref{fig:rot}). Over 195 held-out units, EnvFiLM is better than the TCN with the same four channels on
-62.6\% of units, with a median per-unit ratio of 0.967 (sign test $p = 5.5\times10^{-4}$; Wilcoxon
-$p = 2.4\times10^{-6}$), and its mean RMSE is lower in six of the nine city and size groups. Against the same
-model with the modulation switched off, EnvFiLM is better on 81.0\% of units (median ratio 0.912, Wilcoxon
-$p = 6.7\times10^{-17}$): the environment is far more useful when it changes the particle pathway than when it
-reaches only the output head. Size does not explain the gain: on the development protocol EnvFiLM was better than
+62.6\% of units (bootstrap 95\% interval over units 55.4\% to 69.2\%), with a median per-unit ratio of 0.967
+(interval 0.943 to 0.987; sign test $p = 5.5\times10^{-4}$; Wilcoxon $p = 2.4\times10^{-6}$), and its mean RMSE is
+lower in six of the nine city and size groups (Table~\ref{tab:groups}). Against the same model with the modulation
+switched off, EnvFiLM is better on 81.0\% of units (interval 75.4\% to 86.2\%; median ratio 0.912, interval 0.890 to
+0.928; Wilcoxon $p = 6.7\times10^{-17}$): the environment is far more useful when it changes the particle pathway than
+when it reaches only the output head. The comparison with the TCN given the same channels is closer, because that
+model also lets the environment interact with the particle signal from the first layer on; EnvFiLM's advantage is that
+the interaction is multiplicative and conditioned on a summary of the whole window rather than learned implicitly from
+concatenated channels.
+
+\begin{table*}[t]
+\centering
+\caption{Unit rotation by group: number of held-out units on which EnvFiLM has the lower RMSE, and the median ratio of
+per-unit RMSEs (EnvFiLM / comparison; below one favours EnvFiLM). Zagreb has no sub-hourly reference instrument.}
+\label{tab:groups}
+\input{tab_groups.tex}
+\end{table*} Size does not explain the gain: on the development protocol EnvFiLM was better than
 the size-matched TCN on 68.8\% of 93 units (median 0.951).
 
 \begin{figure}[t]
@@ -241,8 +302,8 @@ hyperparameters (at 10-minute resolution the ``last hour'' change in $z$ spans t
 feature unchanged). EnvFiLM has the lowest error in five of six cells and is tied in the sixth (\PMtwo{} Oslo, 1.40
 versus 1.39). It is lower than TESLA and than TESLA with the same channels in all six cells (mean ratios 0.45 and
 0.48). In the unit rotation, EnvFiLM is better than the TCN with the same channels on 88.9\% of 153 units, with a
-median ratio of 0.893, a lower mean in all six groups and a worst unit ratio of 1.14 (Wilcoxon
-$p = 2\times10^{-23}$). The architectural advantage is roughly three times as large as on the TESLA benchmark. A
+median ratio of 0.893 (bootstrap intervals 83.7\% to 93.5\% and 0.878 to 0.918), a lower mean in all six groups
+and a worst unit ratio of 1.14 (Wilcoxon $p = 2\times10^{-23}$). \TODO{seed-1 replication of both rotations} The architectural advantage is roughly three times as large as on the TESLA benchmark. A
 plausible reason is that the reference instrument is shared by all units, so the unit-specific gain of the
 low-cost target sensor, which no input can reveal (Section~\ref{sec:limits}), no longer dominates the error, and
 the multiplicative humidity effect on optical sensors is exactly what the modulation can represent.
@@ -260,6 +321,31 @@ seeds). Best per row in bold.}
 EnvFiLM has 54,785 parameters, against 23,681 for the TCN with channels and 4,531 for TESLA with channels. A
 single 360-minute window takes 2.9 ms on one CPU core in PyTorch, against 1.9 ms and 1.0 ms. EnvFiLM is therefore
 larger than the microcontroller-oriented TESLA and SCARE designs; we have not optimised it for embedded deployment.
+
+\section{Discussion}
+\label{sec:discussion}
+
+\textit{Why a convolutional network beats the attention models here.} Our re-implementation of TESLA, trained with the
+same recipe as every other model, reproduces the published numbers, so the gap between TESLA and LogTCN is not a matter of
+training. Two properties of the benchmark favour the convolutional design. The useful information is local and recent
+(the target is the reading at the last minute of the window), which dilated convolutions capture directly and
+logarithmic binning of older tokens partly discards; and the input is heavy-tailed, which the log transform handles and
+the raw-scale input of TESLA does not. In early exploratory runs on our own reconstruction of the benchmark from the raw archive (before the
+authors' files were used), giving TESLA a log-scaled input did not improve it (7.55 versus 7.04 on Oslo \PMtwo), whereas
+the same change mattered for the convolutional network (from 5.12 to 4.47), which suggests that the difference lies in the
+architecture rather than the scaling alone. This mirrors the broader observation that simpler models
+are often competitive with Transformers on time-series tasks \cite{zeng2023}.
+
+\textit{Why modulation helps more against a true reference.} On the TESLA benchmark each unit is compared with its own
+OPC-N3, whose unit-specific gain adds an error that no input can explain (Section~\ref{sec:limits}). Against a shared
+reference instrument that error disappears, and what remains is closer to the physical problem that motivated the design:
+the effect of humidity on the optical response. The larger and more uniform advantage on the true-reference benchmark
+(Table~\ref{tab:groups}) is consistent with this reading.
+
+\textit{Practical use.} The four state channels are measured inside every AirSensEUR box, so EnvFiLM needs no additional
+hardware. It does need the internal humidity and temperature of the target instrument when it is trained, which is
+available in co-location campaigns such as SensEURCity. Its cost per window (2.9 ms on one CPU core) is small for
+server-side calibration; it is larger than the microcontroller-oriented designs of TESLA and SCARE.
 
 \section{Limitations and What Did Not Help}
 \label{sec:limits}
@@ -290,6 +376,13 @@ self-supervised joint-embedding pretraining of the convolution trunk on 32 milli
 whole fleet \cite{assran2023,bardes2022}, as initialisation, as a joint objective, as frozen features and with a
 reduced learning rate. None improved on the plain network on validation units, and the pretrained variants were
 worse in every cell tested.
+
+\textit{Threats to validity.} The official split has one test unit per city, and identical seeds can differ by about 7\%
+on a single unit because GPU training is not bit-reproducible; we therefore rest the architectural claim on the unit
+rotation. The rotation uses one training seed and every fourth training window for all models alike. The on-board channels
+are attached to the authors' rows by timestamp from the SensEURCity archive; rows without them were interpolated within each
+unit. Our TESLA re-implementation follows the official TensorFlow code in PyTorch with identical sizes; SCARE is cited from
+its paper only.
 
 \textit{Scope.} All results are on SensEURCity. We make no claim about other sensor platforms or networks.
 

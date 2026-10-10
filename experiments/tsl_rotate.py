@@ -61,7 +61,7 @@ def main():
                         continue
                     t = time.time()
                     S.test = np.concatenate([runs[k] for k in test])
-                    model, v, _ = B.fit(name, S, seed=0)
+                    model, v, _ = B.fit(name, S, seed=int(os.environ.get('TSL_ROT_SEED', '0')))
                     for k in test:
                         rows.append(dict(pm=pm, city=city, fold=f, model=name, unit=S.units[k], val=v,
                                          rmse=B.rmse_on(model, S, runs[k])))

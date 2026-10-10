@@ -53,7 +53,13 @@ def rotation(name, a, b):
     r = csv(name)
     w = r.pivot_table(index=['pm', 'city', 'unit'], columns='model', values='rmse').dropna(subset=[a, b])
     rat = w[a] / w[b]
+    rng = np.random.default_rng(0)
+    v = rat.to_numpy()
+    bs = rng.choice(v, (10000, len(v)), replace=True)
+    ci_better = np.percentile((bs < 1).mean(1), [2.5, 97.5])
+    ci_median = np.percentile(np.median(bs, 1), [2.5, 97.5])
     out = dict(units=int(len(rat)), better=float((rat < 1).mean()), median_ratio=float(rat.median()),
+               ci_better=[float(x) for x in ci_better], ci_median=[float(x) for x in ci_median],
                worst=float(rat.max()), sign_p=float(binomtest(int((rat < 1).sum()), len(rat)).pvalue),
                wilcoxon_p=float(wilcoxon(np.log(rat)).pvalue), groups={})
     for (pm, c), x in w.groupby(level=[0, 1]):
@@ -91,6 +97,30 @@ def write_ref_tex(t):
         lines.append('%s & %s & %s \\\\' % (pmn, c, ' & '.join(fmt(row[k], row[k] == best) for k in cols)))
     lines += ['\\bottomrule', '\\end{tabular}']
     open(os.path.join(OUT, 'tab_ref.tex'), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
+
+
+def write_groups_tex(rot_main, rot_late, rot_ref):
+    """Per-group rotation table: share of units better and median ratio, both benchmarks."""
+    def pmn(pm):
+        return pm.replace('PM2.5', 'PM$_{2.5}$').replace('PM10', 'PM$_{10}$').replace('PM1', 'PM$_{1}$')
+    lines = ['\\begin{tabular}{llrrrrrr}', '\\toprule',
+             ' & & \\multicolumn{2}{c}{TESLA bench., vs TCN+env.} & \\multicolumn{2}{c}{TESLA bench., vs mod. off}'
+             ' & \\multicolumn{2}{c}{True ref., vs TCN+env.} \\\\',
+             'PM & City & better & median & better & median & better & median \\\\', '\\midrule']
+    for pm in PMS:
+        for c in CITIES:
+            k = '%s %s' % (pm, c)
+            cells = []
+            for r in (rot_main, rot_late, rot_ref):
+                g = r['groups'].get(k)
+                cells += ['%d/%d' % (round(g['better'] * g['n']), g['n']), '%.3f' % g['median_ratio']] if g else ['n/a', 'n/a']
+            lines.append('%s & %s & %s \\\\' % (pmn(pm), c, ' & '.join(cells)))
+    lines.append('\\midrule')
+    cells = []
+    for r in (rot_main, rot_late, rot_ref):
+        cells += ['%d/%d' % (round(r['better'] * r['units']), r['units']), '%.3f' % r['median_ratio']]
+    lines += ['All & & %s \\\\' % ' & '.join(cells), '\\bottomrule', '\\end{tabular}']
+    open(os.path.join(OUT, 'tab_groups.tex'), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
 
 
 def dev_ablations():
@@ -199,6 +229,7 @@ def main():
     N['ref_compare'] = {b: dict(cells_better=int((tr['EnvFiLM-b'] < tr[b]).sum()), mean_ratio=float((tr['EnvFiLM-b'] / tr[b]).mean()))
                         for b in ('TCN+ENV', 'TESLA+ENV', 'TCN', 'TESLA')}
     N['rotation_ref_vs_tcnenv'], rot_ref = rotation('rotate_ref10_rot.csv', 'EnvFiLM-b', 'TCN+ENV')
+    write_groups_tex(N['rotation_tesla_vs_tcnenv'], N['rotation_tesla_vs_late'], N['rotation_ref_vs_tcnenv'])
     N['dev'] = dev_ablations()
     N['out_of_season'] = out_of_season()
     o = csv('oracles.csv')
