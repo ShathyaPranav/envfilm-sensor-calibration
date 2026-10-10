@@ -109,7 +109,42 @@ def with_extra(city, ase, d):
     return d
 
 
+REF10 = os.path.join(DATA, 'ref10')
+
+
+def ref10_frame(city, ase):
+    """Second benchmark: same units and periods as the authors' first-co-location files, but the
+    target is the station's REFERENCE instrument (Ref.PM10/2.5/1), and everything is averaged to
+    10 minutes (the references are not all minute-resolved). Stored in the authors' column names
+    (the OPCN3* columns hold the reference) so the rest of the code is unchanged."""
+    dst = os.path.join(REF10, '%s_%s.parquet' % (city, ase))
+    if os.path.exists(dst):
+        return pd.read_parquet(dst)
+    o = orig_frame(city, ase)
+    lo, hi = o.date.min(), o.date.max()
+    cols = ['date', 'Location.ID', '5310CAT', '5325CAT', '5301CAT', 'Ref.PM10', 'Ref.PM2.5', 'Ref.PM1',
+            '5310CAT_flag', '5325CAT_flag', '5301CAT_flag'] + EXTRA
+    d = pd.read_parquet(os.path.join(UNITS, '%s_%s.parquet' % (city, ase)), columns=cols)
+    d = d[(d.date >= lo) & (d.date <= hi)]
+    for c in ('5310CAT', '5325CAT', '5301CAT'):
+        d.loc[d[c + '_flag'].notna(), c] = np.nan
+    d['t10'] = d.date.dt.floor('10min')
+    num = ['5310CAT', '5325CAT', '5301CAT', 'Ref.PM10', 'Ref.PM2.5', 'Ref.PM1'] + EXTRA
+    g = d.groupby('t10')[num]
+    a = g.mean().where(g.count() >= 5)
+    a = a.dropna(subset=['5310CAT', '5325CAT', '5301CAT', 'Ref.PM10', 'Ref.PM2.5', 'Ref.PM1'])
+    a = a.rename(columns={'Ref.PM10': 'OPCN3PM10', 'Ref.PM2.5': 'OPCN3PM25', 'Ref.PM1': 'OPCN3PM1'})
+    a = a.reset_index().rename(columns={'t10': 'date'})
+    if EXTRA:
+        a[EXTRA] = a[EXTRA].interpolate(limit_direction='both')
+    os.makedirs(REF10, exist_ok=True)
+    a.to_parquet(dst, index=False)
+    return a
+
+
 def load(city):
+    if SOURCE == 'ref10':
+        return [(ase, ref10_frame(city, ase)) for ase in LISTS[city]]
     if SOURCE == 'orig':
         return [(ase, with_extra(city, ase, orig_frame(city, ase))) for ase in LISTS[city]]
     m = pd.read_csv(META, encoding='latin-1').drop_duplicates('ASEs').set_index('ASEs')

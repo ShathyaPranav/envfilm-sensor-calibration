@@ -21,7 +21,7 @@ if _EXP not in sys.path:
 from tsl_data import CITIES, OPC, PMS, PUBLISHED, load
 
 DEV = 'cuda'
-N = 360
+N = int(os.environ.get('TSL_N', '360'))
 SCALE = 300.0
 OUT = os.path.join(os.path.dirname(_EXP), 'results', 'tesla')
 RECIPE = dict(lr=1e-3, batch=512, epochs=10, wd=0.0)
