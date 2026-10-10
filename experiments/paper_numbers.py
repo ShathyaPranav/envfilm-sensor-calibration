@@ -1,0 +1,216 @@
+"""Every number, table and figure in the EnvFiLM paper, computed from the result files.
+
+Writes results/paper/numbers.json, results/paper/tab_*.tex and results/paper/fig_*.pdf.
+"""
+import json
+import os
+import sys
+import time
+
+import numpy as np
+import pandas as pd
+from scipy.stats import binomtest, wilcoxon
+
+_EXP = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(_EXP)
+R = os.path.join(ROOT, 'results', 'tesla')
+OUT = os.path.join(ROOT, 'results', 'paper')
+PUB_TESLA = {('PM10', 'Antwerp'): 14.58, ('PM10', 'Oslo'): 15.79, ('PM10', 'Zagreb'): 13.87,
+             ('PM2.5', 'Antwerp'): 7.54, ('PM2.5', 'Oslo'): 7.90, ('PM2.5', 'Zagreb'): 3.03,
+             ('PM1', 'Antwerp'): 4.78, ('PM1', 'Oslo'): 3.63, ('PM1', 'Zagreb'): 1.14}
+PUB_SCARE_MEAN = {'PM10': 14.03, 'PM2.5': 5.67, 'PM1': 2.51}
+PUB_TESLA_MEAN_SCARE = {'PM10': 14.21, 'PM2.5': 6.19, 'PM1': 2.82}     # TESLA as listed in SCARE's table
+PMS = ['PM10', 'PM2.5', 'PM1']
+CITIES = ['Antwerp', 'Oslo', 'Zagreb']
+NAMES = {'EnvFiLM-b': 'EnvFiLM (ours)', 'TCN+ENV': 'TCN + env. channels', 'TCN+ENVwide': 'TCN + env., size-matched',
+         'TESLA+ENV': 'TESLA + env. channels', 'LogTCN': 'LogTCN (particles only)', 'TESLA-reimpl': 'TESLA (our re-impl.)',
+         'TESLA-pub': 'TESLA (published)', 'EnvLate': 'EnvFiLM, modulation off', 'TCN': 'LogTCN (particles only)',
+         'TESLA': 'TESLA (particles only)'}
+
+
+def csv(name):
+    return pd.read_csv(os.path.join(R, name))
+
+
+def main_table():
+    env = csv('bench_final_env.csv')
+    env = env[env.pm == 'PM10']                                   # PM2.5/PM1 of this run came from the second process
+    rows = pd.concat([env, csv('bench_final_env_b.csv'), csv('bench_final_filmb.csv'),
+                      csv('bench_orig_logtcn.csv').assign(model='LogTCN'),
+                      csv('bench_orig_logtcn_rest.csv').assign(model='LogTCN'),
+                      csv('bench_orig_tesla.csv').assign(model='TESLA-reimpl')])
+    rows = rows[rows.model != 'EnvFiLM']                          # unbounded variant: reported separately
+    m = rows.groupby(['pm', 'city', 'model']).test.agg(['mean', 'std', 'count']).reset_index()
+    t = m.pivot_table(index=['pm', 'city'], columns='model', values='mean')
+    s = m.pivot_table(index=['pm', 'city'], columns='model', values='std')
+    t['TESLA-pub'] = [PUB_TESLA[i] for i in t.index]
+    t = t.reindex([(p, c) for p in PMS for c in CITIES])
+    s = s.reindex(t.index)
+    return t, s, rows
+
+
+def rotation(name, a, b):
+    r = csv(name)
+    w = r.pivot_table(index=['pm', 'city', 'unit'], columns='model', values='rmse').dropna(subset=[a, b])
+    rat = w[a] / w[b]
+    out = dict(units=int(len(rat)), better=float((rat < 1).mean()), median_ratio=float(rat.median()),
+               worst=float(rat.max()), sign_p=float(binomtest(int((rat < 1).sum()), len(rat)).pvalue),
+               wilcoxon_p=float(wilcoxon(np.log(rat)).pvalue), groups={})
+    for (pm, c), x in w.groupby(level=[0, 1]):
+        rr = x[a] / x[b]
+        out['groups']['%s %s' % (pm, c)] = dict(n=int(len(rr)), better=float((rr < 1).mean()),
+                                                median_ratio=float(rr.median()),
+                                                mean_a=float(x[a].mean()), mean_b=float(x[b].mean()))
+    return out, rat
+
+
+def fmt(v, best):
+    return ('\\textbf{%.2f}' % v) if best else '%.2f' % v
+
+
+def write_main_tex(t, s):
+    cols = ['EnvFiLM-b', 'TCN+ENV', 'TCN+ENVwide', 'TESLA+ENV', 'LogTCN', 'TESLA-reimpl', 'TESLA-pub']
+    head = ' & '.join(['PM', 'City'] + ['\\rotatebox{90}{%s}' % NAMES[c] for c in cols]) + ' \\\\'
+    lines = ['\\begin{tabular}{ll' + 'r' * len(cols) + '}', '\\toprule', head, '\\midrule']
+    for (pm, c), row in t[cols].iterrows():
+        best = row.min()
+        cells = [fmt(row[k], row[k] == best) for k in cols]
+        pmn = pm.replace('PM2.5', 'PM$_{2.5}$').replace('PM10', 'PM$_{10}$').replace('PM1', 'PM$_{1}$')
+        lines.append('%s & %s & %s \\\\' % (pmn, c, ' & '.join(cells)))
+    lines += ['\\bottomrule', '\\end{tabular}']
+    open(os.path.join(OUT, 'tab_main.tex'), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
+
+
+def write_ref_tex(t):
+    cols = ['EnvFiLM-b', 'TCN+ENV', 'TESLA+ENV', 'TCN', 'TESLA']
+    head = ' & '.join(['PM', 'City'] + [NAMES[c] for c in cols]) + ' \\\\'
+    lines = ['\\begin{tabular}{ll' + 'r' * len(cols) + '}', '\\toprule', head, '\\midrule']
+    for (pm, c), row in t[cols].iterrows():
+        best = row.min()
+        pmn = pm.replace('PM2.5', 'PM$_{2.5}$').replace('PM10', 'PM$_{10}$').replace('PM1', 'PM$_{1}$')
+        lines.append('%s & %s & %s \\\\' % (pmn, c, ' & '.join(fmt(row[k], row[k] == best) for k in cols)))
+    lines += ['\\bottomrule', '\\end{tabular}']
+    open(os.path.join(OUT, 'tab_ref.tex'), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
+
+
+def dev_ablations():
+    """Component checks on the development protocol (official training units only)."""
+    def ratio(f, a, b, extra=None):
+        r = csv(f) if extra is None else pd.concat([csv(f), csv(extra)])
+        w = r.pivot_table(index=['pm', 'city', 'unit'], columns='model', values='rmse').dropna(subset=[a, b])
+        rr = w[a] / w[b]
+        g = rr.groupby(level=[0, 1]).median()
+        return dict(units=int(len(rr)), better=float((rr < 1).mean()), median_ratio=float(rr.median()),
+                    groups={'%s %s' % k: float(v) for k, v in g.items()})
+    return {'RH vs none': ratio('dev_dev_rh.csv', 'TCN+RH', 'TCN'),
+            'four channels vs RH': ratio('dev_dev_env.csv', 'TCN+ENV', 'TCN+RH'),
+            'EnvFiLM vs TCN+ENV (dev)': ratio('dev_dev_film.csv', 'EnvFiLM', 'TCN+ENV'),
+            'EnvFiLM vs size-matched (dev)': ratio('dev_dev_film.csv', 'EnvFiLM', 'TCN+ENVwide', 'dev_dev_cap.csv'),
+            'HumidGate vs TCN+RH (dev)': ratio('dev_dev_hg.csv', 'HumidGate', 'TCN+RH'),
+            'latent target gain vs TCN (dev)': ratio('dev_dev_gain.csv', 'TCN+gain', 'TCN'),
+            'residual TCN vs TCN (dev)': ratio('dev_dev1.csv', 'ResTCN', 'TCN')}
+
+
+def out_of_season():
+    r = csv('oot_oot1.csv')
+    w = r.pivot_table(index=['pm', 'city', 'unit'], columns='model', values='rmse')
+    o = {}
+    for a in ('EnvFiLM', 'EnvFiLM-b'):
+        rr = (w[a] / w['TCN+ENV']).dropna()
+        o[a] = dict(units=int(len(rr)), better=float((rr < 1).mean()), median_ratio=float(rr.median()),
+                    worst=float(rr.max()))
+    o['means'] = {'%s %s' % k: {m: float(v) for m, v in row.items()} for k, row in
+                  w.groupby(level=[0, 1]).mean().iterrows()}
+    ins = csv('bench_final_env.csv')
+    o['in_season_TCN+ENV_PM10'] = {c: float(ins[(ins.pm == 'PM10') & (ins.city == c) & (ins.model == 'TCN+ENV')].test.mean())
+                                  for c in CITIES}
+    return o
+
+
+def params_and_latency():
+    sys.path.insert(0, _EXP)
+    os.environ.setdefault('TSL_EXTRA', 'SHT31HE,SHT31TE,OPCN3Hum,OPCN3Temp')
+    import torch
+    import tsl_bench as B
+    res = {}
+    for name in ('EnvFiLM-b', 'TCN+ENV', 'TCN+ENVwide', 'TESLA+ENV', 'TCN', 'TESLA'):
+        m = B.MODELS[name]().eval()
+        n = sum(p.numel() for p in m.parameters())
+        x = torch.rand(1, B.N) * 0.1
+        e = torch.randn(1, B.N, 4)
+        f = (lambda: m(x, e)) if getattr(m, 'uses_extra', False) else (lambda: m(x))
+        with torch.no_grad():
+            for _ in range(20):
+                f()
+            t = time.perf_counter()
+            for _ in range(300):
+                f()
+            ms = (time.perf_counter() - t) / 300 * 1000
+        res[name] = dict(params=int(n), cpu_ms_per_window=float(ms))
+    return res
+
+
+def figures(rot_main, rot_ref, rot_late):
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    plt.rcParams.update({'font.size': 8, 'font.family': 'serif'})
+    fig, ax = plt.subplots(figsize=(3.4, 2.4))
+    for k, (rat, lab) in enumerate([(rot_main, 'TESLA benchmark\nvs TCN + env.'), (rot_late, 'TESLA benchmark\nvs modulation off'),
+                                    (rot_ref, 'True reference\nvs TCN + env.')]):
+        v = np.log2(rat.to_numpy())
+        ax.boxplot(v, positions=[k], widths=0.5, showfliers=False)
+        ax.scatter(np.full(len(v), k) + np.random.default_rng(k).uniform(-0.18, 0.18, len(v)), v, s=3, alpha=0.35)
+    ax.axhline(0, color='k', lw=0.6, ls='--')
+    ax.set_xticks([0, 1, 2])
+    ax.set_xticklabels(['TESLA bench.\nvs TCN+env.', 'TESLA bench.\nvs mod. off', 'True ref.\nvs TCN+env.'])
+    ax.set_ylabel('log$_2$(RMSE ratio)')
+    lo = min(np.log2(r.to_numpy()).min() for r in (rot_main, rot_ref, rot_late))
+    hi = max(np.log2(r.to_numpy()).max() for r in (rot_main, rot_ref, rot_late))
+    ax.set_ylim(lo - 0.1, hi + 0.1)                                # every unit visible
+    fig.tight_layout()
+    fig.savefig(os.path.join(OUT, 'fig_rotation.pdf'))
+    plt.close(fig)
+
+
+def main():
+    os.makedirs(OUT, exist_ok=True)
+    N = {}
+    t, s, _ = main_table()
+    write_main_tex(t, s)
+    N['main_table'] = {'%s %s' % k: {c: float(v) for c, v in row.items() if pd.notna(v)} for k, row in t.iterrows()}
+    N['main_std'] = {'%s %s' % k: {c: float(v) for c, v in row.items() if pd.notna(v)} for k, row in s.iterrows()}
+    cmp = {}
+    for b in ('TCN+ENV', 'TCN+ENVwide', 'TESLA+ENV', 'LogTCN', 'TESLA-reimpl', 'TESLA-pub'):
+        cmp[b] = dict(cells_better=int((t['EnvFiLM-b'] < t[b]).sum()), mean_ratio=float((t['EnvFiLM-b'] / t[b]).mean()))
+    N['main_compare'] = cmp
+    cm = t.groupby(level=0).mean()
+    N['city_means'] = {p: {c: float(cm.loc[p, c]) for c in ('EnvFiLM-b', 'TCN+ENV', 'LogTCN', 'TESLA-reimpl', 'TESLA-pub')}
+                       for p in PMS}
+    N['city_means_published'] = dict(SCARE=PUB_SCARE_MEAN, TESLA_in_SCARE_table=PUB_TESLA_MEAN_SCARE)
+    N['rotation_tesla_vs_tcnenv'], rot_main = rotation('rotate_rot_filmb.csv', 'EnvFiLM-b', 'TCN+ENV')
+    N['rotation_tesla_vs_late'], rot_late = rotation('rotate_rot_filmb.csv', 'EnvFiLM-b', 'EnvLate')
+    N['rotation_unbounded_vs_tcnenv'], _ = rotation('rotate_rot_film.csv', 'EnvFiLM', 'TCN+ENV')
+    r = csv('bench_ref10_off.csv')
+    tr = r.groupby(['pm', 'city', 'model']).test.mean().unstack('model')
+    tr = tr.reindex([(p, c) for p in PMS for c in ('Antwerp', 'Oslo')])
+    write_ref_tex(tr)
+    N['ref_table'] = {'%s %s' % k: {c: float(v) for c, v in row.items()} for k, row in tr.iterrows()}
+    N['ref_compare'] = {b: dict(cells_better=int((tr['EnvFiLM-b'] < tr[b]).sum()), mean_ratio=float((tr['EnvFiLM-b'] / tr[b]).mean()))
+                        for b in ('TCN+ENV', 'TESLA+ENV', 'TCN', 'TESLA')}
+    N['rotation_ref_vs_tcnenv'], rot_ref = rotation('rotate_ref10_rot.csv', 'EnvFiLM-b', 'TCN+ENV')
+    N['dev'] = dev_ablations()
+    N['out_of_season'] = out_of_season()
+    o = csv('oracles.csv')
+    N['oracle'] = dict(gain_share_median=float(o.gain_share.median()), gain_share_max=float(o.gain_share.max()),
+                       O1_over_floor_median=float((o.rmse_O1 / o.floor).median()),
+                       daily_gain_spread_median=float(o.O3_daily_spread.median()))
+    N['models'] = params_and_latency()
+    figures(rot_main, rot_ref, rot_late)
+    json.dump(N, open(os.path.join(OUT, 'numbers.json'), 'w'), indent=1)
+    print(json.dumps({k: N[k] for k in ('main_compare', 'city_means', 'rotation_tesla_vs_tcnenv', 'rotation_tesla_vs_late',
+                                        'ref_compare', 'rotation_ref_vs_tcnenv', 'models')}, indent=1)[:6000])
+
+
+if __name__ == '__main__':
+    main()
