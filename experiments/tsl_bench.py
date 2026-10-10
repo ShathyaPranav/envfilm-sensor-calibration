@@ -507,7 +507,51 @@ class TeslaLog(Tesla):
         return super().forward(torch.log1p(torch.clamp(x * SCALE, min=0)) / 6)
 
 
-MODELS = {'Linear': Linear, 'TESLA': Tesla, 'TCN+gain': TCNgain, 'TCN+RH': TCNx, 'HumidGate': HumidGate, 'TCN+ENV': lambda: TCNx(E=4), 'EnvFiLM': EnvFiLM, 'EnvFiLM-b': EnvFiLMb, 'EnvLate': EnvLate, 'TESLA+ENV': TeslaEnv, 'TCN+ENVwide': lambda: TCNx(E=4, C=50), 'ResTCN': ResTCN, 'TCNwide': TCNwide,
+class PatchTST(nn.Module):
+    """PatchTST (Nie et al., ICLR 2023) adapted to a scalar target: channel-independent
+    Transformer encoder over patches (length 16, stride 8) of each channel, instance
+    normalisation per window and channel (RevIN without affine), flatten head. The
+    particle channel enters on the log scale as for LogTCN; the removed window mean and
+    spread and the last log value go to the output MLP, so the level is not lost."""
+
+    def __init__(self, E=0, P=16, S=8, D=64, L=3, H=4, F=128, drop=0.2):
+        super().__init__()
+        self.E, self.P, self.S = E, P, S
+        self.T = (N - P) // S + 2                              # end padding by S, as in the paper
+        self.patch = nn.Linear(P, D)
+        self.pos = nn.Parameter(torch.randn(self.T, D) * 0.02)
+        layer = nn.TransformerEncoderLayer(D, H, F, drop, activation='gelu', batch_first=True, norm_first=False)
+        self.enc = nn.TransformerEncoder(layer, L)
+        self.drop = nn.Dropout(drop)
+        self.flat = nn.Linear(self.T * D, 64)
+        self.head = nn.Sequential(nn.Linear(64 * (1 + E) + 3 + E, 64), nn.GELU(), nn.Linear(64, 1))
+
+    def forward(self, x, e=None):
+        lx = torch.log1p(torch.clamp(x * SCALE, min=0))
+        ch = [lx[:, None, :]]
+        if self.E:
+            ch.append(e[..., :self.E].transpose(1, 2))
+        z = torch.cat(ch, 1)                                  # B, C, N
+        mu, sd = z.mean(-1, keepdim=True), z.std(-1, keepdim=True) + 1e-3
+        z = torch.nn.functional.pad((z - mu) / sd, (0, self.S), mode='replicate')
+        p = z.unfold(-1, self.P, self.S)                      # B, C, T, P
+        B_, C, T, _ = p.shape
+        h = self.enc(self.patch(p).reshape(B_ * C, T, -1) + self.pos)
+        h = self.flat(self.drop(h.reshape(B_, C, -1)))        # B, C, 64
+        f = [h.reshape(B_, -1), mu[:, 0], sd[:, 0], lx[:, -1:]]
+        if self.E:
+            f.append(e[:, -1, :self.E])
+        return self.head(torch.cat(f, -1)).squeeze(-1)
+
+
+class PatchTSTenv(PatchTST):
+    uses_extra = True
+
+    def __init__(self):
+        super().__init__(E=4)
+
+
+MODELS = {'PatchTST': PatchTST, 'PatchTST+ENV': PatchTSTenv, 'Linear': Linear, 'TESLA': Tesla, 'TCN+gain': TCNgain, 'TCN+RH': TCNx, 'HumidGate': HumidGate, 'TCN+ENV': lambda: TCNx(E=4), 'EnvFiLM': EnvFiLM, 'EnvFiLM-b': EnvFiLMb, 'EnvLate': EnvLate, 'TESLA+ENV': TeslaEnv, 'TCN+ENVwide': lambda: TCNx(E=4, C=50), 'ResTCN': ResTCN, 'TCNwide': TCNwide,
           'ResTCN+MS': lambda: ResTCN(ms=True), 'ResTCN+LN': lambda: ResTCN(ln=True),
           'ResTCN+MS+LN': lambda: ResTCN(ms=True, ln=True), 'TCNraw': TCNraw, 'TESLAlog': TeslaLog, 'LIC': LIC, 'GRUsmall': GRUsmall, 'TCNsmall': TCNsmall, 'TCN': TCN, 'TCN+ctx': TCNctx, 'GainTCN': GainTCN,
           'GainTCN+ctx': GainTCNctx, 'GainTCN+ctx+aug': GainTCNctxAug, 'TCN+ctx+aug': TCNctxAug}
