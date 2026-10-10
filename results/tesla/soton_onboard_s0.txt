@@ -1,0 +1,90 @@
+PM10  SotonPMS fold 0 EnvFiLM-b        val 6.977  units 7.23 6.86  80 s
+PM10  SotonPMS fold 0 TCN+ENV          val 6.955  units 7.11 6.84  46 s
+PM10  SotonPMS fold 0 TESLA+ENV        val 8.130  units 8.15 8.15  33 s
+PM10  SotonPMS fold 1 EnvFiLM-b        val 7.166  units 7.02 7.35  75 s
+PM10  SotonPMS fold 1 TCN+ENV          val 7.086  units 6.97 7.32  48 s
+PM10  SotonPMS fold 1 TESLA+ENV        val 8.103  units 8.21 8.13  36 s
+PM10  SotonPMS fold 2 EnvFiLM-b        val 6.845  units 6.83 6.69  77 s
+PM10  SotonPMS fold 2 TCN+ENV          val 6.961  units 7.00 6.95  47 s
+PM10  SotonPMS fold 2 TESLA+ENV        val 8.122  units 8.22 8.10  32 s
+PM10  SotonPMS fold 3 EnvFiLM-b        val 6.799  units 9.56  80 s
+PM10  SotonPMS fold 3 TCN+ENV          val 6.833  units 10.25  51 s
+PM10  SotonPMS fold 3 TESLA+ENV        val 8.143  units 9.81  39 s
+PM10  SotonPMS fold 4 EnvFiLM-b        val 7.689  units 7.46  82 s
+PM10  SotonPMS fold 4 TCN+ENV          val 7.758  units 7.56  50 s
+PM10  SotonPMS fold 4 TESLA+ENV        val 8.840  units 8.18  39 s
+PM10  SotonSPS fold 0 EnvFiLM-b        val 10.363  units 7.11 7.18  75 s
+PM10  SotonSPS fold 0 TCN+ENV          val 10.650  units 6.74 6.75  47 s
+PM10  SotonSPS fold 0 TESLA+ENV        val 9.932  units 7.98 8.16  36 s
+PM10  SotonSPS fold 1 EnvFiLM-b        val 6.604  units 6.97 13.45  77 s
+PM10  SotonSPS fold 1 TCN+ENV          val 6.662  units 7.26 13.95  47 s
+PM10  SotonSPS fold 1 TESLA+ENV        val 7.894  units 8.11 11.86  34 s
+PM10  SotonSPS fold 2 EnvFiLM-b        val 6.871  units 6.74 6.56  79 s
+PM10  SotonSPS fold 2 TCN+ENV          val 7.234  units 6.85 6.76  47 s
+PM10  SotonSPS fold 2 TESLA+ENV        val 8.250  units 8.00 8.03  31 s
+PM10  SotonSPS fold 3 EnvFiLM-b        val 6.603  units 6.42  79 s
+PM10  SotonSPS fold 3 TCN+ENV          val 6.749  units 6.48  52 s
+PM10  SotonSPS fold 3 TESLA+ENV        val 8.015  units 7.92  39 s
+PM10  SotonSPS fold 4 EnvFiLM-b        val 6.484  units 6.82  83 s
+PM10  SotonSPS fold 4 TCN+ENV          val 6.728  units 6.99  51 s
+PM10  SotonSPS fold 4 TESLA+ENV        val 7.994  units 8.36  38 s
+PM2.5 SotonPMS fold 0 EnvFiLM-b        val 3.084  units 3.33 2.93  75 s
+PM2.5 SotonPMS fold 0 TCN+ENV          val 3.258  units 3.47 3.13  47 s
+PM2.5 SotonPMS fold 0 TESLA+ENV        val 3.696  units 3.66 3.75  31 s
+PM2.5 SotonPMS fold 1 EnvFiLM-b        val 3.025  units 2.75 3.09  75 s
+PM2.5 SotonPMS fold 1 TCN+ENV          val 3.204  units 3.05 3.15  47 s
+PM2.5 SotonPMS fold 1 TESLA+ENV        val 3.668  units 3.55 3.67  32 s
+PM2.5 SotonPMS fold 2 EnvFiLM-b        val 3.087  units 2.86 3.17  75 s
+PM2.5 SotonPMS fold 2 TCN+ENV          val 3.104  units 3.12 3.08  46 s
+PM2.5 SotonPMS fold 2 TESLA+ENV        val 3.559  units 3.66 3.69  32 s
+PM2.5 SotonPMS fold 3 EnvFiLM-b        val 2.737  units 6.51  78 s
+PM2.5 SotonPMS fold 3 TCN+ENV          val 2.998  units 9.31  51 s
+PM2.5 SotonPMS fold 3 TESLA+ENV        val 3.651  units 7.56  41 s
+PM2.5 SotonPMS fold 4 EnvFiLM-b        val 4.534  units 3.82  83 s
+PM2.5 SotonPMS fold 4 TCN+ENV          val 4.835  units 3.63  53 s
+PM2.5 SotonPMS fold 4 TESLA+ENV        val 5.508  units 3.98  40 s
+PM2.5 SotonSPS fold 0 EnvFiLM-b        val 6.569  units 2.99 2.98  76 s
+PM2.5 SotonSPS fold 0 TCN+ENV          val 6.737  units 2.98 2.83  48 s
+PM2.5 SotonSPS fold 0 TESLA+ENV        val 6.400  units 3.43 3.56  33 s
+PM2.5 SotonSPS fold 1 EnvFiLM-b        val 2.838  units 3.42 9.36  76 s
+PM2.5 SotonSPS fold 1 TCN+ENV          val 2.786  units 3.31 9.42  48 s
+PM2.5 SotonSPS fold 1 TESLA+ENV        val 3.350  units 3.74 8.83  32 s
+PM2.5 SotonSPS fold 2 EnvFiLM-b        val 3.105  units 2.90 2.79  74 s
+PM2.5 SotonSPS fold 2 TCN+ENV          val 3.087  units 2.79 2.78  47 s
+PM2.5 SotonSPS fold 2 TESLA+ENV        val 4.041  units 3.72 3.76  31 s
+PM2.5 SotonSPS fold 3 EnvFiLM-b        val 2.779  units 2.68  83 s
+PM2.5 SotonSPS fold 3 TCN+ENV          val 2.910  units 2.73  51 s
+PM2.5 SotonSPS fold 3 TESLA+ENV        val 3.738  units 3.56  39 s
+PM2.5 SotonSPS fold 4 EnvFiLM-b        val 2.697  units 3.11  81 s
+PM2.5 SotonSPS fold 4 TCN+ENV          val 2.717  units 3.14  31 s
+PM2.5 SotonSPS fold 4 TESLA+ENV        val 3.760  units 4.37  40 s
+PM1   SotonPMS fold 0 EnvFiLM-b        val 2.452  units 2.51 2.40  74 s
+PM1   SotonPMS fold 0 TCN+ENV          val 2.595  units 2.98 2.57  46 s
+PM1   SotonPMS fold 0 TESLA+ENV        val 3.157  units 3.11 3.17  32 s
+PM1   SotonPMS fold 1 EnvFiLM-b        val 2.415  units 2.25 2.37  74 s
+PM1   SotonPMS fold 1 TCN+ENV          val 2.608  units 2.51 2.56  46 s
+PM1   SotonPMS fold 1 TESLA+ENV        val 3.139  units 3.06 3.08  33 s
+PM1   SotonPMS fold 2 EnvFiLM-b        val 2.264  units 2.21 2.44  76 s
+PM1   SotonPMS fold 2 TCN+ENV          val 2.545  units 2.52 2.50  47 s
+PM1   SotonPMS fold 2 TESLA+ENV        val 2.991  units 3.15 3.16  32 s
+PM1   SotonPMS fold 3 EnvFiLM-b        val 2.222  units 8.30  81 s
+PM1   SotonPMS fold 3 TCN+ENV          val 2.572  units 8.36  50 s
+PM1   SotonPMS fold 3 TESLA+ENV        val 2.894  units 8.37  40 s
+PM1   SotonPMS fold 4 EnvFiLM-b        val 5.099  units 2.82  82 s
+PM1   SotonPMS fold 4 TCN+ENV          val 4.710  units 3.17  51 s
+PM1   SotonPMS fold 4 TESLA+ENV        val 5.600  units 3.55  42 s
+PM1   SotonSPS fold 0 EnvFiLM-b        val 5.477  units 2.15 1.89  75 s
+PM1   SotonSPS fold 0 TCN+ENV          val 5.552  units 2.26 1.90  47 s
+PM1   SotonSPS fold 0 TESLA+ENV        val 5.741  units 2.71 2.91  34 s
+PM1   SotonSPS fold 1 EnvFiLM-b        val 2.062  units 2.29 7.44  77 s
+PM1   SotonSPS fold 1 TCN+ENV          val 2.150  units 2.44 7.77  47 s
+PM1   SotonSPS fold 1 TESLA+ENV        val 2.673  units 2.81 7.90  33 s
+PM1   SotonSPS fold 2 EnvFiLM-b        val 2.333  units 2.27 2.17  74 s
+PM1   SotonSPS fold 2 TCN+ENV          val 2.390  units 2.26 2.21  48 s
+PM1   SotonSPS fold 2 TESLA+ENV        val 3.184  units 3.02 2.99  34 s
+PM1   SotonSPS fold 3 EnvFiLM-b        val 2.167  units 1.98  81 s
+PM1   SotonSPS fold 3 TCN+ENV          val 2.329  units 2.28  50 s
+PM1   SotonSPS fold 3 TESLA+ENV        val 2.987  units 2.87  40 s
+PM1   SotonSPS fold 4 EnvFiLM-b        val 1.997  units 2.37  82 s
+PM1   SotonSPS fold 4 TCN+ENV          val 2.089  units 2.43  50 s
+PM1   SotonSPS fold 4 TESLA+ENV        val 3.070  units 3.30  39 s
