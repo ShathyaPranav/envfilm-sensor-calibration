@@ -50,7 +50,10 @@ def main_table():
 
 
 def rotation(name, a, b):
-    r = csv(name)
+    """name: one rotation CSV, or a list of CSVs from different seeds (per-unit RMSE averaged over seeds)."""
+    names = name if isinstance(name, list) else [name]
+    r = pd.concat([csv(n).assign(seed=k) for k, n in enumerate(names)])
+    r = r.groupby(['pm', 'city', 'unit', 'model']).rmse.mean().reset_index()
     w = r.pivot_table(index=['pm', 'city', 'unit'], columns='model', values='rmse').dropna(subset=[a, b])
     rat = w[a] / w[b]
     rng = np.random.default_rng(0)
@@ -228,7 +231,10 @@ def main():
     N['ref_table'] = {'%s %s' % k: {c: float(v) for c, v in row.items()} for k, row in tr.iterrows()}
     N['ref_compare'] = {b: dict(cells_better=int((tr['EnvFiLM-b'] < tr[b]).sum()), mean_ratio=float((tr['EnvFiLM-b'] / tr[b]).mean()))
                         for b in ('TCN+ENV', 'TESLA+ENV', 'TCN', 'TESLA')}
-    N['rotation_ref_vs_tcnenv'], rot_ref = rotation('rotate_ref10_rot.csv', 'EnvFiLM-b', 'TCN+ENV')
+    REF_SEEDS = ['rotate_ref10_rot.csv', 'rotate_ref10_rot_s1.csv', 'rotate_ref10_rot_s2.csv', 'rotate_ref10_rot_s3.csv']
+    N['rotation_ref_vs_tcnenv'], rot_ref = rotation(REF_SEEDS, 'EnvFiLM-b', 'TCN+ENV')
+    N['rotation_ref_per_seed'] = {k: {kk: vv for kk, vv in rotation(f, 'EnvFiLM-b', 'TCN+ENV')[0].items() if kk != 'groups'}
+                                  for k, f in enumerate(REF_SEEDS)}
     write_groups_tex(N['rotation_tesla_vs_tcnenv'], N['rotation_tesla_vs_late'], N['rotation_ref_vs_tcnenv'])
     N['dev'] = dev_ablations()
     N['out_of_season'] = out_of_season()

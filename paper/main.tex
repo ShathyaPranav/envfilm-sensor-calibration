@@ -28,9 +28,10 @@ this on-board state (feature-wise linear modulation). On the SensEURCity benchma
 authors' own data and protocol, EnvFiLM lowers city-averaged RMSE by 43\% to 52\% relative to the published SCARE
 results and is lower than published TESLA in all nine city and size cells. Against the same network given exactly
 the same channels, it has a lower error on 62.6\% of 195 held-out units (Wilcoxon $p = 2.4\times10^{-6}$), and
-removing the modulation makes it worse on 81\% of units. When the target is the station's reference instrument, the
-advantage over the same-input network grows to 89\% of 153 units with a 10.7\% lower median error. EnvFiLM does not
-transfer from spring to the following winter, which we report with the designs that did not help.
+removing the modulation makes it worse on 81\% of units. When the target is the station's reference instrument and
+each model is averaged over four training seeds, EnvFiLM is better than the same-input network on 83.7\% of 153
+units with a 5.4\% lower median error. EnvFiLM is sensitive to its training seed and does not transfer from spring to
+the following winter; we report both limitations with the designs that did not help.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -279,7 +280,8 @@ concatenated channels.
 \begin{table*}[t]
 \centering
 \caption{Unit rotation by group: number of held-out units on which EnvFiLM has the lower RMSE, and the median ratio of
-per-unit RMSEs (EnvFiLM / comparison; below one favours EnvFiLM). Zagreb has no sub-hourly reference instrument.}
+per-unit RMSEs (EnvFiLM / comparison; below one favours EnvFiLM). TESLA benchmark: one seed; true reference: per-unit
+RMSE averaged over four seeds. Zagreb has no sub-hourly reference instrument.}
 \label{tab:groups}
 \input{tab_groups.tex}
 \end{table*} Size does not explain the gain: on the development protocol EnvFiLM was better than
@@ -289,8 +291,9 @@ the size-matched TCN on 68.8\% of 93 units (median 0.951).
 \centering
 \includegraphics[width=\columnwidth]{fig_rotation.pdf}
 \caption{Per-unit log$_2$ RMSE ratios of EnvFiLM against the TCN with the same channels and against EnvFiLM with
-the modulation switched off (TESLA benchmark, 195 units), and against the TCN with the same channels on the
-true-reference benchmark (153 units). Values below zero favour EnvFiLM; every unit is shown.}
+the modulation switched off (TESLA benchmark, 195 units, one seed), and against the TCN with the same channels on the
+true-reference benchmark (153 units, per-unit RMSE averaged over four seeds). Values below zero favour EnvFiLM; every
+unit is shown.}
 \label{fig:rot}
 \end{figure}
 
@@ -301,12 +304,16 @@ Table~\ref{tab:ref} reports the official split of the true-reference benchmark w
 hyperparameters (at 10-minute resolution the ``last hour'' change in $z$ spans the whole window; we left the
 feature unchanged). EnvFiLM has the lowest error in five of six cells and is tied in the sixth (\PMtwo{} Oslo, 1.40
 versus 1.39). It is lower than TESLA and than TESLA with the same channels in all six cells (mean ratios 0.45 and
-0.48). In the unit rotation, EnvFiLM is better than the TCN with the same channels on 88.9\% of 153 units, with a
-median ratio of 0.893 (bootstrap intervals 83.7\% to 93.5\% and 0.878 to 0.918), a lower mean in all six groups
-and a worst unit ratio of 1.14 (Wilcoxon $p = 2\times10^{-23}$). \TODO{seed-1 replication of both rotations} The architectural advantage is roughly three times as large as on the TESLA benchmark. A
-plausible reason is that the reference instrument is shared by all units, so the unit-specific gain of the
-low-cost target sensor, which no input can reveal (Section~\ref{sec:limits}), no longer dominates the error, and
-the multiplicative humidity effect on optical sensors is exactly what the modulation can represent.
+0.48). Because this rotation is fast, we repeated it with four training seeds. Averaging each unit's RMSE over the
+four seeds for each model, EnvFiLM is better than the TCN with the same channels on 83.7\% of 153 units (bootstrap
+95\% interval 77.8\% to 89.5\%), with a median ratio of 0.946 (interval 0.939 to 0.957; Wilcoxon
+$p = 1.8\times10^{-17}$) and a lower mean in five of six groups. The individual seeds are bimodal: two give a clear
+advantage (better on 88.9\% and 88.2\% of units, median ratios 0.893 and 0.896) and two are tied with the TCN (51.6\%
+and 49.0\%, median ratios 0.997 and 1.002); none is worse. We discuss this training sensitivity in
+Section~\ref{sec:limits}. A plausible reason why the advantage is larger and more uniform here than on the TESLA
+benchmark is that the reference instrument is shared by all units, so the unit-specific gain of the low-cost target
+sensor, which no input can reveal (Section~\ref{sec:limits}), no longer dominates the error, and the multiplicative
+humidity effect on optical sensors is what the modulation can represent.
 
 \begin{table}[t]
 \centering
@@ -361,6 +368,14 @@ eight to ten months later. All models' errors grow, by factors between 1.2 and 5
 example \PMten{} in Antwerp from 6.7 to 26.2), and the sensor-to-sensor ratio itself shifts by up to $\pm50\%$ between the
 two periods. EnvFiLM does not help there: it is better than the TCN with the same channels on 35.9\% of 128 units
 (median ratio 1.034).
+
+\textit{Sensitivity to the training seed.} On the true-reference benchmark, two of four training seeds gave EnvFiLM a
+clear advantage and two left it tied with the TCN that receives the same channels, while the TCN itself varied little
+between seeds (median seed-to-seed ratio 0.98 against 1.09 for EnvFiLM between the first two seeds). The modulation path
+starts at zero and appears not to engage in every run within the ten-epoch budget. We therefore recommend averaging
+several trainings; selecting, per fold, the seed with the lowest validation error recovered less of the advantage
+(73.2\% of units, median ratio 0.951) than averaging (83.7\%, 0.946). The TESLA-benchmark rotation in
+Table~\ref{tab:groups} uses a single seed. \TODO{update with the second-seed rotation on the TESLA benchmark}
 
 \textit{Bounded modulation is necessary.} An unbounded version of EnvFiLM (scale $1 + \gamma$, no input clipping)
 performed similarly in season (better than the TCN with channels on 67.7\% of 195 units) but failed badly out of
