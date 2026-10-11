@@ -1,0 +1,6 @@
+PM1   Oslo     PatchTST+ENV seed 0  val 0.968  test 1.357  (published nan)  2402 s
+PM1   Oslo     PatchTST+ENV seed 1  val 0.972  test 1.281  (published nan)  2400 s
+PM1   Oslo     PatchTST+ENV seed 2  val 0.906  test 1.235  (published nan)  2388 s
+PM1   Zagreb   PatchTST+ENV seed 0  val 1.271  test 0.676  (published nan)  2692 s
+PM1   Zagreb   PatchTST+ENV seed 1  val 1.119  test 0.902  (published nan)  2666 s
+PM1   Zagreb   PatchTST+ENV seed 2  val 1.027  test 0.982  (published nan)  2639 s

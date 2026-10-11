@@ -1,0 +1,2 @@
+PM1   Antwerp  PatchTST+ENV seed 1  val 1.878  test 1.876  (published nan)  9834 s
+PM1   Antwerp  PatchTST+ENV seed 2  val 2.071  test 2.367  (published nan)  9773 s

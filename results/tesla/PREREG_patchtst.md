@@ -19,3 +19,9 @@ A reviewer may ask how EnvFiLM-b compares with a modern patch Transformer. Patch
 Same benchmark and regime as the main table, so the result is reported whatever it is:
 both rows go into Table main with 3-seed means. If PatchTST+ENV beats EnvFiLM-b on the
 city-mean of a PM size, the paper says so and the claims are revised accordingly.
+
+## Outcome (2026-10-12)
+PatchTST (particles only): worse than EnvFiLM-b and than LogTCN in 9/9 cells (EnvFiLM-b / PatchTST mean ratio 0.65).
+PatchTST+ENV: EnvFiLM-b lower in 6/9 cells (mean ratio 0.942); PatchTST+ENV lower in PM2.5 Zagreb (2.40 vs 2.72),
+PM1 Oslo (1.29 vs 1.32), PM1 Zagreb (0.85 vs 1.07). City means EnvFiLM-b 8.04/2.71/1.36 vs PatchTST+ENV 8.61/3.11/1.53,
+so the pre-registered revision trigger (PatchTST+ENV better on a size's city mean) did not fire. Both rows in tab_main.

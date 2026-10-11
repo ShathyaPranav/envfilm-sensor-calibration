@@ -1,0 +1,6 @@
+PM2.5 Oslo     PatchTST+ENV seed 0  val 1.982  test 3.221  (published nan)  2382 s
+PM2.5 Oslo     PatchTST+ENV seed 1  val 2.076  test 3.577  (published nan)  2399 s
+PM2.5 Oslo     PatchTST+ENV seed 2  val 2.270  test 3.051  (published nan)  2405 s
+PM2.5 Zagreb   PatchTST+ENV seed 0  val 2.807  test 2.467  (published nan)  2673 s
+PM2.5 Zagreb   PatchTST+ENV seed 1  val 3.001  test 2.317  (published nan)  2663 s
+PM2.5 Zagreb   PatchTST+ENV seed 2  val 3.091  test 2.423  (published nan)  2663 s

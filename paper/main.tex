@@ -220,7 +220,11 @@ embedding (equal information);
 \item TCN + env.: LogTCN with the four state channels as additional input channels at every time step (equal
 information, early fusion);
 \item TCN + env., size-matched: the same with 50 channels (52,949 parameters, matched to EnvFiLM);
-\item EnvFiLM, modulation off: EnvFiLM with the FiLM path removed, so the state summary reaches only the head.
+\item EnvFiLM, modulation off: EnvFiLM with the FiLM path removed, so the state summary reaches only the head;
+\item PatchTST \cite{nie2023}, with patches of 16 steps (stride 8), three encoder layers of width 64 and four heads,
+instance normalisation and the log particle input, from the particle channel alone and channel-independently over
+the particle and the four state channels (PatchTST + env., 309,825 parameters); its sizes were fixed in advance and
+not tuned.
 \end{itemize}
 Our TESLA re-implementation reproduces the published numbers closely on the authors' data (for example \PMten{}
 14.09 versus 14.58 in Antwerp and 13.53 versus 13.87 in Zagreb).
@@ -253,11 +257,16 @@ Table~\ref{tab:main} gives the official-split results. EnvFiLM is lower than pub
 and 3.18 for TESLA. Against the equal-information baselines, EnvFiLM is lower in 6 of 9 cells than the TCN with
 the same channels (mean ratio 0.95), in 7 of 9 than its size-matched version (0.97) and in 7 of 9 than TESLA with
 the same channels (0.79).
+A patch Transformer given the same channels is about as strong a baseline as the TCN with channels: EnvFiLM is lower
+than PatchTST with channels in 6 of 9 cells (mean ratio 0.94), and PatchTST with channels is lower in \PMtwo{} Zagreb,
+\PMone{} Oslo and \PMone{} Zagreb. Averaged over cities EnvFiLM is lower for every size
+fraction (8.04, 2.71 and 1.36 against 8.61, 3.11 and 1.53). From the particle channel alone PatchTST is worse than LogTCN
+in all nine cells.
 
 \begin{table*}[t]
 \centering
 \caption{RMSE (\textmu g/m$^3$) on the TESLA benchmark (authors' data, official split, mean of three seeds;
-published TESLA from \cite{ahn2025}, one value per cell). Columns 2 to 4 receive the same four on-board state
+published TESLA from \cite{ahn2025}, one value per cell). Columns 2 to 5 receive the same four on-board state
 channels as EnvFiLM. Best per row in bold.}
 \label{tab:main}
 \input{tab_main.tex}
@@ -372,7 +381,9 @@ same weather channels, July 2020 to July 2021, one seed.}
 
 \subsection{Cost}
 
-EnvFiLM has 54,785 parameters, against 23,681 for the TCN with channels and 4,531 for TESLA with channels. A
+EnvFiLM has 54,785 parameters, against 23,681 for the TCN with channels, 4,531 for TESLA with channels and 309,825 for PatchTST with channels; on
+our GPU one training run of PatchTST with channels took 30 minutes to 2.7 hours per cell, roughly ten times as long as
+EnvFiLM (4 to 17 minutes), which is why it was not included in the unit rotation. A
 single 360-minute window takes 2.9 ms on one CPU core in PyTorch, against 1.9 ms and 1.0 ms. EnvFiLM is therefore
 larger than the microcontroller-oriented TESLA and SCARE designs; we have not optimised it for embedded deployment.
 
@@ -388,7 +399,9 @@ the raw-scale input of TESLA does not. In early exploratory runs on our own reco
 authors' files were used), giving TESLA a log-scaled input did not improve it (7.55 versus 7.04 on Oslo \PMtwo), whereas
 the same change mattered for the convolutional network (from 5.12 to 4.47), which suggests that the difference lies in the
 architecture rather than the scaling alone. This mirrors the broader observation that simpler models
-are often competitive with Transformers on time-series tasks \cite{zeng2023}.
+are often competitive with Transformers on time-series tasks \cite{zeng2023}. The comparison with PatchTST qualifies this: from the particle channel
+alone it is worse than LogTCN in every cell, but given the state channels it is close to the TCN with channels, so the
+advantage of the convolutional design over a modern Transformer is mostly an advantage when the state is unavailable.
 
 \textit{Why modulation helps more against a true reference.} On the TESLA benchmark each unit is compared with its own
 OPC-N3, whose unit-specific gain adds an error that no input can explain (Section~\ref{sec:limits}). Against a shared

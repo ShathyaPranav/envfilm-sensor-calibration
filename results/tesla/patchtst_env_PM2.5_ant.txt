@@ -1,0 +1,2 @@
+PM2.5 Antwerp  PatchTST+ENV seed 1  val 4.017  test 3.893  (published nan)  9793 s
+PM2.5 Antwerp  PatchTST+ENV seed 2  val 3.478  test 3.347  (published nan)  9804 s
