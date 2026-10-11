@@ -1,0 +1,10 @@
+PM10  Antwerp  PatchTST+ENV seed 0  val 6.248  test 6.612  (published nan)  8788 s
+PM10  Antwerp  PatchTST+ENV seed 1  val 6.406  test 6.949  (published nan)  8787 s
+PM10  Antwerp  PatchTST+ENV seed 2  val 6.315  test 6.944  (published nan)  8131 s
+PM10  Oslo     PatchTST+ENV seed 0  val 6.805  test 8.465  (published nan)  1909 s
+PM10  Oslo     PatchTST+ENV seed 1  val 6.597  test 9.956  (published nan)  1873 s
+PM10  Oslo     PatchTST+ENV seed 2  val 7.041  test 8.722  (published nan)  1899 s
+PM10  Zagreb   PatchTST+ENV seed 0  val 11.119  test 9.731  (published nan)  2120 s
+PM10  Zagreb   PatchTST+ENV seed 1  val 11.575  test 10.654  (published nan)  2395 s
+PM10  Zagreb   PatchTST+ENV seed 2  val 12.116  test 9.465  (published nan)  2657 s
+PM2.5 Antwerp  PatchTST+ENV seed 0  val 3.419  test 3.663  (published nan)  9546 s
