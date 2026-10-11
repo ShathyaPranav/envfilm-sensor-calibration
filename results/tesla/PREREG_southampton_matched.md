@@ -10,3 +10,9 @@ Reading, fixed in advance: if EnvFiLM-b vs TCN+ENV in the PMS5003 group is clear
 channels (91.7%, 0.959), the paper states that the gain on Southampton depends on the monitor's own state sensors.
 If it is similar, the paper states that the difference between the two earlier runs came from period and seeds,
 not from the channels. Reported either way, since the on-board result it qualifies is in the paper.
+
+## Outcome (2026-10-11)
+EnvFiLM-b vs TCN+ENV on the same rows with weather channels: PMS5003 79.2% (19/24), median 0.990 (seeds 58.3%, 75.0%);
+SPS30 83.3%, 0.973. Vs TESLA+ENV: 95.8% and 91.7%. Neither "clearly weaker" nor "similar" fits cleanly: on-board is
+better for PMS5003 (0.959 vs 0.990), weather better for SPS30 (0.973 vs 0.988). Reported as: the channel source has no
+consistent effect; the full-year weather run's failure is attributed to period or seed count, not to the channels.

@@ -350,16 +350,22 @@ median 0.988). Its mean RMSE is the lowest of the three models in all six sensor
 An earlier run on the same site gave every model only the reference station's weather channels (humidity, temperature,
 dew point and pressure) over the full year of the dataset, with one seed. There EnvFiLM was clearly better than TESLA
 with channels (23 of 24 PMS5003 cases, median 0.925) but not better than the TCN with channels (11 of 24, median 1.002).
-That run differs from the main one in period and seed count as well as in the channels, so the contrast is not a
-controlled ablation; it is consistent with the reading that the modulation is useful when it is driven by the state of
-the measuring device itself.
+Because that run differs from the main one in period and seed count as well as in the channels, we repeated it on
+exactly the rows and seeds of the main run with the weather channels in place of the monitors' sensors. EnvFiLM was
+again better than the TCN with channels, on 19 of 24 PMS5003 cases (median 0.990; 58.3\% and 75.0\% for the two seeds)
+and 20 of 24 SPS30 cases (median 0.973), and better than TESLA with channels on 23 and 22 of 24. The monitors' own
+sensors gave the larger advantage for the PMS5003 (median 0.959 against 0.990) and the smaller for the SPS30 (0.988
+against 0.973), so the source of the state channels has no consistent effect. The failure of the full-year run is
+therefore due to its longer period, which adds the winter and spring of 2021, or to its single seed, and not to the
+channels; it agrees with the seasonal limitation of Section~\ref{sec:limits}.
 
 \begin{table*}[t]
 \centering
 \caption{Unit rotation on the independent Southampton dataset: held-out unit cases on which EnvFiLM has the lower RMSE,
 and the median ratio of per-unit RMSEs (EnvFiLM / comparison; below one favours EnvFiLM). On-board: each monitor's
-humidity and temperature plus the station's humidity and temperature, July to December 2020, two seeds. Weather, full
-year: the station's weather channels only, July 2020 to July 2021, one seed.}
+humidity and temperature plus the station's humidity and temperature, July to December 2020, two seeds. Weather, same
+rows: the station's humidity, temperature, dew point and pressure on the same rows and seeds. Weather, full year: the
+same weather channels, July 2020 to July 2021, one seed.}
 \label{tab:soton}
 \input{tab_soton.tex}
 \end{table*}
@@ -392,7 +398,8 @@ the effect of humidity on the optical response. The larger and more uniform adva
 
 \textit{Practical use.} The four state channels are measured inside every AirSensEUR box, so EnvFiLM needs no additional
 hardware. It does need the internal humidity and temperature of the target instrument when it is trained, which is
-available in co-location campaigns such as SensEURCity. Its cost per window (2.9 ms on one CPU core) is small for
+available in co-location campaigns such as SensEURCity. On Southampton, where no target-instrument state exists, the
+monitors' or the station's humidity and temperature were enough. Its cost per window (2.9 ms on one CPU core) is small for
 server-side calibration; it is larger than the microcontroller-oriented designs of TESLA and SCARE.
 
 \section{Limitations and What Did Not Help}
@@ -442,9 +449,9 @@ its paper only.
 
 \textit{Scope.} The results come from two co-location datasets: SensEURCity (three cities, AirSensEUR boxes) and one
 site in Southampton (two sensor types, 16 sensors). The Southampton replication is small, has a single site and
-covers half a year, and its on-board state does not include the internal state of the target instrument. We make no
-claim about networks without on-board humidity and temperature sensing, where the Southampton weather-only run suggests
-the advantage over the TCN with channels may vanish.
+covers half a year, and its state channels do not include the internal state of the target instrument. Over the full
+year, with weather channels and one seed, EnvFiLM did not beat the TCN with channels there, so we make no claim for
+deployments that span seasons without recalibration.
 
 \section{Conclusion}
 
@@ -453,7 +460,8 @@ sensor box, and the most useful way to use it is to let it modulate how the part
 dilated convolutional calibrator with bounded feature-wise environmental modulation, lowers the error of the published
 attention-based models by about half and beats an equal-information convolutional network on most held-out units, by
 a larger margin when the target is a true reference instrument. The same model, unchanged, replicates on an
-independent dataset with different sensors and reference when it receives the monitors' own state. The remaining problem is change between seasons,
+independent dataset with different sensors and reference, whether its state channels come from the monitors or
+from the station's weather sensor. The remaining problem is change between seasons,
 which neither EnvFiLM nor the baselines solve.
 
 \section*{Data and Code Availability}

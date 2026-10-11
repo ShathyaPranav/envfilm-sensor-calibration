@@ -846,6 +846,92 @@
     }
    }
   },
+  "weather_matched": {
+   "SotonPMS TCN+ENV": {
+    "n": 24,
+    "better": 0.7916666666666666,
+    "median_ratio": 0.9900573334038965,
+    "wilcoxon_p": 0.008714795112609863,
+    "PM10": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.981238973953512
+    },
+    "PM2.5": {
+     "better": 6,
+     "n": 8,
+     "median_ratio": 0.9913985868706466
+    },
+    "PM1": {
+     "better": 6,
+     "n": 8,
+     "median_ratio": 0.9927950669527993
+    }
+   },
+   "SotonSPS TCN+ENV": {
+    "n": 24,
+    "better": 0.8333333333333334,
+    "median_ratio": 0.9725002247162324,
+    "wilcoxon_p": 0.0001270771026611328,
+    "PM10": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.9625885085411353
+    },
+    "PM2.5": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.9798375835804476
+    },
+    "PM1": {
+     "better": 6,
+     "n": 8,
+     "median_ratio": 0.9753644007137942
+    }
+   },
+   "SotonPMS TESLA+ENV": {
+    "n": 24,
+    "better": 0.9583333333333334,
+    "median_ratio": 0.851194972478357,
+    "wilcoxon_p": 3.5762786865234375e-07,
+    "PM10": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.8555622132510134
+    },
+    "PM2.5": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.845359120407121
+    },
+    "PM1": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.8426617747014582
+    }
+   },
+   "SotonSPS TESLA+ENV": {
+    "n": 24,
+    "better": 0.9166666666666666,
+    "median_ratio": 0.7869539930301162,
+    "wilcoxon_p": 1.1920928955078125e-06,
+    "PM10": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.8144244660568315
+    },
+    "PM2.5": {
+     "better": 7,
+     "n": 8,
+     "median_ratio": 0.7570900071734261
+    },
+    "PM1": {
+     "better": 8,
+     "n": 8,
+     "median_ratio": 0.7250300808022907
+    }
+   }
+  },
   "onboard_mean_rmse": {
    "SotonPMS PM1": {
     "EnvFiLM-b": 3.0991404205560684,
@@ -1023,27 +1109,27 @@
  "models": {
   "EnvFiLM-b": {
    "params": 54785,
-   "cpu_ms_per_window": 3.508802333381027
+   "cpu_ms_per_window": 3.6206596666791784
   },
   "TCN+ENV": {
    "params": 23681,
-   "cpu_ms_per_window": 2.303563666646369
+   "cpu_ms_per_window": 2.4800419999519363
   },
   "TCN+ENVwide": {
    "params": 52949,
-   "cpu_ms_per_window": 3.323656333377585
+   "cpu_ms_per_window": 3.2314889998330427
   },
   "TESLA+ENV": {
    "params": 4531,
-   "cpu_ms_per_window": 1.1763339999985571
+   "cpu_ms_per_window": 1.7206206665529558
   },
   "TCN": {
    "params": 23041,
-   "cpu_ms_per_window": 2.3390250001102686
+   "cpu_ms_per_window": 3.155384000080327
   },
   "TESLA": {
    "params": 4499,
-   "cpu_ms_per_window": 1.11174066667445
+   "cpu_ms_per_window": 1.1838666665911055
   }
  }
 }
