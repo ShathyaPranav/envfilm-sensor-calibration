@@ -635,7 +635,7 @@ def main():
             S = Split(city, pm)
             CURRENT['pm'] = pm
             for name in names:
-                for s in range(seeds):
+                for s in range(int(os.environ.get('TSL_SEED_START', '0')), seeds):
                     t = time.time()
                     _, v, te = fit(name, S, seed=s)
                     pub = PUBLISHED.get(name, {}).get(pm, (np.nan,) * 3)[CITIES.index(city)]

@@ -25,7 +25,8 @@ CITIES = ['Antwerp', 'Oslo', 'Zagreb']
 NAMES = {'EnvFiLM-b': 'EnvFiLM (ours)', 'TCN+ENV': 'TCN + env. channels', 'TCN+ENVwide': 'TCN + env., size-matched',
          'TESLA+ENV': 'TESLA + env. channels', 'LogTCN': 'LogTCN (particles only)', 'TESLA-reimpl': 'TESLA (our re-impl.)',
          'TESLA-pub': 'TESLA (published)', 'EnvLate': 'EnvFiLM, modulation off', 'TCN': 'LogTCN (particles only)',
-         'TESLA': 'TESLA (particles only)'}
+         'TESLA': 'TESLA (particles only)', 'PatchTST+ENV': 'PatchTST + env. channels',
+         'PatchTST': 'PatchTST (particles only)'}
 
 
 def csv(name):
@@ -39,6 +40,12 @@ def main_table():
                       csv('bench_orig_logtcn.csv').assign(model='LogTCN'),
                       csv('bench_orig_logtcn_rest.csv').assign(model='LogTCN'),
                       csv('bench_orig_tesla.csv').assign(model='TESLA-reimpl')])
+    import glob
+    pt = pd.concat([pd.read_csv(f) for f in glob.glob(os.path.join(R, 'bench_patchtst_*.csv')) if 'crashed' not in f])
+    for name in ('PatchTST', 'PatchTST+ENV'):
+        x = pt[pt.model == name].drop_duplicates(['pm', 'city', 'seed'])
+        if len(x) == 27:                                       # all 9 cells x 3 seeds, else left out of the table
+            rows = pd.concat([rows, x])
     rows = rows[rows.model != 'EnvFiLM']                          # unbounded variant: reported separately
     m = rows.groupby(['pm', 'city', 'model']).test.agg(['mean', 'std', 'count']).reset_index()
     t = m.pivot_table(index=['pm', 'city'], columns='model', values='mean')
@@ -136,6 +143,7 @@ def fmt(v, best):
 
 def write_main_tex(t, s):
     cols = ['EnvFiLM-b', 'TCN+ENV', 'TCN+ENVwide', 'TESLA+ENV', 'LogTCN', 'TESLA-reimpl', 'TESLA-pub']
+    cols = [c for c in cols[:4] + ['PatchTST+ENV'] + cols[4:5] + ['PatchTST'] + cols[5:] if c in t.columns]
     head = ' & '.join(['PM', 'City'] + ['\\rotatebox{90}{%s}' % NAMES[c] for c in cols]) + ' \\\\'
     lines = ['\\begin{tabular}{ll' + 'r' * len(cols) + '}', '\\toprule', head, '\\midrule']
     for (pm, c), row in t[cols].iterrows():
@@ -271,7 +279,7 @@ def main():
     N['main_table'] = {'%s %s' % k: {c: float(v) for c, v in row.items() if pd.notna(v)} for k, row in t.iterrows()}
     N['main_std'] = {'%s %s' % k: {c: float(v) for c, v in row.items() if pd.notna(v)} for k, row in s.iterrows()}
     cmp = {}
-    for b in ('TCN+ENV', 'TCN+ENVwide', 'TESLA+ENV', 'LogTCN', 'TESLA-reimpl', 'TESLA-pub'):
+    for b in [c for c in ('TCN+ENV', 'TCN+ENVwide', 'TESLA+ENV', 'PatchTST+ENV', 'LogTCN', 'PatchTST', 'TESLA-reimpl', 'TESLA-pub') if c in t.columns]:
         cmp[b] = dict(cells_better=int((t['EnvFiLM-b'] < t[b]).sum()), mean_ratio=float((t['EnvFiLM-b'] / t[b]).mean()))
     N['main_compare'] = cmp
     cm = t.groupby(level=0).mean()
