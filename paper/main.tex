@@ -5,7 +5,6 @@
 \usepackage{multirow}
 \usepackage{url}
 \usepackage{xcolor}
-\newcommand{\TODO}[1]{\textcolor{red}{[TODO: #1]}}
 \newcommand{\PMten}{PM$_{10}$}
 \newcommand{\PMtwo}{PM$_{2.5}$}
 \newcommand{\PMone}{PM$_{1}$}
@@ -14,7 +13,9 @@
 
 \title{EnvFiLM: Environment-Conditioned Calibration of Low-Cost Particulate Matter Sensors}
 
-\author{\TODO{Author names and affiliations}}
+\author{Author~One, Author~Two, and Author~Three%
+\thanks{The authors are with the Department of [Department], [University], [City], [Country]
+(e-mail: [corresponding author e-mail]).}}
 
 \maketitle
 
@@ -64,7 +65,7 @@ Our contributions are:
 and shift for every layer of a dilated convolutional network on the log particle signal
 (Section~\ref{sec:method}).
 \item A comparison on the TESLA benchmark using the authors' own preprocessed files, with equal-information
-baselines (TESLA and a convolutional network given the same channels), a capacity-matched control and an
+baselines (TESLA, PatchTST and a convolutional network given the same channels), a capacity-matched control and an
 ablation that switches the modulation off (Section~\ref{sec:results}).
 \item A unit-rotation protocol in which every unit is held out once, used as the primary test of the
 architecture because the official protocol has a single test unit per city
@@ -179,7 +180,8 @@ original code) and the loss is the mean squared error.
 
 \begin{table}[t]
 \centering
-\caption{EnvFiLM configuration (identical on both benchmarks; not tuned on test units).}
+\caption{EnvFiLM configuration (identical on all three benchmarks and not tuned on test units; on Southampton the
+four state channels are the monitor's and the reference station's humidity and temperature, and $N = 180$).}
 \label{tab:hyper}
 \begin{tabular}{ll}
 \toprule
@@ -479,8 +481,7 @@ which neither EnvFiLM nor the baselines solve.
 
 \section*{Data and Code Availability}
 SensEURCity is available from Zenodo \cite{vanpoppel2023}; the TESLA preprocessed files from the authors' repository
-\cite{ahn2025}; the Southampton data from Zenodo \cite{bulot2022data,bulot2022onboard}. Code, result files and the pre-registration notes are available from the authors on request
-\TODO{repository link when made public}.
+\cite{ahn2025}; the Southampton data from Zenodo \cite{bulot2022data,bulot2022onboard}. Code, result files and the pre-registration notes are available from the authors on request.
 
 \begin{thebibliography}{99}
 
