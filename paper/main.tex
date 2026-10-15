@@ -20,18 +20,18 @@
 \maketitle
 
 \begin{abstract}
-Recent deep-learning calibrators for low-cost optical particle sensors use attention over the particle signal alone. We show that the sensor boxes already measure the most useful extra
-information, their own humidity and temperature and those of the target instrument, and that it works best when it
-changes how the particle signal is read rather than entering as one more input. We propose EnvFiLM, a dilated
-convolutional calibrator on the log particle signal whose every layer is scaled and shifted by a bounded encoding of
-this on-board state (feature-wise linear modulation). On the SensEURCity benchmark of TESLA (AAAI 2025), with the
-authors' own data and protocol, EnvFiLM lowers city-averaged RMSE by 43\% to 52\% relative to the published SCARE
-results and is lower than published TESLA in all nine city and size cells. Against the same network given the same
-channels, it has a lower error on 65.6\% of 195 held-out units over two training seeds (Wilcoxon $p = 1.6\times10^{-6}$), and
-removing the modulation makes it worse on 81\% of units. Against the station's reference instrument, averaged over four seeds, it is better than the same-input network on 83.7\% of 153
-units with a 5.4\% lower median error. On an independent dataset from Southampton (UK), with each monitor's own
-humidity and temperature and a FIDAS reference, it is better on 22 of 24 Plantower unit cases. EnvFiLM is sensitive
-to its training seed and does not transfer from spring to the following winter.
+The error of low-cost optical particle sensors depends on humidity and temperature, which many sensor boxes already
+measure, yet recent deep-learning calibrators read the particle signal alone. We propose EnvFiLM, a dilated
+convolutional calibrator on the log particle signal in which an encoding of the measured humidity and temperature
+scales and shifts every layer within fixed bounds (feature-wise linear modulation). On the SensEURCity benchmark of
+TESLA (AAAI 2025), against the same network given the same channels as ordinary inputs, EnvFiLM has a lower error on
+65.6\% of 195 held-out units (35 of 45 trained folds, sign test $p = 2.5\times10^{-4}$), and switching the modulation
+off makes it worse on 81\% of units. Against the stations' reference instruments it is better on 83.7\% of 153 units,
+with a 5.4\% lower median error, and on an independent dataset from Southampton (UK) on 22 of 24 Plantower unit cases.
+With the benchmark authors' data and protocol, its city-averaged RMSE is 43\% to 52\% below the published SCARE results
+and below published TESLA in all nine cells; most of this gap comes from using the humidity and temperature channels
+at all, which the published models do not. A patch Transformer given the same channels is lower in three of the nine
+cells. EnvFiLM is sensitive to its training seed and does not transfer across seasons.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -53,11 +53,11 @@ Both models read only the particle channel.
 
 This paper makes three observations and builds a model on them. First, each SensEURCity box also measures
 its own environmental state, including the internal humidity and temperature of the optical particle
-counter that the benchmark uses as its target, and this state explains a large share of the remaining
+counter that the benchmark uses as its target, and this state explains part of the remaining
 error. Second, a plain dilated convolutional network on the logarithm of the particle signal is a much
 stronger baseline than the attention models that define the state of the art on this benchmark. Third,
-and this is the modelling contribution, the environmental state works best when it modulates the
-particle pathway at every layer rather than entering as an additional input channel or only at the output.
+and this is the modelling contribution, the environmental state works better when it modulates the
+particle pathway at every layer than when it enters as an additional input channel or only at the output.
 
 Our contributions are:
 \begin{enumerate}
@@ -84,6 +84,9 @@ confirmatory test were written down before the test was run.
 terms, random forests and neural networks are standard for co-located calibration
 \cite{zimmerman2018,malings2019,barkjohn2021,karagulian2019,concas2021}. Physically motivated corrections
 model hygroscopic growth of particles at high relative humidity \cite{diantonio2018,crilley2018,petters2007}.
+Neural calibrators range from feed-forward networks and gradient boosting on the reading, humidity and temperature
+\cite{si2020} to recurrent models over the recent history, such as the hybrid DNN and LSTM of Park et al.
+\cite{park2021}; in these the environment enters as additional input features.
 The closest learned approach to ours is the neural correction of Koziel et al. \cite{koziel2025}, in which a
 network maps temperature, humidity and the raw reading to a multiplicative and an additive correction of the
 output. EnvFiLM differs in where the environment acts: it modulates the internal features of a temporal
@@ -98,8 +101,14 @@ tasks \cite{zeng2023}. Dilated convolutional networks \cite{oord2016,bai2018} we
 either benchmark paper.
 
 \textit{Conditioning.} Feature-wise linear modulation (FiLM) \cite{perez2018} conditions a network by
-predicting a per-channel scale and shift from a side input. We did not find prior use of feature-level
-environmental conditioning in low-cost sensor calibration.
+predicting a per-channel scale and shift from a side input. It belongs to a family of feature-wise transformations
+\cite{dumoulin2018} that includes conditional normalisation \cite{devries2017} and hypernetworks, which generate the
+weights themselves \cite{ha2017}. In time-series forecasting, known covariates condition the model through dedicated
+encoders and gating in the Temporal Fusion Transformer \cite{lim2021}, and reversible instance normalisation removes
+the level and scale of each window \cite{kim2022}. Conditioning a temporal network on side information is therefore not
+new. What this paper studies is whether, and when, conditioning the particle pathway on the sensor box's measured
+state improves calibration over giving the same state as inputs; we did not find this question addressed for low-cost
+sensors.
 
 \section{Problem and Benchmarks}
 \label{sec:problem}
@@ -132,7 +141,11 @@ Zagreb & 14 & 939,838 & 2020-05-22 to 2020-07-08 \\
 
 \textit{On-board state.} Each box also records ambient relative humidity and temperature (SHT31) and the OPC-N3
 reports its own internal humidity and temperature. We attach these four channels to the authors' rows by
-timestamp. They are measured inside the box at deployment, so using them requires no extra instrument.
+timestamp. They are measured inside the box at deployment, so using them requires no extra instrument. Two of them
+describe the target instrument of this benchmark; they are available here because the OPC-N3 sits in the same box,
+but a calibration against a separate reference would not have the reference's internal state. On the true-reference
+benchmark the same channels describe a second on-board sensor rather than the target, and the Southampton dataset
+has no such channels.
 
 \textit{True-reference benchmark.} To test whether the conclusions depend on calibrating against a second
 low-cost sensor, we build a variant on the same units and periods in which the target is the station's
@@ -239,7 +252,8 @@ interest. We therefore also hold out every unit once: per city and size fraction
 five folds; a fold's units test, two other units validate, the rest train (every fourth window, for all models
 alike). The comparison with the same-input TCN uses per-unit RMSE averaged over two training seeds on the TESLA benchmark and four on the true-reference benchmark; the comparison with the modulation switched off uses one seed. This gives 195 unit cases on the TESLA benchmark and 153 on the true-reference benchmark. We
 report the share of units on which EnvFiLM has the lower RMSE, the median ratio of per-unit RMSEs, a sign test
-and a Wilcoxon signed-rank test on log ratios.
+and a Wilcoxon signed-rank test on log ratios. Units of one fold share a trained model and are not independent, so we
+also give a sign test over folds, each fold contributing the mean log ratio of its units.
 
 \textit{Development and pre-registration.} Model components were chosen on a development protocol that uses
 only the official training units (four folds of held-out training units). Before each confirmatory run we wrote
@@ -289,12 +303,13 @@ The official split cannot separate effects of a few percent. The unit rotation c
 (Fig.~\ref{fig:rot}). Over 195 held-out units, EnvFiLM is better than the TCN with the same four channels on
 65.6\% of units when each unit's RMSE is averaged over two training seeds (bootstrap 95\% interval over units 59.0\% to
 72.3\%), with a median per-unit ratio of 0.974 (interval 0.960 to 0.984; sign test $p = 1.5\times10^{-5}$; Wilcoxon
-$p = 1.6\times10^{-6}$), and its mean RMSE is lower in six of the nine city and size groups (Table~\ref{tab:groups}).
+$p = 1.6\times10^{-6}$), and its mean RMSE is lower in six of the nine city and size groups (Table~\ref{tab:groups}). Over trained folds,
+EnvFiLM is better in 35 of 45 (sign test $p = 2.5\times10^{-4}$).
 Each seed on its own also favours EnvFiLM: 62.6\% of units with median ratio 0.967 for the first and 59.0\% with 0.984
 for the second. In the three Zagreb groups the median unit favours EnvFiLM but a few units with large errors raise its
 mean. Against the same model with the modulation
 switched off, EnvFiLM is better on 81.0\% of units (interval 75.4\% to 86.2\%; median ratio 0.912, interval 0.890 to
-0.928; Wilcoxon $p = 6.7\times10^{-17}$): the environment is far more useful when it changes the particle pathway than
+0.928; Wilcoxon $p = 6.7\times10^{-17}$; 39 of 45 folds): the environment is far more useful when it changes the particle pathway than
 when it reaches only the output head. The comparison with the TCN given the same channels is closer, because that
 model also lets the environment interact with the particle signal from the first layer on; EnvFiLM's advantage is that
 the interaction is multiplicative and conditioned on a summary of the whole window rather than learned implicitly from
@@ -330,7 +345,7 @@ versus 1.39). It is lower than TESLA and than TESLA with the same channels in al
 0.48). Because this rotation is fast, we repeated it with four training seeds. Averaging each unit's RMSE over the
 four seeds for each model, EnvFiLM is better than the TCN with the same channels on 83.7\% of 153 units (bootstrap
 95\% interval 77.8\% to 89.5\%), with a median ratio of 0.946 (interval 0.939 to 0.957; Wilcoxon
-$p = 1.8\times10^{-17}$) and a lower mean in five of six groups. The individual seeds are bimodal: two give a clear
+$p = 1.8\times10^{-17}$; 26 of 30 folds, sign test $p = 5.9\times10^{-5}$) and a lower mean in five of six groups. The individual seeds are bimodal: two give a clear
 advantage (better on 88.9\% and 88.2\% of units, median ratios 0.893 and 0.896) and two are tied with the TCN (51.6\%
 and 49.0\%, median ratios 0.997 and 1.002); none is worse. We discuss this training sensitivity in
 Section~\ref{sec:limits}. A plausible reason why the advantage is larger and more uniform here than on the TESLA
@@ -356,7 +371,9 @@ study, as primary. Table~\ref{tab:soton} gives the result. For the PMS5003 senso
 the same four channels on 22 of 24 unit cases (median ratio 0.959, Wilcoxon $p = 5.1\times10^{-6}$; 75.0\% and 87.5\%
 for the two seeds separately) and better than TESLA with the same channels on all 24 (median 0.859). For the SPS30
 sensors it is better than TESLA with channels on 22 of 24 (median 0.821) but close to the TCN with channels (14 of 24,
-median 0.988). Its mean RMSE is the lowest of the three models in all six sensor and size groups.
+median 0.988). Its mean RMSE is the lowest of the three models in all six sensor and size groups, and over both sensor types it is
+better than the TCN with channels in 25 of 30 trained folds (sign test $p = 3.2\times10^{-4}$). The 16 sensors sit in
+four monitors, so the monitors' state channels come from four devices.
 
 An earlier run on the same site gave every model only the reference station's weather channels (humidity, temperature,
 dew point and pressure) over the full year of the dataset, with one seed. There EnvFiLM was clearly better than TESLA
@@ -457,7 +474,10 @@ worse in every cell tested.
 
 \textit{Threats to validity.} The official split has one test unit per city, and identical seeds can differ by about 7\%
 on a single unit because GPU training is not bit-reproducible; we therefore rest the architectural claim on the unit
-rotation. The rotation uses two to four training seeds for the main comparison, one for the ablation, and every fourth training window for all models alike. The on-board channels
+rotation. The rotation uses two to four training seeds for the main comparison, one for the ablation, and every fourth training window for all models alike. Model components were chosen on a development protocol over the
+official training units, which are also test units in the rotation, so the rotation is not fully independent of model
+selection; the true-reference benchmark (a different target, not used for any design decision) and the Southampton
+dataset (not used before its confirmatory run) are. The on-board channels
 are attached to the authors' rows by timestamp from the SensEURCity archive; rows without them were interpolated within each
 unit. Our TESLA re-implementation follows the official TensorFlow code in PyTorch with identical sizes; SCARE is cited from
 its paper only.
@@ -552,6 +572,27 @@ recurrent networks for sequence modeling,'' arXiv:1803.01271, 2018.
 
 \bibitem{perez2018} E.~Perez, F.~Strub, H.~de~Vries, V.~Dumoulin, and A.~Courville, ``FiLM: Visual reasoning with a
 general conditioning layer,'' in \emph{Proc. AAAI Conf. Artif. Intell.}, vol.~32, 2018.
+
+\bibitem{dumoulin2018} V.~Dumoulin \emph{et al.}, ``Feature-wise transformations,'' \emph{Distill}, 2018,
+doi:10.23915/distill.00011.
+
+\bibitem{devries2017} H.~de~Vries, F.~Strub, J.~Mary, H.~Larochelle, O.~Pietquin, and A.~Courville, ``Modulating
+early visual processing by language,'' in \emph{Proc. NeurIPS}, 2017.
+
+\bibitem{ha2017} D.~Ha, A.~Dai, and Q.~V.~Le, ``HyperNetworks,'' in \emph{Proc. ICLR}, 2017.
+
+\bibitem{lim2021} B.~Lim, S.~\"O.~Ar\i k, N.~Loeff, and T.~Pfister, ``Temporal Fusion Transformers for interpretable
+multi-horizon time series forecasting,'' \emph{Int. J. Forecasting}, vol.~37, no.~4, pp.~1748--1764, 2021.
+
+\bibitem{kim2022} T.~Kim, J.~Kim, Y.~Tae, C.~Park, J.-H.~Choi, and J.~Choo, ``Reversible instance normalization for
+accurate time-series forecasting against distribution shift,'' in \emph{Proc. ICLR}, 2022.
+
+\bibitem{si2020} M.~Si, Y.~Xiong, S.~Du, and K.~Du, ``Evaluation and calibration of a low-cost particle sensor in
+ambient conditions using machine-learning methods,'' \emph{Atmos. Meas. Tech.}, vol.~13, pp.~1693--1707, 2020.
+
+\bibitem{park2021} D.~Park \emph{et al.}, ``Assessment and calibration of a low-cost PM2.5 sensor using machine
+learning (HybridLSTM neural network): Feasibility study to build an air quality monitoring system,''
+\emph{Atmosphere}, vol.~12, no.~10, p.~1306, 2021.
 
 \bibitem{assran2023} M.~Assran \emph{et al.}, ``Self-supervised learning from images with a joint-embedding predictive
 architecture,'' in \emph{Proc. IEEE/CVF CVPR}, 2023.
