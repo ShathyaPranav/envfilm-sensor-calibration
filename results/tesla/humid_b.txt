@@ -1,0 +1,40 @@
+PM2.5 Antwerp  EnvFiLM-b  seed 0  val 2.957  test 2.696
+PM2.5 Antwerp  TCN+ENV    seed 0  val 3.160  test 2.414
+PM2.5 Antwerp  EnvFiLM-b  seed 1  val 2.776  test 2.364
+PM2.5 Antwerp  TCN+ENV    seed 1  val 3.102  test 2.765
+PM2.5 Antwerp  EnvFiLM-b  seed 2  val 3.126  test 2.244
+PM2.5 Antwerp  TCN+ENV    seed 2  val 3.177  test 2.690
+C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_humidity.py:57: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  pd.concat(parts).to_parquet(out, index=False)
+PM2.5 Oslo     EnvFiLM-b  seed 0  val 1.739  test 2.996
+PM2.5 Oslo     TCN+ENV    seed 0  val 1.801  test 3.165
+PM2.5 Oslo     EnvFiLM-b  seed 1  val 1.728  test 3.299
+PM2.5 Oslo     TCN+ENV    seed 1  val 1.841  test 3.325
+PM2.5 Oslo     EnvFiLM-b  seed 2  val 1.768  test 3.157
+PM2.5 Oslo     TCN+ENV    seed 2  val 1.885  test 3.888
+C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_humidity.py:57: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  pd.concat(parts).to_parquet(out, index=False)
+PM2.5 Zagreb   EnvFiLM-b  seed 0  val 2.677  test 2.448
+PM2.5 Zagreb   TCN+ENV    seed 0  val 2.859  test 3.644
+PM2.5 Zagreb   EnvFiLM-b  seed 1  val 2.730  test 2.876
+PM2.5 Zagreb   TCN+ENV    seed 1  val 2.748  test 2.645
+PM2.5 Zagreb   EnvFiLM-b  seed 2  val 2.583  test 2.584
+PM2.5 Zagreb   TCN+ENV    seed 2  val 2.885  test 2.318
+C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_humidity.py:57: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  pd.concat(parts).to_parquet(out, index=False)
+PM1   Oslo     EnvFiLM-b  seed 0  val 0.762  test 1.234
+PM1   Oslo     TCN+ENV    seed 0  val 0.805  test 1.475
+PM1   Oslo     EnvFiLM-b  seed 1  val 0.766  test 1.411
+PM1   Oslo     TCN+ENV    seed 1  val 0.978  test 1.871
+PM1   Oslo     EnvFiLM-b  seed 2  val 0.775  test 1.306
+PM1   Oslo     TCN+ENV    seed 2  val 0.901  test 1.836
+C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_humidity.py:57: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  pd.concat(parts).to_parquet(out, index=False)
+PM1   Zagreb   EnvFiLM-b  seed 0  val 1.067  test 0.954
+PM1   Zagreb   TCN+ENV    seed 0  val 1.064  test 0.921
+PM1   Zagreb   EnvFiLM-b  seed 1  val 1.075  test 1.259
+PM1   Zagreb   TCN+ENV    seed 1  val 0.991  test 1.164
+PM1   Zagreb   EnvFiLM-b  seed 2  val 1.101  test 0.911
+PM1   Zagreb   TCN+ENV    seed 2  val 1.019  test 1.055
+C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_humidity.py:57: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  pd.concat(parts).to_parquet(out, index=False)

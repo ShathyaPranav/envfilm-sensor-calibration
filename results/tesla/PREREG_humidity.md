@@ -24,3 +24,8 @@ r_high < r_low in at least 6 of the 9 cells, and the median over cells of log(r_
 ## Reporting
 Same benchmark and test units as the main table, so reported whatever it shows. If the primary criterion fails,
 the paper says the gain is not concentrated in humid conditions and softens the physical motivation accordingly.
+
+## Outcome (2026-10-15)
+Primary criterion FAILS: r_high < r_low in 3 of 9 cells; median log(r_high/r_low) = +0.040. The advantage is larger in
+the driest tercile in 6 of 9 cells. Modulation strength vs ambient RH: 3-seed mean Spearman negative in 8 of 9 cells
+(positive only in PM1 Oslo). Reported in the paper's limitations ("What the modulation responds to").
