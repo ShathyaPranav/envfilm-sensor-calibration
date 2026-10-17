@@ -50,12 +50,12 @@ benchmark on the public SensEURCity dataset \cite{vanpoppel2023} together with a
 binned attention, and SCARE \cite{yun2025} improved on it with compressed bitwise attention. Both models read only the
 particle channel.
 
-That leaves useful information on the table. Every SensEURCity box also records its own environmental state,
+That leaves useful information unused. Every SensEURCity box also records its own environmental state,
 including the internal humidity and temperature of the optical particle counter used as the benchmark target, and this
 state explains part of the error that the particle signal cannot. The question is how a model should use it. The usual
 answer is to append humidity and temperature as extra inputs. We argue for a different one: let the state modulate how
 the particle signal is read, at every layer of the network. EnvFiLM implements this idea with feature-wise linear
-modulation on a dilated convolutional backbone, and the evidence in this paper shows that the choice pays off. Against
+modulation on a dilated convolutional backbone, and the evidence in this paper shows that this choice improves calibration. Against
 baselines that receive exactly the same information, EnvFiLM wins on most held-out units of the benchmark, wins by a
 wider margin against true reference instruments, and replicates on an independent dataset that played no part in its
 design.
@@ -154,7 +154,7 @@ the period for which the monitor records exist (July to December 2020, about 0.8
 type). Each sensor's reading of a size fraction is the input and the FIDAS reading of the same fraction is the target.
 Every model receives four state channels: the monitor's humidity and temperature, and the humidity and temperature of
 the reference station's weather sensor. The window is 180 steps, again six hours. The sensors, the reference, the
-climate and the network all differ from SensEURCity, which makes this a demanding test of transfer.
+climate and the network all differ from SensEURCity.
 
 \section{EnvFiLM}
 \label{sec:method}
@@ -279,7 +279,7 @@ channels as EnvFiLM. Best per row in bold.}
 \input{tab_main.tex}
 \end{table*}
 
-The on-board channels are a large part of the story. LogTCN, which does not use them, already improves on published
+The on-board channels account for much of this gain. LogTCN, which does not use them, already improves on published
 TESLA in all nine cells, and adding the channels helps further. On the development protocol, ambient humidity alone
 lowered the per-unit RMSE of LogTCN on 79.7\% of 118 held-out training units (median ratio 0.91), and the four channels
 improved on humidity alone on 79.0\% of 62 (median 0.93). The oracle analysis of Section~\ref{sec:limits} shows why the
@@ -289,7 +289,7 @@ median, and the daily ratio correlates with humidity and with the concentration 
 \subsection{Is it the architecture or the information?}
 \label{sec:ablation}
 
-Giving the state to a model is one thing; using it well is another. The unit rotation separates the two
+The unit rotation tests whether the architecture, and not only the extra information, is responsible
 (Fig.~\ref{fig:rot}). Over 195 held-out units, with each unit's RMSE averaged over two training seeds, EnvFiLM is better
 than the TCN with the same four channels on 65.6\% of units (bootstrap 95\% interval over units 59.0\% to 72.3\%). The
 median per-unit ratio is 0.974 (interval 0.960 to 0.984; sign test $p = 1.5\times10^{-5}$; Wilcoxon
@@ -298,10 +298,10 @@ The result does not depend on how the units are counted: over trained folds, Env
 $p = 2.5\times10^{-4}$), and each seed on its own favours EnvFiLM (62.6\% of units with median ratio 0.967 for the
 first seed, 59.0\% with 0.984 for the second).
 
-The ablation is sharper still. Against the same model with the modulation switched off, EnvFiLM is better on 81.0\% of
+The ablation gives a clearer result. Against the same model with the modulation switched off, EnvFiLM is better on 81.0\% of
 units (interval 75.4\% to 86.2\%; median ratio 0.912, interval 0.890 to 0.928; Wilcoxon $p = 6.7\times10^{-17}$; 39 of
 45 folds). The environment is much more useful when it changes the particle pathway than when it reaches only the
-output head. The TCN given the same channels is a tougher opponent, because it also lets the environment interact with
+output head. The TCN given the same channels is a stronger baseline, because it also lets the environment interact with
 the particle signal from the first layer on. We attribute EnvFiLM's lead to an interaction that is multiplicative
 and conditioned on a summary of the whole window, instead of being learned implicitly from concatenated channels. Model
 size does not explain the gain: on the development protocol EnvFiLM was better than the size-matched TCN on 68.8\% of
@@ -330,7 +330,7 @@ over four seeds). Values below zero favour EnvFiLM; every unit is shown.}
 \subsection{True-reference benchmark}
 \label{sec:ref}
 
-Against reference-grade targets the picture gets better. Table~\ref{tab:ref} reports the official split of the
+Against reference-grade targets the advantage of EnvFiLM grows. Table~\ref{tab:ref} reports the official split of the
 true-reference benchmark with unchanged models and hyperparameters. (At 10-minute resolution the ``last hour'' change
 in $z$ spans the whole window; we left the feature as it was.) EnvFiLM has the lowest error in five of six cells and is
 tied in the sixth (\PMtwo{} Oslo, 1.40 versus 1.39), and it is lower than TESLA and than TESLA with the same channels in
@@ -354,8 +354,8 @@ seeds). Best per row in bold.}
 \subsection{Independent dataset}
 \label{sec:soton}
 
-Southampton is the strictest test in the paper: different sensors, a different reference, a different climate, and
-data that played no part in any design decision. We ran the unit rotation within each sensor type (8 units, five
+Southampton is the strictest test in the paper, because its sensors, reference and climate all differ from
+SensEURCity and its data played no part in any design decision. We ran the unit rotation within each sensor type (8 units, five
 folds, two validation units, every fourth training window) with models and hyperparameters unchanged from SensEURCity
 and per-unit RMSE averaged over two training seeds, under pass criteria written down before the run. EnvFiLM passed
 clearly (Table~\ref{tab:soton}). For the PMS5003 sensors it is better than the TCN with the same four channels on 22 of
@@ -408,7 +408,7 @@ with Transformers on time-series tasks \cite{zeng2023}, and with our PatchTST re
 \textit{Why modulation helps more against a true reference.} On the TESLA benchmark each unit is compared with its own
 OPC-N3, whose unit-specific gain adds an error that no input can explain (Section~\ref{sec:limits}). Against a shared
 reference instrument that error disappears, and a larger part of what remains depends on the sensor's state, which is
-exactly what EnvFiLM conditions on. The larger and more uniform advantage on the true-reference benchmark
+what EnvFiLM conditions on. The larger and more uniform advantage on the true-reference benchmark
 (Table~\ref{tab:groups}) fits this reading, and it is the setting that matters most in practice, since deployed
 networks are calibrated against reference stations.
 
@@ -427,10 +427,10 @@ on this benchmark therefore belongs to the target instrument and cannot be predi
 explains why the true-reference benchmark separates the models more clearly.
 
 \textit{What the modulation responds to.} The design was motivated by the humidity response of optical sensors, and
-the model's behaviour turns out to be richer than that picture. Splitting each official test unit's windows into
+the model's behaviour turns out to be broader than that explanation. Splitting each official test unit's windows into
 humidity terciles, the advantage over the TCN with channels is not confined to the most humid third: it is larger in
 the driest third in 6 of 9 cells, and the modulation is most active in drier air in 8 of 9 cells. EnvFiLM is therefore capturing more than the hygroscopic effect, and identifying what else it tracks is a
-promising direction.
+direction for future work.
 
 \textit{Seasons.} Calibrations trained in one season and applied eight to ten months later degrade for every model:
 when we trained on the first co-location (spring 2020) and tested on each unit's second co-location, the errors of the
@@ -475,8 +475,8 @@ Low-cost particle sensor boxes already measure humidity and temperature, and thi
 a dilated convolutional calibrator with bounded feature-wise modulation, roughly halves the error of the published
 state of the art on the TESLA benchmark. It beats the same network given the state as ordinary inputs on most held-out
 units, by a wider margin when the target is a true reference instrument, and it carries over unchanged to an
-independent dataset with different sensors, reference and climate. The lesson extends beyond this model: when a sensor
-reports its own operating conditions, those conditions should shape how its signal is read, not merely sit beside it.
+independent dataset with different sensors, reference and climate. More generally, our results suggest that when a
+sensor reports its own operating conditions, they are most useful as a way of adjusting how its signal is read.
 
 \section*{Data and Code Availability}
 SensEURCity is available from Zenodo \cite{vanpoppel2023}, the TESLA preprocessed files from the authors' repository
