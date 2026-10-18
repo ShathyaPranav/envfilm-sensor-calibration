@@ -9,6 +9,7 @@
 \newcommand{\PMten}{PM$_{10}$}
 \newcommand{\PMtwo}{PM$_{2.5}$}
 \newcommand{\PMone}{PM$_{1}$}
+\newcommand{\ugm}{\textmu g/m$^3$}
 
 \begin{document}
 
@@ -128,7 +129,7 @@ but the last two train, the second-to-last validates, the last tests.}
 \label{tab:data}
 \begin{tabular}{lrrl}
 \toprule
-City & Units & Rows (minutes) & First co-location period \\
+City & Units & Rows (1 min each) & First co-location period \\
 \midrule
 Antwerp & 30 & 3,113,955 & 2020-04-03 to 2020-06-15 \\
 Oslo & 21 & 810,314 & 2020-09-17 to 2020-10-14 \\
@@ -137,7 +138,7 @@ Zagreb & 14 & 939,838 & 2020-05-22 to 2020-07-08 \\
 \end{tabular}
 \end{table}
 
-\textit{On-board state.} Each box also records ambient relative humidity and temperature (SHT31), and the OPC-N3
+\textit{On-board state.} Each box also records ambient relative humidity (\%) and temperature ($^\circ$C) with an SHT31 sensor, and the OPC-N3
 reports its own internal humidity and temperature. We attach these four channels to the authors' rows by timestamp.
 They are measured inside the box during deployment, so EnvFiLM needs no extra instrument. Two of the channels belong to
 the OPC-N3, which on this benchmark is the target; on the true-reference benchmark the OPC-N3 is simply a second
@@ -151,7 +152,7 @@ its reference is not sub-hourly. Unit lists and splits are those of the TESLA be
 
 \textit{Independent dataset.} Bulot et al. \cite{bulot2023} co-located 8 Plantower PMS5003 and 8 Sensirion SPS30
 sensors, housed in four monitors, with a FIDAS 200S reference in Southampton (UK) and published 2-minute medians
-\cite{bulot2022data}. Each monitor also logged its own humidity and temperature (SHT35) \cite{bulot2022onboard}. We use
+\cite{bulot2022data}. Each monitor also logged its own humidity (\%) and temperature ($^\circ$C) with an SHT35 sensor \cite{bulot2022onboard}. We use
 the period for which the monitor records exist (July to December 2020, about 0.87 million 2-minute rows per sensor
 type). Each sensor's reading of a size fraction is the input and the FIDAS reading of the same fraction is the target.
 Every model receives four state channels: the monitor's humidity and temperature, and the humidity and temperature of
@@ -199,8 +200,9 @@ Component & Setting \\
 \midrule
 Input transform & $\log(1 + x)$, $x$ in \textmu g/m$^3$ \\
 Convolutions & 7 layers, kernel 3, 32 channels, dilations $2^0..2^6$, GELU \\
-State channels & ambient RH and $T$, OPC-N3 internal RH and $T$ \\
-State summary $z$ & last, mean, change over last 60 steps, min, max \\
+State channels & ambient RH (\%) and $T$ ($^\circ$C), OPC-N3 internal RH (\%) and $T$ ($^\circ$C) \\
+Window $N$ & 360 steps of 1 min (6 h); 36 of 10 min and 180 of 2 min on the other benchmarks \\
+State summary $z$ & last, mean, change over last 60 steps (1 h at 1 min), min, max \\
 State clipping & $\pm3$ training standard deviations \\
 Environment encoder & MLP $20 \to 64 \to 2\cdot 32\cdot 7$, last layer zero-initialised \\
 Modulation & scale $1+\frac12\tanh\gamma$, shift $\frac12\tanh\beta$ \\
@@ -238,7 +240,7 @@ instance normalisation and the log particle input, run on the particle channel a
 the particle and the four state channels (PatchTST + env., 309,825 parameters). Its sizes were fixed in advance.
 \end{itemize}
 On the authors' data our TESLA re-implementation reproduces the published numbers closely (for example \PMten{} 14.09
-versus 14.58 in Antwerp and 13.53 versus 13.87 in Zagreb), which confirms that the shared recipe treats the attention
+versus 14.58~\ugm{} in Antwerp and 13.53 versus 13.87~\ugm{} in Zagreb), which confirms that the shared recipe treats the attention
 models fairly.
 
 \textit{Official split.} Three seeds per model and cell; we report the mean.
@@ -266,12 +268,12 @@ pooled median ratio below one.
 
 Table~\ref{tab:main} gives the official-split results. EnvFiLM is more accurate than published TESLA in all nine cells
 (mean ratio 0.54) and than our TESLA re-implementation in all nine. Averaged over cities, its RMSE is 8.04 (\PMten),
-2.71 (\PMtwo) and 1.36 (\PMone), against 14.03, 5.67 and 2.51 reported for SCARE and 14.75, 6.16 and 3.18 for TESLA,
+2.71 (\PMtwo) and 1.36 (\PMone), against 14.03, 5.67 and 2.51 reported for SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}),
 which roughly halves the error of the current state of the art. EnvFiLM also leads the baselines that receive the same
 information: it is lower than the TCN with the same channels in 6 of 9 cells (mean ratio 0.95), than its size-matched
 version in 7 of 9 (0.97) and than TESLA with the same channels in 7 of 9 (0.79). PatchTST with the same channels is the
 strongest Transformer we tested, and EnvFiLM beats it in 6 of 9 cells (mean ratio 0.94) and on the city average of
-every size fraction (8.04, 2.71 and 1.36 against 8.61, 3.11 and 1.53) with less than a fifth of its parameters. On the
+every size fraction (8.04, 2.71 and 1.36 against 8.61, 3.11 and 1.53~\ugm{}) with less than a fifth of its parameters. On the
 particle channel alone, PatchTST is worse than LogTCN in all nine cells.
 
 \begin{table*}[t]
@@ -337,7 +339,7 @@ over four seeds). Values below zero favour EnvFiLM; every unit is shown.}
 Against reference-grade targets the advantage of EnvFiLM grows. Table~\ref{tab:ref} reports the official split of the
 true-reference benchmark with unchanged models and hyperparameters. (At 10-minute resolution the ``last hour'' change
 in $z$ spans the whole window; we left the feature as it was.) EnvFiLM has the lowest error in five of six cells and is
-tied in the sixth (\PMtwo{} Oslo, 1.40 versus 1.39), and it is lower than TESLA and than TESLA with the same channels in
+tied in the sixth (\PMtwo{} Oslo, 1.40 versus 1.39~\ugm{}), and it is lower than TESLA and than TESLA with the same channels in
 all six (mean ratios 0.45 and 0.48). In the rotation, with each unit's RMSE averaged over four training seeds, EnvFiLM
 is better than the TCN with the same channels on 83.7\% of 153 units (bootstrap 95\% interval 77.8\% to 89.5\%). The
 median ratio is 0.946 (interval 0.939 to 0.957; Wilcoxon $p = 1.8\times10^{-17}$; 26 of 30 folds, sign test
@@ -404,8 +406,8 @@ matter of training. Two properties of the benchmark favour the convolutional des
 and recent (the target is the reading at the last minute of the window), which dilated convolutions capture directly
 and logarithmic binning of older tokens partly discards. The input is also heavy-tailed, which the log transform
 handles and the raw-scale input of TESLA does not. In early exploratory runs on our own reconstruction of the benchmark
-from the raw archive, before we used the authors' files, a log-scaled input did not improve TESLA (7.55 versus 7.04 on
-Oslo \PMtwo) but did improve the convolutional network (from 5.12 to 4.47), so the difference lies in the architecture
+from the raw archive, before we used the authors' files, a log-scaled input did not improve TESLA (7.55 versus 7.04~\ugm{} on
+Oslo \PMtwo) but did improve the convolutional network (from 5.12 to 4.47~\ugm{}), so the difference lies in the architecture
 rather than in the scaling alone. This is in line with the broader finding that simpler models are often competitive
 with Transformers on time-series tasks \cite{zeng2023}, and with our PatchTST results.
 
