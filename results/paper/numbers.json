@@ -1153,27 +1153,27 @@
  "models": {
   "EnvFiLM-b": {
    "params": 54785,
-   "cpu_ms_per_window": 3.316068666681531
+   "cpu_ms_per_window": 2.7225916665823506
   },
   "TCN+ENV": {
    "params": 23681,
-   "cpu_ms_per_window": 2.0828646666632267
+   "cpu_ms_per_window": 1.7789546666123595
   },
   "TCN+ENVwide": {
    "params": 52949,
-   "cpu_ms_per_window": 3.056106333315256
+   "cpu_ms_per_window": 2.329844000050798
   },
   "TESLA+ENV": {
    "params": 4531,
-   "cpu_ms_per_window": 1.022448000003351
+   "cpu_ms_per_window": 0.871735000012753
   },
   "TCN": {
    "params": 23041,
-   "cpu_ms_per_window": 2.288184999997611
+   "cpu_ms_per_window": 1.6864930000156164
   },
   "TESLA": {
    "params": 4499,
-   "cpu_ms_per_window": 0.935469333344372
+   "cpu_ms_per_window": 0.8495839999523014
   }
  }
 }

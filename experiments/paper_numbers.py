@@ -157,7 +157,7 @@ def write_main_tex(t, s):
 
 def write_ref_tex(t):
     cols = ['EnvFiLM-b', 'TCN+ENV', 'TESLA+ENV', 'TCN', 'TESLA']
-    head = ' & '.join(['PM', 'City'] + [NAMES[c] for c in cols]) + ' \\\\'
+    head = ' & '.join(['PM', 'City'] + ['\\rotatebox{90}{%s}' % NAMES[c] for c in cols]) + ' \\\\'
     lines = ['\\begin{tabular}{ll' + 'r' * len(cols) + '}', '\\toprule', head, '\\midrule']
     for (pm, c), row in t[cols].iterrows():
         best = row.min()

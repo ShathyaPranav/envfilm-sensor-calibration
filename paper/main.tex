@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{array}
 \usepackage{url}
 \usepackage{xcolor}
 \newcommand{\PMten}{PM$_{10}$}
@@ -167,7 +168,8 @@ discover such multiplicative interactions on its own. Feature-wise linear modula
 the side input sets a gain and an offset for every feature channel, so the environment can change how strongly each
 learned temporal pattern of the particle signal contributes to the output.
 
-Fig.~\ref{fig:arch} shows the model. The particle window $x_{t-N+1},\dots,x_t$ is transformed to $\ell = \log(1 + x)$,
+In EnvFiLM (Fig.~\ref{fig:arch}) the particle window $x_{t-N+1},\dots,x_t$ is first transformed to
+$\ell = \log(1 + x)$,
 because concentrations are heavy-tailed and optical sensor responses are closer to multiplicative than additive. Seven
 convolution layers with kernel size 3, 32 channels and dilations $1, 2, \dots, 64$ cover the window. The on-board state
 window $e \in \mathbb{R}^{N\times 4}$ is standardised with training statistics and clipped to $\pm3$ standard
@@ -189,7 +191,8 @@ error.
 \caption{EnvFiLM configuration (identical on all three benchmarks and not tuned on test units; on Southampton the
 four state channels are the monitor's and the reference station's humidity and temperature, and $N = 180$).}
 \label{tab:hyper}
-\begin{tabular}{ll}
+\footnotesize
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.6\columnwidth}@{}}
 \toprule
 Component & Setting \\
 \midrule
@@ -272,7 +275,7 @@ particle channel alone, PatchTST is worse than LogTCN in all nine cells.
 
 \begin{table*}[t]
 \centering
-\caption{RMSE (\textmu g/m$^3$) on the TESLA benchmark (authors' data, official split, mean of three seeds;
+\caption{RMSE (\textup{\textmu g/m$^3$}) on the TESLA benchmark (authors' data, official split, mean of three seeds;
 published TESLA from \cite{ahn2025}, one value per cell). Columns 2 to 5 receive the same four on-board state
 channels as EnvFiLM. Best per row in bold.}
 \label{tab:main}
@@ -345,10 +348,10 @@ share one reference instrument, so the unit-specific gain of the low-cost target
 
 \begin{table}[t]
 \centering
-\caption{RMSE (\textmu g/m$^3$) on the true-reference benchmark (10-minute data, official split, mean of three
+\caption{RMSE (\textup{\textmu g/m$^3$}) on the true-reference benchmark (10-minute data, official split, mean of three
 seeds). Best per row in bold.}
 \label{tab:ref}
-\resizebox{\columnwidth}{!}{\input{tab_ref.tex}}
+\input{tab_ref.tex}
 \end{table}
 
 \subsection{Independent dataset}
