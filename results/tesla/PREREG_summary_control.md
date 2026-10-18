@@ -21,3 +21,9 @@ Also reported: the sensor-level count and sign test, and the official-split cell
 ## Reporting
 Same benchmark and protocol as the main results, so reported whatever it shows. If the criterion fails, the paper's
 claim that modulation beats concatenation is withdrawn and the paper is reframed around state-aware calibration.
+
+## Outcome, rotation (2026-10-19)
+EnvFiLM-b vs TCN+ENV+z, 195 cases, two seeds averaged: better on 60.5%, median ratio 0.984 (Wilcoxon p = 5.7e-4);
+30 of 45 folds (sign p = 0.036); 42 of 65 physical sensors (sign p = 0.025, bootstrap share 52.3% to 75.4%).
+Criterion (>= 55%, median < 1) PASSES. The summary alone barely helps the TCN: TCN+ENV+z vs TCN+ENV better on 51.3%,
+median 0.998. Official split (tag final_ctrlz) still running.

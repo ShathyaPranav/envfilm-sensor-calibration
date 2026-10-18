@@ -244,6 +244,8 @@ embedding (equal information);
 \item TCN + env.: LogTCN with the four state channels as additional input channels at every time step (equal
 information, early fusion);
 \item TCN + env., size-matched: the same with 50 channels (52,949 parameters, matched to EnvFiLM);
+\item TCN + env. + $z$: the TCN with channels whose head also receives EnvFiLM's state summary $z$, so that the only
+remaining difference to EnvFiLM is how the environment acts inside the network (24,705 parameters);
 \item EnvFiLM, modulation off: EnvFiLM with the FiLM path removed, so the state summary reaches only the head;
 \item PatchTST \cite{nie2023} with patches of 16 steps (stride 8), three encoder layers of width 64, four heads,
 instance normalisation and the log particle input, run on the particle channel alone and, channel-independently, on
@@ -338,7 +340,10 @@ output head. The TCN given the same channels is a stronger baseline, because it 
 the particle signal from the first layer on. We attribute EnvFiLM's lead to an interaction that is multiplicative
 and conditioned on a summary of the whole window, instead of being learned implicitly from concatenated channels. Model
 size does not explain the gain: on the development protocol EnvFiLM was better than the size-matched TCN on 68.8\% of
-93 units (median 0.951).
+93 units (median 0.951). Nor do the summary features in the head: given the same summary $z$, the TCN with channels
+improves on its plain version on only 51.3\% of cases (median 0.998), and EnvFiLM still beats it on 60.5\% of the 195
+cases (median 0.984, Wilcoxon $p = 5.7\times10^{-4}$), in 30 of 45 folds and on 42 of 65 physical sensors (sign test
+$p = 0.025$).
 
 \begin{table*}[t]
 \centering
