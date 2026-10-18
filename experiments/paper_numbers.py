@@ -137,6 +137,26 @@ def write_soton_tex(S):
     open(os.path.join(OUT, 'tab_soton.tex'), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
 
 
+def sensor_level(files, a='EnvFiLM-b', b='TCN+ENV', n_boot=5000):
+    """Rotation statistics with the physical sensor as the independent unit: each sensor's mean log ratio over its
+    size fractions for the sign and Wilcoxon tests, and a bootstrap that resamples sensors (cluster bootstrap)."""
+    r = pd.concat([csv(f) for f in files]).groupby(['pm', 'city', 'unit', 'model']).rmse.mean().unstack('model')
+    lr = np.log(r[a] / r[b]).dropna()
+    per = lr.groupby(level=[1, 2]).mean()
+    groups = [g.to_numpy() for _, g in lr.groupby(level=[1, 2])]
+    rng = np.random.default_rng(0)
+    share, med = [], []
+    for _ in range(n_boot):
+        s = np.concatenate([groups[i] for i in rng.integers(0, len(groups), len(groups))])
+        share.append((s < 0).mean())
+        med.append(np.exp(np.median(s)))
+    return dict(sensors=int(len(per)), better=int((per < 0).sum()),
+                sign_p=float(binomtest(int((per < 0).sum()), len(per)).pvalue),
+                wilcoxon_p=float(wilcoxon(per).pvalue),
+                ci_share=[float(x) for x in np.percentile(share, [2.5, 97.5])],
+                ci_median=[float(x) for x in np.percentile(med, [2.5, 97.5])])
+
+
 def fmt(v, best):
     return ('\\textbf{%.2f}' % v) if best else '%.2f' % v
 
@@ -304,6 +324,7 @@ def main():
     N['rotation_ref_per_seed'] = {k: {kk: vv for kk, vv in rotation(f, 'EnvFiLM-b', 'TCN+ENV')[0].items() if kk != 'groups'}
                                   for k, f in enumerate(REF_SEEDS)}
     write_groups_tex(N['rotation_tesla_vs_tcnenv'], N['rotation_tesla_vs_late'], N['rotation_ref_vs_tcnenv'])
+    N['sensor_level'] = dict(tesla=sensor_level(TESLA_SEEDS), ref=sensor_level(REF_SEEDS), soton=sensor_level(SOTON_ON))
     N['southampton'] = southampton()
     write_soton_tex(N['southampton'])
     N['dev'] = dev_ablations()

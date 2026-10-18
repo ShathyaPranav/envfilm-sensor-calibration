@@ -717,6 +717,50 @@
    "wilcoxon_p": 9.349485748349028e-22
   }
  },
+ "sensor_level": {
+  "tesla": {
+   "sensors": 65,
+   "better": 48,
+   "sign_p": 0.00015210657584807538,
+   "wilcoxon_p": 0.00015653863357991774,
+   "ci_share": [
+    0.5846153846153846,
+    0.7282051282051282
+   ],
+   "ci_median": [
+    0.9577288320876935,
+    0.984708932503024
+   ]
+  },
+  "ref": {
+   "sensors": 51,
+   "better": 47,
+   "sign_p": 2.4163071543625847e-10,
+   "wilcoxon_p": 2.17728484131092e-07,
+   "ci_share": [
+    0.7581699346405228,
+    0.9019607843137255
+   ],
+   "ci_median": [
+    0.938299952644368,
+    0.9627463893089879
+   ]
+  },
+  "soton": {
+   "sensors": 16,
+   "better": 14,
+   "sign_p": 0.004180908203125,
+   "wilcoxon_p": 0.000152587890625,
+   "ci_share": [
+    0.6041666666666666,
+    0.875
+   ],
+   "ci_median": [
+    0.9620144409399565,
+    0.9884374495667858
+   ]
+  }
+ },
  "southampton": {
   "onboard": {
    "SotonPMS TCN+ENV": {
@@ -1153,27 +1197,27 @@
  "models": {
   "EnvFiLM-b": {
    "params": 54785,
-   "cpu_ms_per_window": 2.7225916665823506
+   "cpu_ms_per_window": 3.5080126667162403
   },
   "TCN+ENV": {
    "params": 23681,
-   "cpu_ms_per_window": 1.7789546666123595
+   "cpu_ms_per_window": 2.3762623333216952
   },
   "TCN+ENVwide": {
    "params": 52949,
-   "cpu_ms_per_window": 2.329844000050798
+   "cpu_ms_per_window": 3.157737666624598
   },
   "TESLA+ENV": {
    "params": 4531,
-   "cpu_ms_per_window": 0.871735000012753
+   "cpu_ms_per_window": 1.1308163332675272
   },
   "TCN": {
    "params": 23041,
-   "cpu_ms_per_window": 1.6864930000156164
+   "cpu_ms_per_window": 2.3113526665838435
   },
   "TESLA": {
    "params": 4499,
-   "cpu_ms_per_window": 0.8495839999523014
+   "cpu_ms_per_window": 1.089021666557528
   }
  }
 }
