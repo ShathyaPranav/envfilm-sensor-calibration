@@ -264,6 +264,25 @@ class TCNx(nn.Module):
         return self.head(torch.cat([h[..., -1], h.mean(-1), lx[:, -1:], e[:, -1, :]], -1)).squeeze(-1)
 
 
+class TCNxZ(TCNx):
+    """Control for EnvFiLM-b (results/tesla/PREREG_summary_control.md): TCN+ENV whose head receives exactly EnvFiLM-b's
+    state summary z (last, mean, 1-hour change, min, max of the clipped channels) instead of the last values only. The
+    only remaining difference to EnvFiLM-b is how the environment acts inside the network: concatenated input channels
+    here, feature-wise modulation of every layer there."""
+
+    def __init__(self, E=4, C=32):
+        super().__init__(E=E, C=C)
+        self.head = nn.Sequential(nn.Linear(C * 2 + 1 + 5 * E, 64), nn.GELU(), nn.Linear(64, 1))
+
+    def forward(self, x, e):
+        e = e[..., :self.E]
+        ec = torch.clamp(e, -3, 3)
+        z = torch.cat([ec[:, -1], ec.mean(1), ec[:, -1] - ec[:, -60:].mean(1), ec.amin(1), ec.amax(1)], -1)
+        lx = torch.log1p(torch.clamp(x * SCALE, min=0))
+        h = self.conv(torch.cat([lx[:, None, :], e.transpose(1, 2)], 1))
+        return self.head(torch.cat([h[..., -1], h.mean(-1), lx[:, -1:], z], -1)).squeeze(-1)
+
+
 class HumidGate(nn.Module):
     """Humidity-gated calibrator. A LogTCN on the particle channel gives a base estimate
     f(x); a gate driven by humidity multiplies it, y = f(x) * exp(G), with
@@ -551,7 +570,7 @@ class PatchTSTenv(PatchTST):
         super().__init__(E=4)
 
 
-MODELS = {'PatchTST': PatchTST, 'PatchTST+ENV': PatchTSTenv, 'Linear': Linear, 'TESLA': Tesla, 'TCN+gain': TCNgain, 'TCN+RH': TCNx, 'HumidGate': HumidGate, 'TCN+ENV': lambda: TCNx(E=4), 'EnvFiLM': EnvFiLM, 'EnvFiLM-b': EnvFiLMb, 'EnvLate': EnvLate, 'TESLA+ENV': TeslaEnv, 'TCN+ENVwide': lambda: TCNx(E=4, C=50), 'ResTCN': ResTCN, 'TCNwide': TCNwide,
+MODELS = {'PatchTST': PatchTST, 'PatchTST+ENV': PatchTSTenv, 'Linear': Linear, 'TESLA': Tesla, 'TCN+gain': TCNgain, 'TCN+RH': TCNx, 'HumidGate': HumidGate, 'TCN+ENV': lambda: TCNx(E=4), 'TCN+ENV+z': TCNxZ, 'EnvFiLM': EnvFiLM, 'EnvFiLM-b': EnvFiLMb, 'EnvLate': EnvLate, 'TESLA+ENV': TeslaEnv, 'TCN+ENVwide': lambda: TCNx(E=4, C=50), 'ResTCN': ResTCN, 'TCNwide': TCNwide,
           'ResTCN+MS': lambda: ResTCN(ms=True), 'ResTCN+LN': lambda: ResTCN(ln=True),
           'ResTCN+MS+LN': lambda: ResTCN(ms=True, ln=True), 'TCNraw': TCNraw, 'TESLAlog': TeslaLog, 'LIC': LIC, 'GRUsmall': GRUsmall, 'TCNsmall': TCNsmall, 'TCN': TCN, 'TCN+ctx': TCNctx, 'GainTCN': GainTCN,
           'GainTCN+ctx': GainTCNctx, 'GainTCN+ctx+aug': GainTCNctxAug, 'TCN+ctx+aug': TCNctxAug}
