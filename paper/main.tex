@@ -28,8 +28,8 @@ both. Recent deep-learning calibrators nevertheless read the particle signal alo
 convolutional calibrator in which an encoding of the box's measured humidity and temperature scales and shifts every
 layer of the particle pathway within fixed bounds (feature-wise linear modulation). On the SensEURCity benchmark of TESLA
 (AAAI 2025), evaluated with the benchmark authors' own data and protocol, the complete EnvFiLM calibrator lowers
-city-averaged RMSE by 43\% to 52\% relative to the published SCARE results and is more accurate than published TESLA in
-all nine city and size cells. The architecture itself matters: against the same network given the same channels as
+city-averaged RMSE by 40\% to 48\% relative to the strongest published model and is more accurate than published
+TESLA in all nine city and size cells. The architecture itself matters: against the same network given the same channels as
 ordinary inputs, EnvFiLM is better on 48 of 65 held-out sensors (sign test $p = 1.5\times10^{-4}$), and switching the
 modulation off makes it worse on 81\% of sensor and size cases. The advantage grows against true reference
 instruments, where EnvFiLM is better on 47 of 51 sensors, and it carries over unchanged to an independent dataset from
@@ -50,8 +50,9 @@ low-cost reading to the value a better instrument would report. Statistical and 
 established when a sensor is co-located with a reference \cite{zimmerman2018,malings2019,barkjohn2021,concas2021}, and
 recent work treats calibration of minute-resolved signals as sequence modelling. TESLA \cite{ahn2025} introduced a
 benchmark on the public SensEURCity dataset \cite{vanpoppel2023} together with a Transformer that uses logarithmically
-binned attention, and SCARE \cite{yun2025} improved on it with compressed bitwise attention. Both models read only the
-particle channel.
+binned attention, SCARE \cite{yun2025} improved on it with compressed bitwise attention, and the same group has since reported a
+lightweight model with input compression and temporal and feature fusion \cite{yun2026}. These models read only
+the particle channel.
 
 That leaves useful information unused. Every SensEURCity box also records its own environmental state,
 including the internal humidity and temperature of the optical particle counter used as the benchmark target, and this
@@ -89,8 +90,11 @@ hygroscopic growth of particles at high relative humidity \cite{diantonio2018,cr
 calibrators range from feed-forward networks and gradient boosting on the reading, humidity and temperature
 \cite{si2020} to recurrent models over the recent history, such as the hybrid DNN and LSTM of Park et al.
 \cite{park2021}, and a recent multi-city study compares machine-learning calibrations that use temperature,
-humidity, hour of day and month as covariates \cite{wathore2026}. In all of these the environment enters as
-additional input features. The closest learned approach
+humidity, hour of day and month as covariates \cite{wathore2026}. Sequence calibrators such as DeepCM
+\cite{yu2020deepcm} and SenDaL \cite{ahn2024sendal} model the recent history of the low-cost reading, and AirNet
+\cite{yu2020airnet} adds a second encoder over the history of a nearby reference station. In all of these the
+environment, where it is used, enters as additional input features, and the second pathway of AirNet carries
+another station's measurements rather than the sensor's own state. The closest learned approach
 to ours is the neural correction of Koziel et al. \cite{koziel2025}, where a network maps temperature, humidity and the
 raw reading to a multiplicative and an additive correction of the output. EnvFiLM moves the environment inside the
 model: it modulates the internal features of a temporal network at every layer, and our ablation shows that
@@ -277,8 +281,11 @@ pooled median ratio below one.
 
 Table~\ref{tab:main} gives the official-split results. EnvFiLM is more accurate than published TESLA in all nine cells
 (mean ratio 0.54) and than our TESLA re-implementation in all nine. Averaged over cities, its RMSE is 8.04 (\PMten),
-2.71 (\PMtwo) and 1.36 (\PMone), against 14.03, 5.67 and 2.51 reported for SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}),
-which roughly halves the error of the current state of the art. The classical reference points in the same table of
+2.71 (\PMtwo) and 1.36 (\PMone), against 13.34, 5.19 and 2.50 for the most recent published model \cite{yun2026}, 14.03, 5.67 and 2.51 for
+SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}). EnvFiLM's error is therefore 40\% to 48\% below the
+strongest published result; TimeXer, a Transformer built for exogenous inputs, reaches 15.12, 6.31 and 3.31~\ugm{} in
+the same comparison \cite{yun2026}. TESLA and SCARE were designed to fit microcontrollers, whereas EnvFiLM targets
+server-side calibration (Section~\ref{sec:cost}). The classical reference points in the same table of
 \cite{ahn2025} are further away still: the uncalibrated sensor averages 20.70, 10.28 and 8.42~\ugm{}, and a linear
 calibration of the window 17.87, 8.35 and 4.30~\ugm{}, so EnvFiLM's error is 55\% to 68\% below the linear
 calibration. EnvFiLM also leads the baselines that receive the same
@@ -286,7 +293,11 @@ information: it is lower than the TCN with the same channels in 6 of 9 cells (me
 version in 7 of 9 (0.97) and than TESLA with the same channels in 7 of 9 (0.79). PatchTST with the same channels is the
 strongest Transformer we tested, and EnvFiLM beats it in 6 of 9 cells (mean ratio 0.94) and on the city average of
 every size fraction (8.04, 2.71 and 1.36 against 8.61, 3.11 and 1.53~\ugm{}) with less than a fifth of its parameters. On the
-particle channel alone, PatchTST is worse than LogTCN in all nine cells.
+particle channel alone, PatchTST is worse than LogTCN in all nine cells. The advantage over the TCN with the same channels
+is not specific to RMSE. In a second set of trainings with the same recipe (used for the analysis in
+Section~\ref{sec:limits}), EnvFiLM has the lower MAE in 8 of 9 cells, the higher city-averaged $R^2$ for every size
+fraction (0.776, 0.740 and 0.729 against 0.745, 0.683 and 0.719 for \PMten, \PMtwo{} and \PMone) and a smaller
+mean bias (0.07, 0.04 and 0.01 against 0.25, 0.08 and 0.14~\ugm{}).
 
 \begin{table*}[t]
 \centering
@@ -394,7 +405,9 @@ EnvFiLM does not depend on a particular source of state information either. Repe
 and seeds with the station's weather channels (humidity, temperature, dew point and pressure) in place of the monitors'
 sensors, EnvFiLM again beats the TCN with channels, on 19 of 24 PMS5003 cases (median 0.990) and 20 of 24 SPS30 cases
 (median 0.973), and TESLA with channels on 23 and 22 of 24. The method therefore works both with sensors built into the
-monitor and with a nearby weather station.
+monitor and with a nearby weather station. Over a full year that also covers winter and spring, with the weather
+channels and one seed, the two networks are level (11 of 24 PMS5003 cases, median 1.002; Table~\ref{tab:soton}), in
+line with the seasonal behaviour discussed in Section~\ref{sec:limits}.
 
 \begin{table*}[t]
 \centering
@@ -408,6 +421,7 @@ same weather channels, July 2020 to July 2021, one seed.}
 \end{table*}
 
 \subsection{Cost}
+\label{sec:cost}
 
 EnvFiLM is compact. It has 54,785 parameters, against 23,681 for the TCN with channels, 4,531 for TESLA with channels
 and 309,825 for PatchTST with channels. One training run of EnvFiLM took 4 to 17 minutes per cell on our GPU, roughly a
@@ -499,8 +513,8 @@ Replications at further sites will extend the Southampton result, which covers 1
 \section{Conclusion}
 
 Low-cost particle sensor boxes already measure humidity and temperature, and this state is worth using well. EnvFiLM,
-a dilated convolutional calibrator with bounded feature-wise modulation, roughly halves the error of the published
-state of the art on the TESLA benchmark. It beats the same network given the state as ordinary inputs on most held-out
+a dilated convolutional calibrator with bounded feature-wise modulation, lowers the error of the strongest published
+model on the TESLA benchmark by 40\% to 48\%. It beats the same network given the state as ordinary inputs on most held-out
 units, by a wider margin when the target is a true reference instrument, and it carries over unchanged to an
 independent dataset with different sensors, reference and climate. More generally, our results suggest that when a
 sensor reports its own operating conditions, they are most useful as a way of adjusting how its signal is read.
@@ -600,6 +614,20 @@ air quality sensor correction,'' in \emph{Proc. AAAI Conf. Artif. Intell.}, vol.
 \bibitem{wathore2026} R.~Wathore, D.~Jadhao, A.~Chakraborty, and N.~Labhasetwar, ``Evaluating environmental and
 temporal performance of machine learning calibration models for low-cost particulate matter sensors: A case study
 across 4 Indian cities,'' in \emph{EGU General Assembly 2026}, 2026, EGU26-976.
+
+\bibitem{yun2026} J.~Yun, S.~Ahn, H.~Kim, S.~Shin, and Y.-D.~Seo, ``Low-cost sensor calibration for indoor air quality
+monitoring: A dataset, evaluation scenarios, and a lightweight model,'' arXiv:2610.11236, 2026.
+
+\bibitem{yu2020airnet} H.~Yu, Q.~Li, Y.~Geng, Y.~Zhang, and Z.~Wei, ``AirNet: A calibration model for low-cost air
+monitoring sensors using dual sequence encoder networks,'' in \emph{Proc. AAAI Conf. Artif. Intell.}, vol.~34, 2020,
+pp.~1129--1136.
+
+\bibitem{yu2020deepcm} H.~Yu \emph{et al.}, ``A deep calibration method for low-cost air monitoring sensors with
+multilevel sequence modeling,'' \emph{IEEE Trans. Instrum. Meas.}, vol.~69, no.~9, pp.~7167--7179, 2020.
+
+\bibitem{ahn2024sendal} S.~Ahn, H.~Kim, E.~Lee, and Y.-D.~Seo, ``SenDaL: An effective and efficient calibration
+framework of low-cost sensors for daily life,'' \emph{IEEE Internet Things J.}, vol.~11, no.~11, pp.~20619--20630,
+2024.
 
 \bibitem{si2020} M.~Si, Y.~Xiong, S.~Du, and K.~Du, ``Evaluation and calibration of a low-cost particle sensor in
 ambient conditions using machine-learning methods,'' \emph{Atmos. Meas. Tech.}, vol.~13, pp.~1693--1707, 2020.
