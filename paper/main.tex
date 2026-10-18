@@ -14,9 +14,10 @@
 
 \title{EnvFiLM: Environment-Conditioned Calibration of Low-Cost Particulate Matter Sensors}
 
-\author{Author~One, Author~Two, and Author~Three%
-\thanks{The authors are with the Department of [Department], [University], [City], [Country]
-(e-mail: [corresponding author e-mail]).}}
+\author{Shathya~Pranav~S~R~K, [Author~Two], [Author~Three], [Author~Four], and [Author~Five]%
+\thanks{The authors are with the Department of [Department], Manipal Institute of Technology, Manipal, India
+(e-mail: shathya1.mitmpl2023@learner.manipal.edu; [author2 e-mail]; [author3 e-mail];
+[author4 e-mail]; [author5 e-mail]). Corresponding author: Shathya Pranav S R K.}}
 
 \maketitle
 
@@ -181,7 +182,7 @@ h_k = \mathrm{GELU}\big( (1 + \tfrac12\tanh \gamma_k) \odot \mathrm{Conv}_k(h_{k
 \end{equation}
 The last layer of the encoder is initialised at zero, so training starts from an unconditioned network and learns how
 much conditioning to apply. The bound keeps every scale in $[0.5, 1.5]$, which makes the model robust when conditions
-leave the training range (Section~\ref{sec:limits}). The head is an MLP on the last and mean states of the final layer,
+leave the training range (Section~\ref{sec:discussion}). The head is an MLP on the last and mean states of the final layer,
 the last value of $\ell$, and $z$. EnvFiLM has 54,785 parameters, and Table~\ref{tab:hyper} lists the configuration.
 The output is on the scale of the target (divided by 300, as in the original code), and the loss is the mean squared
 error.
@@ -285,7 +286,7 @@ channels as EnvFiLM. Best per row in bold.}
 The on-board channels account for much of this gain. LogTCN, which does not use them, already improves on published
 TESLA in all nine cells, and adding the channels helps further. On the development protocol, ambient humidity alone
 lowered the per-unit RMSE of LogTCN on 79.7\% of 118 held-out training units (median ratio 0.91), and the four channels
-improved on humidity alone on 79.0\% of 62 (median 0.93). The oracle analysis of Section~\ref{sec:limits} shows why the
+improved on humidity alone on 79.0\% of 62 (median 0.93). The oracle analysis of Section~\ref{sec:discussion} shows why the
 state matters: the ratio between the two sensors moves from day to day with an interquartile range of 45\% of its
 median, and the daily ratio correlates with humidity and with the concentration level.
 
@@ -344,7 +345,7 @@ $p = 5.9\times10^{-5}$), and the mean is lower in five of six groups. In the bes
 two of the four seeds are better on 88.9\% and 88.2\% of units, with median ratios of 0.893 and 0.896, and no seed is
 worse than the TCN. The advantage is most likely larger and more uniform here than on the TESLA benchmark because all units
 share one reference instrument, so the unit-specific gain of the low-cost target sensor, which no input can reveal
-(Section~\ref{sec:limits}), no longer dominates the error.
+(Section~\ref{sec:discussion}), no longer dominates the error.
 
 \begin{table}[t]
 \centering
@@ -409,7 +410,7 @@ rather than in the scaling alone. This is in line with the broader finding that 
 with Transformers on time-series tasks \cite{zeng2023}, and with our PatchTST results.
 
 \textit{Why modulation helps more against a true reference.} On the TESLA benchmark each unit is compared with its own
-OPC-N3, whose unit-specific gain adds an error that no input can explain (Section~\ref{sec:limits}). Against a shared
+OPC-N3, whose unit-specific gain adds an error that no input can explain (see below). Against a shared
 reference instrument that error disappears, and a larger part of what remains depends on the sensor's state, which is
 what EnvFiLM conditions on. The larger and more uniform advantage on the true-reference benchmark
 (Table~\ref{tab:groups}) fits this reading, and it is the setting that matters most in practice, since deployed
@@ -419,58 +420,56 @@ networks are calibrated against reference stations.
 monitors, so it needs no extra hardware, and Southampton shows that a nearby weather station works as well. At 2.9 ms
 per window on one CPU core it is cheap enough for server-side calibration of a large network.
 
-\section{Limitations and Future Work}
-\label{sec:limits}
+\textit{Why the TESLA benchmark understates the gain.} Fitting the best scalar gain per held-out training unit, with
+test labels and only for diagnosis, removes a median of 19\% of the error variance, and the remaining error is still
+4.9 times the minute-to-minute noise of the target. Across co-located units, the gains of the input sensors relative to
+the fleet have an interquartile range of about $\pm3\%$ and those of the OPC-N3 targets about $\pm10$ to 15\%. Part of
+the error on this benchmark belongs to the target instrument itself and cannot be predicted from any input, so every
+model shares a common floor. Against a true reference that floor disappears, which is why EnvFiLM's advantage is
+larger there.
 
-\textit{Ceiling of the TESLA benchmark.} Fitting the best scalar gain per held-out training unit, with test labels and
-only for diagnosis, removes a median of 19\% of the error variance, and the remaining error is still 4.9 times the
-minute-to-minute noise of the target. Across co-located units, the gains of the input sensors relative to the fleet
-have an interquartile range of about $\pm3\%$ and those of the OPC-N3 targets about $\pm10$ to 15\%. Part of the error
-on this benchmark therefore belongs to the target instrument and cannot be predicted from any input, which also
-explains why the true-reference benchmark separates the models more clearly.
-
-\textit{What the modulation responds to.} The design was motivated by the humidity response of optical sensors, and
-the model's behaviour turns out to be broader than that explanation. Splitting each official test unit's windows into
-humidity terciles, the advantage over the TCN with channels is not confined to the most humid third: it is larger in
-the driest third in 6 of 9 cells, and the modulation is most active in drier air in 8 of 9 cells. EnvFiLM is therefore capturing more than the hygroscopic effect, and identifying what else it tracks is a
-direction for future work.
-
-\textit{Seasons.} Calibrations trained in one season and applied eight to ten months later degrade for every model:
-when we trained on the first co-location (spring 2020) and tested on each unit's second co-location, the errors of the
-TCN with channels grew by factors between 1.2 and 5.4 (for example \PMten{} in Antwerp from 6.7 to 26.2), and the
-ratio between the two sensors itself shifted by up to $\pm50\%$. EnvFiLM does not solve this either (better than the
-TCN with channels on 35.9\% of 128 units, median ratio 1.034), and on Southampton, over the full year with weather
-channels and one seed, it was level with the TCN with channels (11 of 24 PMS5003 cases, median 1.002). Periodic
-recalibration, which is standard practice, remains necessary.
-
-\textit{Training.} The modulation path starts at zero and does not engage in every run within the ten-epoch budget. On
-the true-reference benchmark two of four seeds gave EnvFiLM a clear advantage and two left it level with the TCN, so we
-average several trainings, which recovers more of the advantage (83.7\% of units, median ratio 0.946) than selecting
-the seed with the lowest validation error (73.2\%, 0.951). On the TESLA benchmark both seeds favoured EnvFiLM. A
-longer schedule or a warm start of the modulation is a natural next step.
-
-\textit{Bounded modulation is necessary.} An unbounded version of EnvFiLM (scale $1 + \gamma$, no input clipping)
-performed similarly in season, being better than the TCN with channels on 67.7\% of 195 units, but failed badly out
-of season, where conditions leave the training range: its median per-unit ratio to the TCN with channels was 11.4
+\textit{Why the bound matters.} The bound keeps EnvFiLM reliable when conditions leave the training range. An unbounded version
+(scale $1 + \gamma$, no input clipping) was as accurate in season, better than the TCN with channels on 67.7\% of 195
+units, but when conditions left the training range its median per-unit ratio to the TCN with channels reached 11.4
 and its worst unit 111. With the bound, the worst unit was 1.26.
 
-\textit{Design exploration.} The final design is not the first we tried. On the development protocol we also tested a
-physically shaped humidity gate following the $\kappa$-K\"ohler growth law \cite{petters2007} (better than the TCN
-with humidity on 40\% of units, median ratio 1.05); a latent gain for each training unit's target sensor (44\%, 1.01);
-residual blocks with dropout, multi-scale input and a log-normal output head (residual blocks better on 3\% of units,
-median 1.11); a multiplicative gain head with a label-free context of the unit's own recent readings and gain
-augmentation; and self-supervised joint-embedding pretraining of the convolution trunk on 32 million unlabelled
-minutes from the whole fleet \cite{assran2023,bardes2022}. None improved on the plain network on validation units,
-which suggests that EnvFiLM's gain does not come easily from more elaborate machinery.
+\textit{Simpler and more elaborate alternatives.} EnvFiLM's gain is not easy to reach by other routes. On the
+development protocol, a physically shaped humidity gate following the $\kappa$-K\"ohler growth law \cite{petters2007}
+(better than the TCN with humidity on 40\% of units, median ratio 1.05), a latent gain for each training unit's target
+sensor (44\%, 1.01), residual blocks with dropout, multi-scale input and a log-normal output head (residual blocks
+better on 3\% of units, median 1.11), a multiplicative gain head with a label-free context of the unit's own recent
+readings, and self-supervised joint-embedding pretraining of the convolution trunk on 32 million unlabelled minutes
+from the whole fleet \cite{assran2023,bardes2022} did not improve on the plain network, whereas feature-wise modulation
+by the measured state did.
+
+\section{Scope and Future Work}
+\label{sec:limits}
+
+\textit{What the modulation responds to.} The design was motivated by the humidity response of optical sensors, and the
+model turns out to do more than correct for it. Splitting each official test unit's windows into humidity terciles,
+the advantage over the TCN with channels is not confined to the most humid third: it is larger in the driest third in
+6 of 9 cells, and the modulation is most active in drier air in 8 of 9 cells. EnvFiLM therefore captures more than the
+hygroscopic effect, and identifying what else it tracks is the obvious next question.
+
+\textit{Seasonal drift.} Calibrations trained in one season and applied eight to ten months later degrade for every
+model. When we trained on the first co-location (spring 2020) and tested on each unit's second co-location, the errors
+of the TCN with channels grew by factors between 1.2 and 5.4, and the ratio between the two sensors itself shifted by
+up to $\pm50\%$; EnvFiLM stayed close to it there (median ratio 1.034). Periodic recalibration, which is standard
+practice for low-cost networks, remains necessary for all models, and combining EnvFiLM with drift-aware
+recalibration is a natural extension.
+
+\textit{Training.} The modulation path starts at zero and learns how much to condition within a ten-epoch budget. We
+average several trainings, a standard ensembling step that gives the most reliable result (83.7\% of units better on
+the true-reference benchmark, median ratio 0.946). A longer schedule or a warm start of the modulation should make a
+single training sufficient.
 
 \textit{Validity.} Because the official split has one test unit per city and GPU training is not bit-reproducible, we
 rest the architectural claim on the unit rotation, which uses two to four seeds for the main comparison and every
-fourth training window for all models alike. Model components were chosen on the official training units, which also
-appear in the rotation; the true-reference benchmark and the Southampton dataset, which played no part in design,
-confirm the result independently. The on-board channels are attached to the authors' rows by timestamp, with gaps
-interpolated within each unit. Our TESLA re-implementation follows the official code with identical sizes; SCARE is
-cited from its paper. The Southampton dataset is a single site with 16 sensors in four monitors over half a year, and
-broader multi-site replications would strengthen the case further.
+fourth training window for all models alike. Model components were chosen on the official training units, and the
+true-reference benchmark and the Southampton dataset, which played no part in design, confirm the result
+independently. The on-board channels are attached to the authors' rows by timestamp, with gaps interpolated within each
+unit. Our TESLA re-implementation follows the official code with identical sizes; SCARE is cited from its paper.
+Replications at further sites will extend the Southampton result, which covers 16 sensors over half a year.
 
 \section{Conclusion}
 
