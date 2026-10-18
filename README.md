@@ -115,3 +115,8 @@ The repository began as a study of robust and naive estimators in streaming data
 `harness/`, `figures/` and the `results/` folders other than `results/tesla/` and `results/paper/`, and the
 corresponding scripts are in `experiments/` (`run_phase*.py`, `run_*_sweep.py`, `reproduce_tables.py` and the
 `intel_*`, `cctnorm_*` and `lro_*` scripts). EnvFiLM does not depend on any of it.
+
+## License
+
+The code is released under the MIT License (see `LICENSE`). The datasets keep their own licenses: SensEURCity and the
+Southampton data are CC BY 4.0 on Zenodo.
