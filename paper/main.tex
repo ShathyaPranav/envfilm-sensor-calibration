@@ -72,7 +72,7 @@ and shift for every layer of a dilated convolutional network on the log particle
 baselines that receive the same information (TESLA, PatchTST and a convolutional network given the same channels), a
 capacity-matched control and an ablation that switches the modulation off (Section~\ref{sec:results}).
 \item A unit-rotation protocol in which every unit is held out once, which turns a benchmark with one test unit per
-city into 195 test cases and gives the comparison real statistical power (Section~\ref{sec:protocol}).
+city into 195 test cases from 65 physical sensors and gives the comparison real statistical power (Section~\ref{sec:protocol}).
 \item A true-reference benchmark on the same units, where the advantage of the architecture is larger, and a
 replication on an independent dataset with different sensors, reference and climate (Sections~\ref{sec:ref}
 and~\ref{sec:soton}).
@@ -170,7 +170,9 @@ climate and the network all differ from SensEURCity.
 uptake changes particle size and refractive index, so its effect on a light-scattering sensor scales with the particle
 signal and depends on the size distribution \cite{diantonio2018,crilley2018,petters2007}. The two sensors of a
 SensEURCity box also share a housing and its temperature. A model that receives humidity as one more input has to
-discover such multiplicative interactions on its own. Feature-wise linear modulation \cite{perez2018} builds them in:
+discover such multiplicative interactions on its own: in a convolution over concatenated channels the environment
+enters each feature as an added term before the activation, so a humidity-dependent gain can only be approximated by
+later layers. Feature-wise linear modulation \cite{perez2018} builds them in:
 the side input sets a gain and an offset for every feature channel, so the environment can change how strongly each
 learned temporal pattern of the particle signal contributes to the output.
 
@@ -247,7 +249,9 @@ On the authors' data our TESLA re-implementation reproduces the published number
 versus 14.58~\ugm{} in Antwerp and 13.53 versus 13.87~\ugm{} in Zagreb), which confirms that the shared recipe treats the attention
 models fairly.
 
-\textit{Official split.} Three seeds per model and cell; we report the mean.
+\textit{Official split.} Three seeds per model and cell; we report the mean. Across seeds, EnvFiLM is the more stable
+of the two convolutional models: the median standard deviation of its test RMSE over the nine cells is 0.21~\ugm{},
+against 0.27~\ugm{} for the TCN with the same channels.
 
 \textit{Unit rotation.} The official protocol tests one unit per city, and with an identical seed we measured
 run-to-run differences of about 7\% on a single unit (GPU non-determinism), as large as the effects of interest. We
@@ -274,7 +278,10 @@ pooled median ratio below one.
 Table~\ref{tab:main} gives the official-split results. EnvFiLM is more accurate than published TESLA in all nine cells
 (mean ratio 0.54) and than our TESLA re-implementation in all nine. Averaged over cities, its RMSE is 8.04 (\PMten),
 2.71 (\PMtwo) and 1.36 (\PMone), against 14.03, 5.67 and 2.51 reported for SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}),
-which roughly halves the error of the current state of the art. EnvFiLM also leads the baselines that receive the same
+which roughly halves the error of the current state of the art. The classical reference points in the same table of
+\cite{ahn2025} are further away still: the uncalibrated sensor averages 20.70, 10.28 and 8.42~\ugm{}, and a linear
+calibration of the window 17.87, 8.35 and 4.30~\ugm{}, so EnvFiLM's error is 55\% to 68\% below the linear
+calibration. EnvFiLM also leads the baselines that receive the same
 information: it is lower than the TCN with the same channels in 6 of 9 cells (mean ratio 0.95), than its size-matched
 version in 7 of 9 (0.97) and than TESLA with the same channels in 7 of 9 (0.79). PatchTST with the same channels is the
 strongest Transformer we tested, and EnvFiLM beats it in 6 of 9 cells (mean ratio 0.94) and on the city average of
@@ -310,7 +317,8 @@ $p = 2.5\times10^{-4}$), and each seed on its own favours EnvFiLM (62.6\% of uni
 first seed, 59.0\% with 0.984 for the second). Counting each physical sensor once, EnvFiLM is better on 48 of 65
 sensors (74\%; sign test $p = 1.5\times10^{-4}$, Wilcoxon $p = 1.6\times10^{-4}$), and a bootstrap over
 sensors puts the share of better sensors between 63.1\% and 84.6\% and the median per-sensor ratio at 0.978 (0.946
-to 0.988).
+to 0.988). The gain is therefore consistent rather than carried by a few sensors: it holds per case, per fold, per
+sensor and for each seed, on top of the large improvement that the state channels already bring.
 
 The ablation gives a clearer result. Against the same model with the modulation switched off, EnvFiLM is better on 81.0\% of
 units (interval 75.4\% to 86.2\%; median ratio 0.912, interval 0.890 to 0.928; Wilcoxon $p = 6.7\times10^{-17}$; 39 of
@@ -444,10 +452,10 @@ the error on this benchmark belongs to the target instrument itself and cannot b
 model shares a common floor. Against a true reference that floor disappears, which is why EnvFiLM's advantage is
 larger there.
 
-\textit{Why the bound matters.} The bound keeps EnvFiLM reliable when conditions leave the training range. An unbounded version
+\textit{Why the bound matters.} The bound is what keeps EnvFiLM reliable outside its training range. An unbounded version
 (scale $1 + \gamma$, no input clipping) was as accurate in season, better than the TCN with channels on 67.7\% of 195
-units, but when conditions left the training range its median per-unit ratio to the TCN with channels reached 11.4
-and its worst unit 111. With the bound, the worst unit was 1.26.
+units, but out of season its median per-unit ratio to the TCN with channels reached 11.4 and its worst unit 111.
+With the bound, the worst unit was 1.26.
 
 \textit{Simpler and more elaborate alternatives.} EnvFiLM's gain is not easy to reach by other routes. On the
 development protocol, a physically shaped humidity gate following the $\kappa$-K\"ohler growth law \cite{petters2007}
