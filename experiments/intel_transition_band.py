@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)
-DQ = r"C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval"
+DQ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 W = 30
 SAT = 122.153
 

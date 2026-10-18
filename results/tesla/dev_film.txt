@@ -49,7 +49,7 @@ PM1   Zagreb   fold 3 EnvFiLM        val 1.665  45 s
 
 median per-unit RMSE ratio to TCN (below 1 = better), and share of units better:
 Traceback (most recent call last):
-  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+  File "...\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
     return self._engine.get_loc(casted_key)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
@@ -61,14 +61,14 @@ KeyError: 'TCN'
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_dev.py", line 70, in <module>
+  File "...\experiments\tsl_dev.py", line 70, in <module>
     main()
-  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_dev.py", line 63, in main
+  File "...\experiments\tsl_dev.py", line 63, in main
     ratio = (w[m] / w[base]).groupby(level=[0, 1]).median()
                     ~^^^^^^
-  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\frame.py", line 4107, in __getitem__
+  File "...\Lib\site-packages\pandas\core\frame.py", line 4107, in __getitem__
     indexer = self.columns.get_loc(key)
               ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+  File "...\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
     raise KeyError(key) from err
 KeyError: 'TCN'

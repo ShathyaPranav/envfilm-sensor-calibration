@@ -62,7 +62,7 @@ from numpy.lib.stride_tricks import sliding_window_view
 warnings.filterwarnings('ignore', category=RuntimeWarning)
 torch.set_num_threads(max(1, (os.cpu_count() or 4) - 2))
 
-DQ = r"C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval"
+DQ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(DQ, 'results', 'intel')
 W = 30
 FOLDS = int(os.environ.get('FOLDS', '5'))

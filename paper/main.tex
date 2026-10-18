@@ -88,7 +88,9 @@ forests and neural networks are standard for co-located calibration
 hygroscopic growth of particles at high relative humidity \cite{diantonio2018,crilley2018,petters2007}. Neural
 calibrators range from feed-forward networks and gradient boosting on the reading, humidity and temperature
 \cite{si2020} to recurrent models over the recent history, such as the hybrid DNN and LSTM of Park et al.
-\cite{park2021}. In all of these the environment enters as additional input features. The closest learned approach
+\cite{park2021}, and a recent multi-city study compares machine-learning calibrations that use temperature,
+humidity, hour of day and month as covariates \cite{wathore2026}. In all of these the environment enters as
+additional input features. The closest learned approach
 to ours is the neural correction of Koziel et al. \cite{koziel2025}, where a network maps temperature, humidity and the
 raw reading to a multiplicative and an additive correction of the output. EnvFiLM moves the environment inside the
 model: it modulates the internal features of a temporal network at every layer, and our ablation shows that
@@ -257,7 +259,7 @@ the TESLA benchmark and 153 ($51\times3$) on the true-reference benchmark. We re
 lower RMSE, the median ratio of per-unit RMSEs, a sign test and a Wilcoxon signed-rank test on log ratios. Because
 units of one fold share a trained model and each sensor contributes one case per size fraction, we repeat the tests with
 the trained fold or the physical sensor as the independent unit. At sensor level, each sensor contributes the mean log
-ratio over its size fractions, and a cluster bootstrap resamples whole sensors.
+ratio over its size fractions, and the bootstrap resamples sensors.
 
 \textit{Development and pre-registration.} Model components were chosen on a development protocol that uses only the
 official training units (four folds of held-out training units). Before each confirmatory run we wrote down its pass
@@ -306,8 +308,9 @@ $p = 1.6\times10^{-6}$), and the mean RMSE is lower in six of the nine city and 
 The result does not depend on how the units are counted: over trained folds, EnvFiLM is better in 35 of 45 (sign test
 $p = 2.5\times10^{-4}$), and each seed on its own favours EnvFiLM (62.6\% of units with median ratio 0.967 for the
 first seed, 59.0\% with 0.984 for the second). Counting each physical sensor once, EnvFiLM is better on 48 of 65
-sensors (74\%; sign test $p = 1.5\times10^{-4}$, Wilcoxon $p = 1.6\times10^{-4}$), and the sensor-level bootstrap
-puts the share of better cases between 58.5\% and 72.8\% and the median ratio between 0.958 and 0.985.
+sensors (74\%; sign test $p = 1.5\times10^{-4}$, Wilcoxon $p = 1.6\times10^{-4}$), and a bootstrap over
+sensors puts the share of better sensors between 63.1\% and 84.6\% and the median per-sensor ratio at 0.978 (0.946
+to 0.988).
 
 The ablation gives a clearer result. Against the same model with the modulation switched off, EnvFiLM is better on 81.0\% of
 units (interval 75.4\% to 86.2\%; median ratio 0.912, interval 0.890 to 0.928; Wilcoxon $p = 6.7\times10^{-17}$; 39 of
@@ -349,8 +352,8 @@ all six (mean ratios 0.45 and 0.48). In the rotation, with each unit's RMSE aver
 is better than the TCN with the same channels on 83.7\% of 153 units (bootstrap 95\% interval 77.8\% to 89.5\%). The
 median ratio is 0.946 (interval 0.939 to 0.957; Wilcoxon $p = 1.8\times10^{-17}$; 26 of 30 folds, sign test
 $p = 5.9\times10^{-5}$), and the mean is lower in five of six groups. Counted per physical
-sensor, EnvFiLM is better on 47 of 51 (92\%; sign test $p = 2.4\times10^{-10}$; sensor-bootstrap interval for the
-median ratio 0.938 to 0.963). In the best trainings the margin is wider still:
+sensor, EnvFiLM is better on 47 of 51 (92\%, bootstrap interval 84.3\% to 98.0\%; sign test
+$p = 2.4\times10^{-10}$), with a median per-sensor ratio of 0.943 (0.934 to 0.960). In the best trainings the margin is wider still:
 two of the four seeds are better on 88.9\% and 88.2\% of units, with median ratios of 0.893 and 0.896, and no seed is
 worse than the TCN. The advantage is most likely larger and more uniform here than on the TESLA benchmark because all units
 share one reference instrument, so the unit-specific gain of the low-cost target sensor, which no input can reveal
@@ -585,6 +588,10 @@ accurate time-series forecasting against distribution shift,'' in \emph{Proc. IC
 
 \bibitem{dalbah2026} Y.~Dalbah, M.~Worring, and Y.-C.~Hsu, ``Veli: Unsupervised method and unified benchmark for low-cost
 air quality sensor correction,'' in \emph{Proc. AAAI Conf. Artif. Intell.}, vol.~40, 2026, pp.~20684--20692.
+
+\bibitem{wathore2026} R.~Wathore, D.~Jadhao, A.~Chakraborty, and N.~Labhasetwar, ``Evaluating environmental and
+temporal performance of machine learning calibration models for low-cost particulate matter sensors: A case study
+across 4 Indian cities,'' in \emph{EGU General Assembly 2026}, 2026, EGU26-976.
 
 \bibitem{si2020} M.~Si, Y.~Xiong, S.~Du, and K.~Du, ``Evaluation and calibration of a low-cost particle sensor in
 ambient conditions using machine-learning methods,'' \emph{Atmos. Meas. Tech.}, vol.~13, pp.~1693--1707, 2020.

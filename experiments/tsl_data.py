@@ -18,7 +18,7 @@ import os
 import numpy as np
 import pandas as pd
 
-DATA = os.environ.get('SEC_DATA', 'C:/Users/luckf/dq_data/senseurcity')
+DATA = os.environ.get('SEC_DATA', os.path.join(os.environ.get('DQ_DATA', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')), 'senseurcity'))
 UNITS = os.path.join(DATA, 'units')
 OUT = os.path.join(DATA, 'tesla')
 META = os.path.join(DATA, 'peek', 'metadata', 'metadata_dates.csv')

@@ -2,15 +2,15 @@ PM10  Antwerp  PatchTST   seed 0  val 9.403  test 11.964  (published 14.60)  820
 PM10  Antwerp  PatchTST   seed 1  val 10.662  test 12.898  (published 14.60)  789 s
 PM10  Antwerp  PatchTST   seed 2  val 9.770  test 13.689  (published 14.60)  791 s
 Traceback (most recent call last):
-  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 649, in <module>
+  File "...\experiments\tsl_bench.py", line 649, in <module>
     main()
-  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 640, in main
+  File "...\experiments\tsl_bench.py", line 640, in main
     _, v, te = fit(name, S, seed=s)
                ^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 601, in fit
+  File "...\experiments\tsl_bench.py", line 601, in fit
     loss = torch.mean((model(x, S.extra(perm[j:j + RECIPE['batch']])) - y) ** 2)
                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 73, in extra
+  File "...\experiments\tsl_bench.py", line 73, in extra
     return self.ex[i[:, None] + self.offs[None, :]]                 # B, N, E
            ^^^^^^^
 AttributeError: 'Split' object has no attribute 'ex'. Did you mean: 'x'?

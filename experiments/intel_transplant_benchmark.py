@@ -32,7 +32,7 @@ import numpy as np
 import pandas as pd
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)
-DQ = r"C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval"
+DQ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, DQ)
 sys.path.insert(0, os.path.join(DQ, 'experiments'))
 from harness.harness1c import rolling_stats

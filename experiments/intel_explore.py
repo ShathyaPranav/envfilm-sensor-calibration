@@ -27,7 +27,7 @@ import pickle
 import numpy as np
 import pandas as pd
 
-DATA = r"C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\data\intel_lab"
+DATA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'intel_lab')
 W = 30
 
 

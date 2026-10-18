@@ -33,7 +33,7 @@ from tsl_data import LISTS, PMS, UNITS
 DEV = 'cuda'
 N = B.N
 KS = (5, 15, 60, 180)
-CK = os.path.join(os.environ.get('SEC_DATA', 'C:/Users/luckf/dq_data/senseurcity'), 'jepa')
+CK = os.path.join(os.environ.get('SEC_DATA', os.path.join(os.environ.get('DQ_DATA', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')), 'senseurcity')), 'jepa')
 CFG = dict(steps=20000, batch=512, lr=1e-3, ema=0.996, C=32)
 CFG.update(eval(os.environ.get('JEPA_CFG', '{}')))
 

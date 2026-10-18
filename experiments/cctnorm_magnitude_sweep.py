@@ -31,7 +31,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-DQ = r"C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval"
+DQ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 for p in (DQ, os.path.join(DQ, 'experiments')):
     if p not in sys.path:
         sys.path.insert(0, p)

@@ -34,7 +34,7 @@ import pandas as pd
 from numpy.lib.stride_tricks import sliding_window_view
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)
-DQ = r"C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval"
+DQ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(DQ, 'results', 'intel')
 W = 30
 SAT = 122.153

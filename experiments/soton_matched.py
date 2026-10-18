@@ -12,7 +12,7 @@ os.environ['TSL_EXTRA'] = 'rh,temperature,dew_point_temperature,air_pressure'
 import tsl_bench as B
 import tsl_rotate as R
 
-BASE = 'C:/Users/luckf/dq_data'
+BASE = os.environ.get('DQ_DATA', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data'))
 GROUP = {'SotonPMS': 'PMS5003', 'SotonSPS': 'SPS030'}
 
 

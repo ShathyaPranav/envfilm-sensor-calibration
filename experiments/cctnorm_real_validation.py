@@ -47,7 +47,7 @@ from cct_norm import CCTNorm, winsorize, ALPHA_MAX
 from run_cctnorm_mechanism import TinyAE, recon_loss
 
 torch.set_num_threads(max(1, (os.cpu_count() or 4) - 2))
-DQ = r"C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval"
+DQ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 W = 60                 # TinyAE halves twice and doubles twice, so W must be divisible by 4
 N_CAL = int(os.environ.get('N_CAL', '400'))   # stride subsample for the O(n^2) soft CDF; preserves the fault mix
 N_WIN = int(os.environ.get('N_WIN', '500'))   # contiguous reconstruction windows sampled across the whole stream

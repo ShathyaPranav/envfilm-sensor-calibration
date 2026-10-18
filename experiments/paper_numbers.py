@@ -137,20 +137,18 @@ def write_soton_tex(S):
     open(os.path.join(OUT, 'tab_soton.tex'), 'w', encoding='utf-8', newline='\n').write('\n'.join(lines) + '\n')
 
 
-def sensor_level(files, a='EnvFiLM-b', b='TCN+ENV', n_boot=5000):
-    """Rotation statistics with the physical sensor as the independent unit: each sensor's mean log ratio over its
-    size fractions for the sign and Wilcoxon tests, and a bootstrap that resamples sensors (cluster bootstrap)."""
+def sensor_level(files, a="EnvFiLM-b", b="TCN+ENV", n_boot=10000):
+    """Rotation statistics with the physical sensor as the independent unit: each sensor contributes its mean log ratio
+    over its size fractions; sign and Wilcoxon tests on those values, and a bootstrap that resamples sensors for the
+    share of better sensors and the median per-sensor ratio."""
     r = pd.concat([csv(f) for f in files]).groupby(['pm', 'city', 'unit', 'model']).rmse.mean().unstack('model')
     lr = np.log(r[a] / r[b]).dropna()
     per = lr.groupby(level=[1, 2]).mean()
-    groups = [g.to_numpy() for _, g in lr.groupby(level=[1, 2])]
-    rng = np.random.default_rng(0)
-    share, med = [], []
-    for _ in range(n_boot):
-        s = np.concatenate([groups[i] for i in rng.integers(0, len(groups), len(groups))])
-        share.append((s < 0).mean())
-        med.append(np.exp(np.median(s)))
-    return dict(sensors=int(len(per)), better=int((per < 0).sum()),
+    v = per.to_numpy()
+    bs = np.random.default_rng(0).choice(v, (n_boot, len(v)), replace=True)
+    share = (bs < 0).mean(1)
+    med = np.exp(np.median(bs, 1))
+    return dict(sensors=int(len(per)), better=int((per < 0).sum()), median_ratio=float(np.exp(np.median(v))),
                 sign_p=float(binomtest(int((per < 0).sum()), len(per)).pvalue),
                 wilcoxon_p=float(wilcoxon(per).pvalue),
                 ci_share=[float(x) for x in np.percentile(share, [2.5, 97.5])],
