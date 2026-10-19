@@ -22,7 +22,7 @@ PUB_SCARE_MEAN = {'PM10': 14.03, 'PM2.5': 5.67, 'PM1': 2.51}
 PUB_TESLA_MEAN_SCARE = {'PM10': 14.21, 'PM2.5': 6.19, 'PM1': 2.82}     # TESLA as listed in SCARE's table
 PMS = ['PM10', 'PM2.5', 'PM1']
 CITIES = ['Antwerp', 'Oslo', 'Zagreb']
-NAMES = {'EnvFiLM-b': 'EnvFiLM (ours)', 'TCN+ENV': 'TCN + env. channels', 'TCN+ENVwide': 'TCN + env., size-matched',
+NAMES = {'EnvFiLM-b': 'EnvFiLM (ours)', 'TCN+ENV': 'TCN + env. channels', 'TCN+ENVwide': 'TCN + env., size-matched', 'TCN+ENV+z': 'TCN + env. + $z$',
          'TESLA+ENV': 'TESLA + env. channels', 'LogTCN': 'LogTCN (particles only)', 'TESLA-reimpl': 'TESLA (our re-impl.)',
          'TESLA-pub': 'TESLA (published)', 'EnvLate': 'EnvFiLM, modulation off', 'TCN': 'LogTCN (particles only)',
          'TESLA': 'TESLA (particles only)', 'PatchTST+ENV': 'PatchTST + env. channels',
@@ -36,7 +36,7 @@ def csv(name):
 def main_table():
     env = csv('bench_final_env.csv')
     env = env[env.pm == 'PM10']                                   # PM2.5/PM1 of this run came from the second process
-    rows = pd.concat([env, csv('bench_final_env_b.csv'), csv('bench_final_filmb.csv'),
+    rows = pd.concat([env, csv('bench_final_env_b.csv'), csv('bench_final_filmb.csv'), csv('bench_final_ctrlz.csv'),
                       csv('bench_orig_logtcn.csv').assign(model='LogTCN'),
                       csv('bench_orig_logtcn_rest.csv').assign(model='LogTCN'),
                       csv('bench_orig_tesla.csv').assign(model='TESLA-reimpl')])
@@ -160,8 +160,8 @@ def fmt(v, best):
 
 
 def write_main_tex(t, s):
-    cols = ['EnvFiLM-b', 'TCN+ENV', 'TCN+ENVwide', 'TESLA+ENV', 'LogTCN', 'TESLA-reimpl', 'TESLA-pub']
-    cols = [c for c in cols[:4] + ['PatchTST+ENV'] + cols[4:5] + ['PatchTST'] + cols[5:] if c in t.columns]
+    cols = ['EnvFiLM-b', 'TCN+ENV', 'TCN+ENVwide', 'TCN+ENV+z', 'TESLA+ENV', 'LogTCN', 'TESLA-reimpl', 'TESLA-pub']
+    cols = [c for c in cols[:5] + ['PatchTST+ENV'] + cols[5:6] + ['PatchTST'] + cols[6:] if c in t.columns]
     head = ' & '.join(['PM', 'City'] + ['\\rotatebox{90}{%s}' % NAMES[c] for c in cols]) + ' \\\\'
     lines = ['\\begin{tabular}{ll' + 'r' * len(cols) + '}', '\\toprule', head, '\\midrule']
     for (pm, c), row in t[cols].iterrows():
@@ -297,7 +297,7 @@ def main():
     N['main_table'] = {'%s %s' % k: {c: float(v) for c, v in row.items() if pd.notna(v)} for k, row in t.iterrows()}
     N['main_std'] = {'%s %s' % k: {c: float(v) for c, v in row.items() if pd.notna(v)} for k, row in s.iterrows()}
     cmp = {}
-    for b in [c for c in ('TCN+ENV', 'TCN+ENVwide', 'TESLA+ENV', 'PatchTST+ENV', 'LogTCN', 'PatchTST', 'TESLA-reimpl', 'TESLA-pub') if c in t.columns]:
+    for b in [c for c in ('TCN+ENV', 'TCN+ENVwide', 'TCN+ENV+z', 'TESLA+ENV', 'PatchTST+ENV', 'LogTCN', 'PatchTST', 'TESLA-reimpl', 'TESLA-pub') if c in t.columns]:
         cmp[b] = dict(cells_better=int((t['EnvFiLM-b'] < t[b]).sum()), mean_ratio=float((t['EnvFiLM-b'] / t[b]).mean()))
     N['main_compare'] = cmp
     cm = t.groupby(level=0).mean()

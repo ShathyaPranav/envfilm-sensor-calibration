@@ -292,7 +292,8 @@ server-side calibration (Section~\ref{sec:cost}). The classical reference points
 calibration of the window 17.87, 8.35 and 4.30~\ugm{}, so EnvFiLM's error is 55\% to 68\% below the linear
 calibration. EnvFiLM also leads the baselines that receive the same
 information: it is lower than the TCN with the same channels in 6 of 9 cells (mean ratio 0.95), than its size-matched
-version in 7 of 9 (0.97) and than TESLA with the same channels in 7 of 9 (0.79). PatchTST with the same channels is the
+version in 7 of 9 (0.97), than the TCN that also receives the state summary $z$ in 8 of 9 (0.94) and than TESLA
+with the same channels in 7 of 9 (0.79). PatchTST with the same channels is the
 strongest Transformer we tested, and EnvFiLM beats it in 6 of 9 cells (mean ratio 0.94) and on the city average of
 every size fraction (8.04, 2.71 and 1.36 against 8.61, 3.11 and 1.53~\ugm{}) with less than a fifth of its parameters. On the
 particle channel alone, PatchTST is worse than LogTCN in all nine cells. The advantage over the TCN with the same channels
@@ -304,7 +305,7 @@ mean bias (0.07, 0.04 and 0.01 against 0.25, 0.08 and 0.14~\ugm{}).
 \begin{table*}[t]
 \centering
 \caption{RMSE (\textup{\textmu g/m$^3$}) on the TESLA benchmark (authors' data, official split, mean of three seeds;
-published TESLA from \cite{ahn2025}, one value per cell). Columns 2 to 5 receive the same four on-board state
+published TESLA from \cite{ahn2025}, one value per cell). Columns 2 to 6 receive the same four on-board state
 channels as EnvFiLM. Best per row in bold.}
 \label{tab:main}
 \input{tab_main.tex}

@@ -27,3 +27,6 @@ EnvFiLM-b vs TCN+ENV+z, 195 cases, two seeds averaged: better on 60.5%, median r
 30 of 45 folds (sign p = 0.036); 42 of 65 physical sensors (sign p = 0.025, bootstrap share 52.3% to 75.4%).
 Criterion (>= 55%, median < 1) PASSES. The summary alone barely helps the TCN: TCN+ENV+z vs TCN+ENV better on 51.3%,
 median 0.998. Official split (tag final_ctrlz) still running.
+
+## Outcome, official split (2026-10-19)
+EnvFiLM-b lower than TCN+ENV+z in 8 of 9 cells (mean ratio 0.938); city means 8.04/2.71/1.36 against 8.41/3.06/1.42.
