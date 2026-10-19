@@ -290,8 +290,8 @@ Table~\ref{tab:main} gives the official-split results. EnvFiLM is more accurate 
 14.03, 5.67 and 2.51 for SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}, as reported by their authors).
 EnvFiLM's error is 40\% to 48\% below the most recent reported result. These published models, and the further
 baselines reported in \cite{yun2026}, follow the TESLA setting and read the particle channel without the on-board state
-channels used here; part of the gap therefore reflects that information, and the comparisons with baselines given the
-same channels below isolate the architecture. TESLA and SCARE were designed to fit microcontrollers, whereas EnvFiLM targets
+channels used here, so part of the gap reflects that information. The comparisons below, with baselines given the
+same channels, isolate the architecture. TESLA and SCARE were designed to fit microcontrollers, whereas EnvFiLM targets
 server-side calibration (Section~\ref{sec:cost}). The classical reference points in the same table of
 \cite{ahn2025} are further away still: the uncalibrated sensor averages 20.70, 10.28 and 8.42~\ugm{}, and a linear
 calibration of the window 17.87, 8.35 and 4.30~\ugm{}, so EnvFiLM's error is 55\% to 68\% below the linear
@@ -346,8 +346,8 @@ output head. The TCN given the same channels is a stronger baseline, because it 
 the particle signal from the first layer on. We attribute EnvFiLM's lead to an interaction that is multiplicative
 and conditioned on a summary of the whole window, instead of being learned implicitly from concatenated channels. Model
 size does not explain the gain: on the development protocol EnvFiLM was better than the size-matched TCN on 68.8\% of
-93 units (median 0.951). Nor do the summary features in the head: given the same summary $z$, the TCN with channels
-improves on its plain version on only 51.3\% of cases (median 0.998), and EnvFiLM still beats it on 60.5\% of the 195
+93 units (median 0.951). The summary features in the head do not explain it either. Given the same summary $z$, the
+TCN with channels improves on its plain version on only 51.3\% of cases (median 0.998), and EnvFiLM still beats it on 60.5\% of the 195
 cases (median 0.984, Wilcoxon $p = 5.7\times10^{-4}$), in 30 of 45 folds and on 42 of 65 physical sensors (sign test
 $p = 0.025$). Sensors that share a fold also share a trained model and the same weather, so we also resample whole
 folds: a fold-clustered bootstrap of the pre-registered median ratio gives $p = 0.0002$ against the TCN with channels
@@ -520,7 +520,7 @@ cells, where hygroscopic growth sets in. Against concentration it falls steadily
 air, where the offset of a low-cost sensor matters most relative to the signal. Consistent with this, the advantage over
 the TCN with channels is not confined to the most humid third of each test unit's windows: it is larger in the driest
 third in 6 of 9 cells. EnvFiLM therefore captures the hygroscopic regime and, beyond it, a dependence on dry, clean
-conditions, which is a natural target for further study.
+conditions, which we leave to further study.
 
 
 \textit{Seasonal drift.} Calibrations trained in one season and applied eight to ten months later degrade for every
@@ -559,8 +559,9 @@ sensor reports its own operating conditions, they are most useful as a way of ad
 
 \section*{Data and Code Availability}
 SensEURCity is available from Zenodo \cite{vanpoppel2023}, the TESLA preprocessed files from the authors' repository
-\cite{ahn2025}, and the Southampton data from Zenodo \cite{bulot2022data,bulot2022onboard}. Code, result files and the
-pre-registration notes are available from the authors on request.
+\cite{ahn2025}, and the Southampton data from Zenodo \cite{bulot2022data,bulot2022onboard}. The code, every result file and
+the pre-registration notes, with their commit history, are available at
+\url{https://github.com/ShathyaPranav/envfilm-sensor-calibration} under the MIT License.
 
 \begin{thebibliography}{99}
 

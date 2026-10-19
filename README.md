@@ -15,20 +15,22 @@ On the SensEURCity benchmark of TESLA (AAAI 2025), with the TESLA authors' own p
 | | PM10 | PM2.5 | PM1 |
 |---|---|---|---|
 | EnvFiLM, city-averaged RMSE (µg/m³) | **8.04** | **2.71** | **1.36** |
+| Yun et al. 2026 (preprint), reported | 13.34 | 5.19 | 2.50 |
 | SCARE, published | 14.03 | 5.67 | 2.51 |
 | TESLA, published | 14.75 | 6.16 | 3.18 |
 
-Against the same convolutional network given the same four humidity and temperature channels as ordinary inputs,
-tested by holding out every sensor once (unit rotation):
+The published models read the particle channel only. To isolate the architecture, EnvFiLM is also compared with the
+same convolutional network given the same four humidity and temperature channels as ordinary inputs (TCN+ENV), and
+with that network plus EnvFiLM's 20-number summary of the state in its head (TCN+ENV+z). Every sensor is held out once
+(unit rotation); the table counts sensors on which EnvFiLM has the lower error:
 
-| Benchmark | Sensors where EnvFiLM is better | Sign test |
+| Benchmark | vs TCN+ENV | vs TCN+ENV+z |
 |---|---|---|
-| TESLA benchmark (target: OPC-N3) | 48 of 65 | p = 1.5e-4 |
-| Same sensors, target: station reference instrument | 47 of 51 | p = 2.4e-10 |
-| Southampton, UK (independent dataset, FIDAS reference) | 14 of 16 | p = 4.2e-3 |
+| TESLA benchmark (target: OPC-N3) | 48 of 65 | 42 of 65 |
+| Same sensors, target: station reference instrument | 47 of 51 | 51 of 51 |
+| Southampton, UK (independent dataset, FIDAS reference) | 14 of 16 | 15 of 16 |
 
-When that network also gets EnvFiLM's 20-number summary of the state in its head, EnvFiLM is still better on 42 of 65
-sensors and in 8 of 9 official cells, so the gain comes from the modulation and not from the summary features.
+The summary features do not help the TCN on any benchmark, so the gain comes from the modulation.
 Switching the modulation off makes EnvFiLM worse on 81% of sensor and size cases. The full tables, including PatchTST,
 TESLA with the same channels and a size-matched network, are in `paper/`.
 
@@ -46,11 +48,11 @@ The main files in `experiments/`:
 | File | What it does |
 |---|---|
 | `tsl_data.py` | Loads the TESLA benchmark files, attaches the on-board channels, builds the true-reference variant |
-| `tsl_bench.py` | All models (EnvFiLM is class `EnvFiLMb`, name `EnvFiLM-b`), the shared training recipe, the official split |
+| `tsl_bench.py` | All models (EnvFiLM is class `EnvFiLMb`, name `EnvFiLM-b`; the summary control is `TCN+ENV+z`), the shared training recipe, the official split |
 | `tsl_rotate.py` | Unit rotation: every sensor is a test sensor once |
 | `soton_onboard.py`, `soton_matched.py` | Southampton rotation with the monitors' sensors, and with station weather only |
 | `tsl_oot.py` | Train in spring 2020, test at the second co-location months later |
-| `tsl_humidity.py`, `humidity_analysis.py` | Error by humidity tercile and the strength of the modulation |
+| `tsl_humidity.py`, `humidity_analysis.py`, `fig_modulation.py` | Error by humidity tercile, and what the modulation responds to (Fig. 3) |
 | `tsl_dev.py`, `tsl_oracle.py` | Development protocol on training sensors only, and diagnostic oracles |
 | `paper_numbers.py`, `paper_fig_arch.py` | Every number, table and figure in the paper, computed from `results/tesla/` |
 | `sec_extract.py`, `prepare_soton.py` | Data preparation (see below) |
