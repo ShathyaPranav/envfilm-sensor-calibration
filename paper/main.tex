@@ -28,12 +28,12 @@ both. Recent deep-learning calibrators nevertheless read the particle signal alo
 convolutional calibrator in which an encoding of the box's measured humidity and temperature scales and shifts every
 layer of the particle pathway within fixed bounds (feature-wise linear modulation). On the SensEURCity benchmark of TESLA
 (AAAI 2025), evaluated with the benchmark authors' own data and protocol, the complete EnvFiLM calibrator lowers
-city-averaged RMSE by 40\% to 48\% relative to the strongest published model and is more accurate than published
+city-averaged RMSE by 40\% to 48\% relative to the most recent reported model and is more accurate than published
 TESLA in all nine city and size cells. The architecture itself matters: against the same network given the same channels as
 ordinary inputs, EnvFiLM is better on 48 of 65 held-out sensors (sign test $p = 1.5\times10^{-4}$), and still on 42
 of 65 when that network also receives EnvFiLM's summary of the state; switching the modulation off makes EnvFiLM worse
 on 81\% of sensor and size cases. The advantage grows against true reference
-instruments, where EnvFiLM is better on 47 of 51 sensors, and it carries over unchanged to an independent dataset from
+instruments, where EnvFiLM is better on 47 of 51 sensors, and, with its settings unchanged, it carries over to an independent dataset from
 Southampton (UK), with different sensors, reference and climate, where it is better on 14 of 16 sensors.
 \end{abstract}
 
@@ -285,10 +285,12 @@ pooled median ratio below one.
 
 Table~\ref{tab:main} gives the official-split results. EnvFiLM is more accurate than published TESLA in all nine cells
 (mean ratio 0.54) and than our TESLA re-implementation in all nine. Averaged over cities, its RMSE is 8.04 (\PMten),
-2.71 (\PMtwo) and 1.36 (\PMone), against 13.34, 5.19 and 2.50 for the most recent published model \cite{yun2026}, 14.03, 5.67 and 2.51 for
-SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}). EnvFiLM's error is 40\% to 48\% below the
-strongest published result; TimeXer, a Transformer built for exogenous inputs, reaches 15.12, 6.31 and 3.31~\ugm{} in
-the same comparison \cite{yun2026}. TESLA and SCARE were designed to fit microcontrollers, whereas EnvFiLM targets
+2.71 (\PMtwo) and 1.36 (\PMone), against 13.34, 5.19 and 2.50 for the most recent reported model \cite{yun2026},
+14.03, 5.67 and 2.51 for SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}, as reported by their authors).
+EnvFiLM's error is 40\% to 48\% below the most recent reported result. These published models, and the further
+baselines reported in \cite{yun2026}, follow the TESLA setting and read the particle channel without the on-board state
+channels used here; part of the gap therefore reflects that information, and the comparisons with baselines given the
+same channels below isolate the architecture. TESLA and SCARE were designed to fit microcontrollers, whereas EnvFiLM targets
 server-side calibration (Section~\ref{sec:cost}). The classical reference points in the same table of
 \cite{ahn2025} are further away still: the uncalibrated sensor averages 20.70, 10.28 and 8.42~\ugm{}, and a linear
 calibration of the window 17.87, 8.35 and 4.30~\ugm{}, so EnvFiLM's error is 55\% to 68\% below the linear
@@ -346,7 +348,11 @@ size does not explain the gain: on the development protocol EnvFiLM was better t
 93 units (median 0.951). Nor do the summary features in the head: given the same summary $z$, the TCN with channels
 improves on its plain version on only 51.3\% of cases (median 0.998), and EnvFiLM still beats it on 60.5\% of the 195
 cases (median 0.984, Wilcoxon $p = 5.7\times10^{-4}$), in 30 of 45 folds and on 42 of 65 physical sensors (sign test
-$p = 0.025$).
+$p = 0.025$). Sensors that share a fold also share a trained model and the same weather, so we also resample whole
+folds: a fold-clustered bootstrap of the pre-registered median ratio gives $p = 0.0002$ against the TCN with channels
+and $p = 0.006$ against the summary control, and the median favours EnvFiLM in each of the three cities against both.
+A test on the mean log ratio with fold-clustered errors gives $p = 0.029$ and $p = 0.067$; the mean is pulled up by a
+few Zagreb sensors with large errors, which is why the pre-registered criterion uses the median.
 
 \begin{table*}[t]
 \centering
@@ -491,16 +497,31 @@ by the measured state did.
 \section{Scope and Future Work}
 \label{sec:limits}
 
-\textit{What the modulation responds to.} The design was motivated by the humidity response of optical sensors, and the
-model turns out to do more than correct for it. Splitting each official test unit's windows into humidity terciles,
-the advantage over the TCN with channels is not confined to the most humid third: it is larger in the driest third in
-6 of 9 cells, and the modulation is most active in drier air in 8 of 9 cells. EnvFiLM therefore captures more than the
-hygroscopic effect, and identifying what else it tracks is the obvious next question.
+\textit{What the modulation responds to.} The humidity response of optical sensors was the initial motivation for the
+design, and the model turns out to do more than correct for it. Fig.~\ref{fig:mod} shows the strength of the
+modulation, the mean of $|\text{scale} - 1|$ over layers and channels, on the official test units. Against ambient
+humidity it is U-shaped: strongest in dry air, lowest around 60\% to 70\%, and rising again above about 70\% in most
+cells, where hygroscopic growth sets in. Against concentration it falls steadily, so the modulation is largest in clean
+air, where the offset of a low-cost sensor matters most relative to the signal. Consistent with this, the advantage over
+the TCN with channels is not confined to the most humid third of each test unit's windows: it is larger in the driest
+third in 6 of 9 cells. EnvFiLM therefore captures the hygroscopic regime and, beyond it, a dependence on dry, clean
+conditions, which is a natural target for further study.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{fig_modulation.pdf}
+\caption{Strength of EnvFiLM's modulation (mean $|\text{scale} - 1|$ over layers and channels) on the official test
+units, against ambient relative humidity (left) and the target concentration (right), in deciles; one line per city
+and size fraction, averaged over three seeds.}
+\label{fig:mod}
+\end{figure*}
 
 \textit{Seasonal drift.} Calibrations trained in one season and applied eight to ten months later degrade for every
 model. When we trained on the first co-location (spring 2020) and tested on each unit's second co-location, the errors
-of the TCN with channels grew by factors between 1.2 and 5.4, and the ratio between the two sensors itself shifted by
-up to $\pm50\%$; EnvFiLM stayed close to it there (median ratio 1.034). Periodic recalibration, which is standard
+of the TCN with channels grew by factors between 1.2 and 5.4 and those of EnvFiLM by factors between 1.3 and 7.6, and
+the ratio between the two sensors itself shifted by up to $\pm50\%$. Out of season the two networks are close (median
+ratio 1.034, group means within 15\%), so the advantage of EnvFiLM holds within the season covered by its training
+data, and the full-year Southampton run (Table~\ref{tab:soton}) shows the same boundary. Periodic recalibration, which is standard
 practice for low-cost networks, remains necessary for all models, and combining EnvFiLM with drift-aware
 recalibration is a natural extension.
 
@@ -521,11 +542,12 @@ Replications at further sites will extend the Southampton result, which covers 1
 \section{Conclusion}
 
 Low-cost particle sensor boxes already measure humidity and temperature, and this state is worth using well. EnvFiLM,
-a dilated convolutional calibrator with bounded feature-wise modulation, lowers the error of the strongest published
+a dilated convolutional calibrator with bounded feature-wise modulation, lowers the error of the most recent reported
 model on the TESLA benchmark by 40\% to 48\%. On most held-out sensors it also beats the same network given the state as
 ordinary inputs, including when that network receives the same summary of the state. The margin is wider when the target
-is a true reference instrument, and the model carries over unchanged to an independent dataset with different sensors,
-reference and climate. More generally, our results suggest that when a
+is a true reference instrument, and the model, with its settings unchanged, carries over to an independent dataset with
+different sensors, reference and climate. The advantage holds within the season covered by the training data;
+across seasons every model needs recalibration. More generally, our results suggest that when a
 sensor reports its own operating conditions, they are most useful as a way of adjusting how its signal is read.
 
 \section*{Data and Code Availability}
