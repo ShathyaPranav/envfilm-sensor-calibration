@@ -31,8 +31,8 @@ layer of the particle pathway within fixed bounds (feature-wise linear modulatio
 city-averaged RMSE by 40\% to 48\% relative to the most recent reported model and is more accurate than published
 TESLA in all nine city and size cells. The architecture itself matters: against the same network given the same channels as
 ordinary inputs, EnvFiLM is better on 48 of 65 held-out sensors (sign test $p = 1.5\times10^{-4}$), and still on 42
-of 65 when that network also receives EnvFiLM's summary of the state (51 of 51 and 15 of 16 sensors on the
-true-reference and independent benchmarks); switching the modulation off makes EnvFiLM worse
+of 65 when that network also receives EnvFiLM's summary of the state (15 of 16 on the independent dataset);
+switching the modulation off makes EnvFiLM worse
 on 81\% of sensor and size cases. The advantage grows against true reference
 instruments, where EnvFiLM is better on 47 of 51 sensors, and, with its settings unchanged, it carries over to an independent dataset from
 Southampton (UK), with different sensors, reference and climate, where it is better on 14 of 16 sensors.
@@ -394,7 +394,10 @@ share one reference instrument, so the unit-specific gain of the low-cost target
 (Section~\ref{sec:discussion}), no longer dominates the error. The summary-feature control confirms the result here
 as well. Giving the TCN EnvFiLM's summary $z$ does not help it on this benchmark (better than its plain version on 20\%
 of cases, median 1.035), and EnvFiLM beats this control on 98.0\% of the 153 cases (median 0.910), in all 30 folds and
-on all 51 sensors.
+on all 51 sensors; because the summary weakens the TCN here, we treat the comparison with the plain TCN with channels
+(47 of 51 sensors) as the headline result for this benchmark. In absolute terms, the median per-sensor RMSE against
+the station references falls from 5.84 to 5.28~\ugm{} for \PMten, from 2.16 to 2.07~\ugm{} for \PMtwo{} and from 2.04
+to 1.98~\ugm{} for \PMone{} relative to the TCN with channels, a gain obtained in software, with no additional hardware.
 
 \begin{table}[t]
 \centering
@@ -532,10 +535,11 @@ data, and the full-year Southampton run (Table~\ref{tab:soton}) shows the same b
 practice for low-cost networks, remains necessary for all models, and combining EnvFiLM with drift-aware
 recalibration is a natural extension.
 
-\textit{Training.} The modulation path starts at zero and learns how much to condition within a ten-epoch budget. We
-average several trainings, a standard ensembling step that gives the most reliable result (83.7\% of units better on
-the true-reference benchmark, median ratio 0.946). A longer schedule or a warm start of the modulation should make a
-single training sufficient.
+\textit{Training.} The modulation path starts at zero and learns how much to condition within a ten-epoch budget, and
+individual trainings differ. In the evaluation we therefore average each unit's RMSE over several training seeds, for
+every model alike, to reduce training noise (83.7\% of units better on the true-reference benchmark, median ratio
+0.946). The deployed model is a single network; averaging the predictions of several trainings, a longer schedule or a
+warm start of the modulation could make one training as reliable as the average.
 
 \textit{Validity.} Because the official split has one test unit per city and GPU training is not bit-reproducible, we
 rest the architectural claim on the unit rotation, which uses two to four seeds for the main comparison and every
@@ -543,7 +547,10 @@ fourth training window for all models alike. Model components were chosen on the
 true-reference benchmark and the Southampton dataset, which played no part in design, confirm the result
 independently. The on-board channels are attached to the authors' rows by timestamp, and the 1.0\% of rows
 without them (49,179 of 4.86 million) were filled by interpolation within each unit. Humidity and temperature vary slowly,
-so this step has little room to affect the results. Our TESLA re-implementation follows the official code with identical sizes; SCARE is cited from its paper.
+so this step has little room to affect the results. Our TESLA re-implementation follows the official code with identical sizes; SCARE is cited from its paper. No model,
+EnvFiLM included, received a per-model search over the training settings (learning rate, epochs, batch size); all
+share one recipe, under which our TESLA
+re-implementation reproduces its published numbers, and model-specific tuning of the baselines is left open.
 Replications at further sites will extend the Southampton result, which covers 16 sensors over half a year.
 
 \section{Conclusion}
