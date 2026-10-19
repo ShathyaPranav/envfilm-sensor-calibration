@@ -397,7 +397,7 @@ of cases, median 1.035), and EnvFiLM beats this control on 98.0\% of the 153 cas
 on all 51 sensors; because the summary weakens the TCN here, we treat the comparison with the plain TCN with channels
 (47 of 51 sensors) as the headline result for this benchmark. In absolute terms, the median per-sensor RMSE against
 the station references falls from 5.84 to 5.28~\ugm{} for \PMten, from 2.16 to 2.07~\ugm{} for \PMtwo{} and from 2.04
-to 1.98~\ugm{} for \PMone{} relative to the TCN with channels, a gain obtained in software, with no additional hardware.
+to 1.98~\ugm{} for \PMone{} relative to the TCN with channels, and the gain needs no additional hardware.
 
 \begin{table}[t]
 \centering
@@ -538,8 +538,8 @@ recalibration is a natural extension.
 \textit{Training.} The modulation path starts at zero and learns how much to condition within a ten-epoch budget, and
 individual trainings differ. In the evaluation we therefore average each unit's RMSE over several training seeds, for
 every model alike, to reduce training noise (83.7\% of units better on the true-reference benchmark, median ratio
-0.946). The deployed model is a single network; averaging the predictions of several trainings, a longer schedule or a
-warm start of the modulation could make one training as reliable as the average.
+0.946). The deployed model is a single network. Averaging the predictions of several trainings would make it as reliable as
+the average, and a longer schedule or a warm start of the modulation may do the same for a single training.
 
 \textit{Validity.} Because the official split has one test unit per city and GPU training is not bit-reproducible, we
 rest the architectural claim on the unit rotation, which uses two to four seeds for the main comparison and every
@@ -550,7 +550,7 @@ without them (49,179 of 4.86 million) were filled by interpolation within each u
 so this step has little room to affect the results. Our TESLA re-implementation follows the official code with identical sizes; SCARE is cited from its paper. No model,
 EnvFiLM included, received a per-model search over the training settings (learning rate, epochs, batch size); all
 share one recipe, under which our TESLA
-re-implementation reproduces its published numbers, and model-specific tuning of the baselines is left open.
+re-implementation reproduces its published numbers. Tuning each baseline separately is left to future work.
 Replications at further sites will extend the Southampton result, which covers 16 sensors over half a year.
 
 \section{Conclusion}
