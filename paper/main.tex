@@ -30,8 +30,9 @@ layer of the particle pathway within fixed bounds (feature-wise linear modulatio
 (AAAI 2025), evaluated with the benchmark authors' own data and protocol, the complete EnvFiLM calibrator lowers
 city-averaged RMSE by 40\% to 48\% relative to the strongest published model and is more accurate than published
 TESLA in all nine city and size cells. The architecture itself matters: against the same network given the same channels as
-ordinary inputs, EnvFiLM is better on 48 of 65 held-out sensors (sign test $p = 1.5\times10^{-4}$), and switching the
-modulation off makes it worse on 81\% of sensor and size cases. The advantage grows against true reference
+ordinary inputs, EnvFiLM is better on 48 of 65 held-out sensors (sign test $p = 1.5\times10^{-4}$), and still on 42
+of 65 when that network also receives EnvFiLM's summary of the state; switching the modulation off makes EnvFiLM worse
+on 81\% of sensor and size cases. The advantage grows against true reference
 instruments, where EnvFiLM is better on 47 of 51 sensors, and it carries over unchanged to an independent dataset from
 Southampton (UK), with different sensors, reference and climate, where it is better on 14 of 16 sensors.
 \end{abstract}
@@ -71,7 +72,8 @@ and shift for every layer of a dilated convolutional network on the log particle
 (Section~\ref{sec:method}).
 \item A new state of the art on the TESLA benchmark, measured on the authors' own preprocessed files, together with
 baselines that receive the same information (TESLA, PatchTST and a convolutional network given the same channels), a
-capacity-matched control and an ablation that switches the modulation off (Section~\ref{sec:results}).
+capacity-matched control, a control that gives the convolutional network EnvFiLM's state summary as well, and an
+ablation that switches the modulation off (Section~\ref{sec:results}).
 \item A unit-rotation protocol in which every unit is held out once, which turns a benchmark with one test unit per
 city into 195 test cases from 65 physical sensors and gives the comparison real statistical power (Section~\ref{sec:protocol}).
 \item A true-reference benchmark on the same units, where the advantage of the architecture is larger, and a
@@ -79,7 +81,7 @@ replication on an independent dataset with different sensors, reference and clim
 and~\ref{sec:soton}).
 \end{enumerate}
 All design decisions were made on training or validation units, and the pass criteria of every confirmatory test were
-written down before the test was run.
+written down and committed to version control, with timestamps, before the test was run.
 
 \section{Related Work}
 
@@ -284,7 +286,7 @@ pooled median ratio below one.
 Table~\ref{tab:main} gives the official-split results. EnvFiLM is more accurate than published TESLA in all nine cells
 (mean ratio 0.54) and than our TESLA re-implementation in all nine. Averaged over cities, its RMSE is 8.04 (\PMten),
 2.71 (\PMtwo) and 1.36 (\PMone), against 13.34, 5.19 and 2.50 for the most recent published model \cite{yun2026}, 14.03, 5.67 and 2.51 for
-SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}). EnvFiLM's error is therefore 40\% to 48\% below the
+SCARE and 14.75, 6.16 and 3.18 for TESLA (all in \ugm{}). EnvFiLM's error is 40\% to 48\% below the
 strongest published result; TimeXer, a Transformer built for exogenous inputs, reaches 15.12, 6.31 and 3.31~\ugm{} in
 the same comparison \cite{yun2026}. TESLA and SCARE were designed to fit microcontrollers, whereas EnvFiLM targets
 server-side calibration (Section~\ref{sec:cost}). The classical reference points in the same table of
@@ -331,7 +333,7 @@ $p = 2.5\times10^{-4}$), and each seed on its own favours EnvFiLM (62.6\% of uni
 first seed, 59.0\% with 0.984 for the second). Counting each physical sensor once, EnvFiLM is better on 48 of 65
 sensors (74\%; sign test $p = 1.5\times10^{-4}$, Wilcoxon $p = 1.6\times10^{-4}$), and a bootstrap over
 sensors puts the share of better sensors between 63.1\% and 84.6\% and the median per-sensor ratio at 0.978 (0.946
-to 0.988). The gain is therefore consistent rather than carried by a few sensors: it holds per case, per fold, per
+to 0.988). The gain is consistent rather than carried by a few sensors: it holds per case, per fold, per
 sensor and for each seed, on top of the large improvement that the state channels already bring.
 
 The ablation gives a clearer result. Against the same model with the modulation switched off, EnvFiLM is better on 81.0\% of
@@ -410,7 +412,7 @@ $p = 4.2\times10^{-3}$).
 EnvFiLM does not depend on a particular source of state information either. Repeating the run on exactly the same rows
 and seeds with the station's weather channels (humidity, temperature, dew point and pressure) in place of the monitors'
 sensors, EnvFiLM again beats the TCN with channels, on 19 of 24 PMS5003 cases (median 0.990) and 20 of 24 SPS30 cases
-(median 0.973), and TESLA with channels on 23 and 22 of 24. The method therefore works both with sensors built into the
+(median 0.973), and TESLA with channels on 23 and 22 of 24. The method works both with sensors built into the
 monitor and with a nearby weather station. Over a full year that also covers winter and spring, with the weather
 channels and one seed, the two networks are level (11 of 24 PMS5003 cases, median 1.002; Table~\ref{tab:soton}), in
 line with the seasonal behaviour discussed in Section~\ref{sec:limits}.
@@ -520,9 +522,10 @@ Replications at further sites will extend the Southampton result, which covers 1
 
 Low-cost particle sensor boxes already measure humidity and temperature, and this state is worth using well. EnvFiLM,
 a dilated convolutional calibrator with bounded feature-wise modulation, lowers the error of the strongest published
-model on the TESLA benchmark by 40\% to 48\%. It beats the same network given the state as ordinary inputs on most held-out
-units, by a wider margin when the target is a true reference instrument, and it carries over unchanged to an
-independent dataset with different sensors, reference and climate. More generally, our results suggest that when a
+model on the TESLA benchmark by 40\% to 48\%. On most held-out sensors it also beats the same network given the state as
+ordinary inputs, including when that network receives the same summary of the state. The margin is wider when the target
+is a true reference instrument, and the model carries over unchanged to an independent dataset with different sensors,
+reference and climate. More generally, our results suggest that when a
 sensor reports its own operating conditions, they are most useful as a way of adjusting how its signal is read.
 
 \section*{Data and Code Availability}

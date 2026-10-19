@@ -27,6 +27,8 @@ tested by holding out every sensor once (unit rotation):
 | Same sensors, target: station reference instrument | 47 of 51 | p = 2.4e-10 |
 | Southampton, UK (independent dataset, FIDAS reference) | 14 of 16 | p = 4.2e-3 |
 
+When that network also gets EnvFiLM's 20-number summary of the state in its head, EnvFiLM is still better on 42 of 65
+sensors and in 8 of 9 official cells, so the gain comes from the modulation and not from the summary features.
 Switching the modulation off makes EnvFiLM worse on 81% of sensor and size cases. The full tables, including PatchTST,
 TESLA with the same channels and a size-matched network, are in `paper/`.
 
