@@ -1,0 +1,30 @@
+PM10  SotonPMS fold 0 TCN+ENV+z        val 7.035  units 7.27 6.88  41 s
+PM10  SotonPMS fold 1 TCN+ENV+z        val 7.082  units 6.98 7.17  33 s
+PM10  SotonPMS fold 2 TCN+ENV+z        val 7.193  units 7.31 7.10  30 s
+PM10  SotonPMS fold 3 TCN+ENV+z        val 6.876  units 10.19  39 s
+PM10  SotonPMS fold 4 TCN+ENV+z        val 8.233  units 7.87  32 s
+PM10  SotonSPS fold 0 TCN+ENV+z        val 11.004  units 7.26 7.21  35 s
+PM10  SotonSPS fold 1 TCN+ENV+z        val 6.728  units 7.06 14.13  35 s
+PM10  SotonSPS fold 2 TCN+ENV+z        val 7.181  units 6.83 6.78  33 s
+PM10  SotonSPS fold 3 TCN+ENV+z        val 6.937  units 6.72  39 s
+PM10  SotonSPS fold 4 TCN+ENV+z        val 6.762  units 7.15  35 s
+PM2.5 SotonPMS fold 0 TCN+ENV+z        val 3.276  units 3.52 3.14  34 s
+PM2.5 SotonPMS fold 1 TCN+ENV+z        val 3.194  units 3.09 3.18  36 s
+PM2.5 SotonPMS fold 2 TCN+ENV+z        val 3.213  units 3.17 3.11  35 s
+PM2.5 SotonPMS fold 3 TCN+ENV+z        val 2.973  units 8.02  36 s
+PM2.5 SotonPMS fold 4 TCN+ENV+z        val 4.741  units 3.72  36 s
+PM2.5 SotonSPS fold 0 TCN+ENV+z        val 7.022  units 2.88 2.68  39 s
+PM2.5 SotonSPS fold 1 TCN+ENV+z        val 2.797  units 3.49 9.79  37 s
+PM2.5 SotonSPS fold 2 TCN+ENV+z        val 3.194  units 2.87 2.86  38 s
+PM2.5 SotonSPS fold 3 TCN+ENV+z        val 2.921  units 2.77  42 s
+PM2.5 SotonSPS fold 4 TCN+ENV+z        val 2.772  units 3.17  42 s
+PM1   SotonPMS fold 0 TCN+ENV+z        val 2.616  units 2.88 2.55  38 s
+PM1   SotonPMS fold 1 TCN+ENV+z        val 2.632  units 2.42 2.56  38 s
+PM1   SotonPMS fold 2 TCN+ENV+z        val 2.634  units 2.48 2.42  35 s
+PM1   SotonPMS fold 3 TCN+ENV+z        val 2.595  units 8.61  39 s
+PM1   SotonPMS fold 4 TCN+ENV+z        val 4.971  units 3.27  35 s
+PM1   SotonSPS fold 0 TCN+ENV+z        val 5.769  units 2.34 2.20  26 s
+PM1   SotonSPS fold 1 TCN+ENV+z        val 2.135  units 2.41 7.82  25 s
+PM1   SotonSPS fold 2 TCN+ENV+z        val 2.461  units 2.30 2.30  26 s
+PM1   SotonSPS fold 3 TCN+ENV+z        val 2.424  units 2.27  30 s
+PM1   SotonSPS fold 4 TCN+ENV+z        val 2.182  units 2.44  30 s

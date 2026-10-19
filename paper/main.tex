@@ -31,7 +31,8 @@ layer of the particle pathway within fixed bounds (feature-wise linear modulatio
 city-averaged RMSE by 40\% to 48\% relative to the most recent reported model and is more accurate than published
 TESLA in all nine city and size cells. The architecture itself matters: against the same network given the same channels as
 ordinary inputs, EnvFiLM is better on 48 of 65 held-out sensors (sign test $p = 1.5\times10^{-4}$), and still on 42
-of 65 when that network also receives EnvFiLM's summary of the state; switching the modulation off makes EnvFiLM worse
+of 65 when that network also receives EnvFiLM's summary of the state (51 of 51 and 15 of 16 sensors on the
+true-reference and independent benchmarks); switching the modulation off makes EnvFiLM worse
 on 81\% of sensor and size cases. The advantage grows against true reference
 instruments, where EnvFiLM is better on 47 of 51 sensors, and, with its settings unchanged, it carries over to an independent dataset from
 Southampton (UK), with different sensors, reference and climate, where it is better on 14 of 16 sensors.
@@ -390,7 +391,10 @@ $p = 2.4\times10^{-10}$), with a median per-sensor ratio of 0.943 (0.934 to 0.96
 two of the four seeds are better on 88.9\% and 88.2\% of units, with median ratios of 0.893 and 0.896, and no seed is
 worse than the TCN. The advantage is most likely larger and more uniform here than on the TESLA benchmark because all units
 share one reference instrument, so the unit-specific gain of the low-cost target sensor, which no input can reveal
-(Section~\ref{sec:discussion}), no longer dominates the error.
+(Section~\ref{sec:discussion}), no longer dominates the error. The summary-feature control confirms the result here
+as well. Giving the TCN EnvFiLM's summary $z$ does not help it on this benchmark (better than its plain version on 20\%
+of cases, median 1.035), and EnvFiLM beats this control on 98.0\% of the 153 cases (median 0.910), in all 30 folds and
+on all 51 sensors.
 
 \begin{table}[t]
 \centering
@@ -413,7 +417,9 @@ better than TESLA with the same channels on all 24 (median 0.859). For the SPS30
 22 of 24 (median 0.821) and edges the TCN with channels (14 of 24, median 0.988). Its mean RMSE is the lowest of the
 three models in all six sensor and size groups, and over both sensor types it is better than the TCN with channels in
 25 of 30 trained folds (sign test $p = 3.2\times10^{-4}$) and on 14 of 16 physical sensors (sign test
-$p = 4.2\times10^{-3}$).
+$p = 4.2\times10^{-3}$). Against the TCN that also receives the summary $z$, which leaves that network essentially
+unchanged here (median ratio to its plain version 1.005), EnvFiLM is better on 22 of 24 PMS5003 cases (median 0.961),
+18 of 24 SPS30 cases (0.978) and 15 of 16 sensors.
 
 EnvFiLM does not depend on a particular source of state information either. Repeating the run on exactly the same rows
 and seeds with the station's weather channels (humidity, temperature, dew point and pressure) in place of the monitors'
@@ -443,6 +449,15 @@ tenth of the 30 minutes to 2.7 hours needed by PatchTST with channels, which is 
 the unit rotation. A single 360-minute window takes 2.9 ms on one CPU core in PyTorch, against 1.9 ms for the TCN with
 channels and 1.0 ms for TESLA with channels, well within the budget of server-side calibration. The microcontroller
 designs of TESLA and SCARE remain smaller.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{fig_modulation.pdf}
+\caption{Strength of EnvFiLM's modulation (mean $|\text{scale} - 1|$ over layers and channels) on the official test
+units, against ambient relative humidity (left) and the target concentration (right), in deciles; one line per city
+and size fraction, averaged over three seeds.}
+\label{fig:mod}
+\end{figure*}
 
 \section{Discussion}
 \label{sec:discussion}
@@ -507,14 +522,6 @@ the TCN with channels is not confined to the most humid third of each test unit'
 third in 6 of 9 cells. EnvFiLM therefore captures the hygroscopic regime and, beyond it, a dependence on dry, clean
 conditions, which is a natural target for further study.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.85\textwidth]{fig_modulation.pdf}
-\caption{Strength of EnvFiLM's modulation (mean $|\text{scale} - 1|$ over layers and channels) on the official test
-units, against ambient relative humidity (left) and the target concentration (right), in deciles; one line per city
-and size fraction, averaged over three seeds.}
-\label{fig:mod}
-\end{figure*}
 
 \textit{Seasonal drift.} Calibrations trained in one season and applied eight to ten months later degrade for every
 model. When we trained on the first co-location (spring 2020) and tested on each unit's second co-location, the errors

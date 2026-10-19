@@ -1,0 +1,159 @@
+PM10  Antwerp  fold 0 TCN+ENV+z        val 6.748  units 5.89 6.29 6.05 6.03 6.29 6.19  17 s
+PM10  Antwerp  fold 1 TCN+ENV+z        val 6.837  units 6.46 6.44 6.62 6.62 6.97 7.99  11 s
+PM10  Antwerp  fold 2 TCN+ENV+z        val 5.827  units 5.95 6.18 6.09 6.58 6.02 6.42  11 s
+PM10  Antwerp  fold 3 TCN+ENV+z        val 5.989  units 6.36 6.08 6.10 11.06 5.85 5.69  11 s
+PM10  Antwerp  fold 4 TCN+ENV+z        val 6.348  units 7.04 6.07 5.89 5.95 6.38 8.02  11 s
+PM10  Oslo     fold 0 TCN+ENV+z        val 5.335  units 5.29 6.69 5.23 5.24 5.78  2 s
+PM10  Oslo     fold 1 TCN+ENV+z        val 5.658  units 5.91 5.16 5.17 5.53  2 s
+PM10  Oslo     fold 2 TCN+ENV+z        val 5.498  units 5.25 5.11 5.21 5.30  2 s
+PM10  Oslo     fold 3 TCN+ENV+z        val 5.470  units 5.43 5.29 5.35 5.33  2 s
+PM10  Oslo     fold 4 TCN+ENV+z        val 5.443  units 5.77 5.48 5.40 5.36  2 s
+Traceback (most recent call last):
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_rotate.py", line 75, in <module>
+    main()
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_rotate.py", line 46, in main
+    S = B.Split(city, pm)
+        ^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_bench.py", line 37, in __init__
+    U = load(city)
+        ^^^^^^^^^^
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_data.py", line 147, in load
+    return [(ase, ref10_frame(city, ase)) for ase in LISTS[city]]
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\OneDrive\Desktop\dq-estimator-eval\experiments\tsl_data.py", line 127, in ref10_frame
+    d = pd.read_parquet(os.path.join(UNITS, '%s_%s.parquet' % (city, ase)), columns=cols)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\io\parquet.py", line 669, in read_parquet
+    return impl.read(
+           ^^^^^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\io\parquet.py", line 265, in read
+    pa_table = self.api.parquet.read_table(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyarrow\parquet\core.py", line 1964, in read_table
+    return dataset.read(columns=columns, use_threads=use_threads,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\luckf\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyarrow\parquet\core.py", line 1590, in read
+    table = self._dataset.to_table(
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "pyarrow/_dataset.pyx", line 579, in pyarrow._dataset.Dataset.to_table
+    return self.scanner(
+  File "pyarrow/_dataset.pyx", line 415, in pyarrow._dataset.Dataset.scanner
+    return Scanner.from_dataset(
+  File "pyarrow/_dataset.pyx", line 3706, in pyarrow._dataset.Scanner.from_dataset
+    options = Scanner._make_scan_options(
+  File "pyarrow/_dataset.pyx", line 3619, in pyarrow._dataset.Scanner._make_scan_options
+    _populate_builder(
+  File "pyarrow/_dataset.pyx", line 3569, in pyarrow._dataset._populate_builder
+    check_status(builder.ProjectColumns([tobytes(c) for c in columns]))
+  File "pyarrow/error.pxi", line 92, in pyarrow.lib.check_status
+    raise convert_status(status)
+pyarrow.lib.ArrowInvalid: No match for FieldRef.Nested(FieldRef.Name(Ref) FieldRef.Name(PM1)) in date: timestamp[ns]
+latitude: float
+longitude: float
+altitude: float
+Location.ID: dictionary<values=string, indices=int8, ordered=0>
+BMP280: float
+SHT31HE: float
+SHT31TE: float
+Absolute_humidity: float
+Td_deficit: float
+SHT31HI: float
+SHT31TI: float
+CO_A4_P1: float
+D300: float
+NO_B4_P1: float
+NO2_B43F_P1: float
+OX_A431_P1: float
+5301CAT: float
+5301CST: float
+5325CAT: float
+5325CST: float
+5310CAT: float
+5310CST: float
+53PT003: float
+53PT005: float
+53PT010: float
+53PT025: float
+53PT050: float
+53PT100: float
+OPCN3PM1: float
+OPCN3PM25: float
+OPCN3PM10: float
+OPCN3Bin0: float
+OPCN3Bin1: float
+OPCN3Bin2: float
+OPCN3Bin3: float
+OPCN3Bin4: float
+OPCN3Bin5: float
+OPCN3Bin6: float
+OPCN3Bin7: float
+OPCN3Bin8: float
+OPCN3Bin9: float
+OPCN3Bin10: float
+OPCN3Bin11: float
+OPCN3Bin12: float
+OPCN3Bin13: float
+OPCN3Bin14: float
+OPCN3Bin15: float
+OPCN3Bin16: float
+OPCN3Bin17: float
+OPCN3Bin18: float
+OPCN3Bin19: float
+OPCN3Bin20: float
+OPCN3Bin21: float
+OPCN3Bin22: float
+OPCN3Bin23: float
+OPCN3Hum: float
+OPCN3Temp: float
+OPCN3Vol: float
+CO_A4_P1_flag: dictionary<values=string, indices=int8, ordered=0>
+D300_flag: dictionary<values=string, indices=int8, ordered=0>
+NO_B4_P1_flag: dictionary<values=string, indices=int8, ordered=0>
+NO2_B43F_P1_flag: dictionary<values=string, indices=int8, ordered=0>
+OX_A431_P1_flag: dictionary<values=string, indices=int8, ordered=0>
+5301CAT_flag: dictionary<values=string, indices=int8, ordered=0>
+5301CST_flag: dictionary<values=string, indices=int8, ordered=0>
+OPCN3PM1_flag: dictionary<values=string, indices=int8, ordered=0>
+5310CAT_flag: dictionary<values=string, indices=int8, ordered=0>
+5310CST_flag: dictionary<values=string, indices=int8, ordered=0>
+OPCN3PM10_flag: dictionary<values=string, indices=int8, ordered=0>
+5325CAT_flag: dictionary<values=string, indices=int8, ordered=0>
+5325CST_flag: dictionary<values=string, indices=int8, ordered=0>
+OPCN3PM25_flag: dictionary<values=string, indices=int8, ordered=0>
+BMP280_flag: dictionary<values=string, indices=int8, ordered=0>
+SHT31HE_flag: dictionary<values=string, indices=int8, ordered=0>
+SHT31HI_flag: dictionary<values=string, indices=int8, ordered=0>
+SHT31TE_flag: dictionary<values=string, indices=int8, ordered=0>
+SHT31TI_flag: dictionary<values=string, indices=int8, ordered=0>
+Ref.Long: float
+Ref.Lat: float
+Ref.CO_ppm: float
+Ref.NO: float
+Ref.NO2: float
+Ref.O3: float
+Ref.PM10: float
+Ref.PM2.5: float
+__fragment_index: int32
+__batch_index: int32
+__last_in_fragment: bool
+__filename: string
+PM2.5 Antwerp  fold 0 TCN+ENV+z        val 3.423  units 2.01 2.50 2.21 2.16 2.20 2.52  17 s
+PM2.5 Antwerp  fold 1 TCN+ENV+z        val 3.560  units 2.44 2.33 2.83 2.79 4.05 4.27  11 s
+PM2.5 Antwerp  fold 2 TCN+ENV+z        val 2.272  units 2.60 2.63 2.62 2.85 2.60 2.97  11 s
+PM2.5 Antwerp  fold 3 TCN+ENV+z        val 2.380  units 2.68 2.20 2.43 7.49 2.23 2.00  11 s
+PM2.5 Antwerp  fold 4 TCN+ENV+z        val 2.564  units 2.78 2.32 2.15 2.19 2.61 4.80  11 s
+PM2.5 Oslo     fold 0 TCN+ENV+z        val 1.998  units 2.14 3.08 1.78 1.85 2.13  2 s
+PM2.5 Oslo     fold 1 TCN+ENV+z        val 2.102  units 2.26 1.67 1.75 1.77  2 s
+PM2.5 Oslo     fold 2 TCN+ENV+z        val 2.074  units 1.67 1.59 1.64 1.82  2 s
+PM2.5 Oslo     fold 3 TCN+ENV+z        val 1.954  units 1.82 1.68 1.73 2.12  2 s
+PM2.5 Oslo     fold 4 TCN+ENV+z        val 1.772  units 2.01 1.74 1.78 1.74  2 s
+PM1   Antwerp  fold 0 TCN+ENV+z        val 3.485  units 2.03 2.42 2.15 2.37 1.98 2.53  11 s
+PM1   Antwerp  fold 1 TCN+ENV+z        val 3.778  units 2.69 2.27 3.08 3.09 4.30 3.67  11 s
+PM1   Antwerp  fold 2 TCN+ENV+z        val 2.130  units 2.38 2.16 2.13 2.85 2.18 2.90  11 s
+PM1   Antwerp  fold 3 TCN+ENV+z        val 2.382  units 2.75 2.19 2.24 6.70 2.20 2.21  11 s
+PM1   Antwerp  fold 4 TCN+ENV+z        val 2.691  units 3.05 2.49 2.12 2.31 2.73 5.17  11 s
+PM1   Oslo     fold 0 TCN+ENV+z        val 1.776  units 1.95 2.83 1.56 1.61 2.06  2 s
+PM1   Oslo     fold 1 TCN+ENV+z        val 1.917  units 2.12 1.43 1.50 1.54  2 s
+PM1   Oslo     fold 2 TCN+ENV+z        val 1.935  units 1.38 1.35 1.41 1.72  2 s
+PM1   Oslo     fold 3 TCN+ENV+z        val 1.765  units 1.57 1.50 1.54 1.98  2 s
+PM1   Oslo     fold 4 TCN+ENV+z        val 1.510  units 1.89 1.43 1.48 1.54  2 s

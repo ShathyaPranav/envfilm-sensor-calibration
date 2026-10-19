@@ -16,3 +16,10 @@ EnvFiLM-b beats TCN+ENV+z if it is better on at least 55% of unit cases with a p
 
 ## Reporting
 Reported whatever it shows. If a benchmark fails, the paper says so for that benchmark.
+
+## Outcome (2026-10-20)
+True reference, four seeds: EnvFiLM-b better than TCN+ENV+z on 98.0% of 153 cases, median 0.910, 30 of 30 folds,
+51 of 51 sensors. PASSES. Note: here the summary makes the TCN worse (TCN+ENV+z vs TCN+ENV better on 20%, median 1.035).
+Southampton, two seeds: PMS5003 (primary) 91.7% of 24 cases, median 0.961, 8 of 8 sensors. PASSES. SPS30 75.0%,
+median 0.978, 7 of 8 sensors. Both types: 83.3%, 15 of 16 sensors; the summary leaves the TCN unchanged there
+(42% better, median 1.005).
